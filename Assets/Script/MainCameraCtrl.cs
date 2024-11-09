@@ -9,7 +9,12 @@ public class MainCameraCtrl : MonoBehaviour
     [SerializeField] float MouseY;
     [SerializeField] float sens = 800f;
     [SerializeField] float Distance = 10f;
-    [SerializeField] Transform Player;
+    [SerializeField] GameObject Player;
+
+    void Start()
+    {
+        Player = GameObject.FindWithTag("Player");
+    }
 
     void Update()
     {
@@ -20,9 +25,9 @@ public class MainCameraCtrl : MonoBehaviour
     void Move()
     {
         Quaternion rotation = Quaternion.Euler(MouseY, MouseX, 0f);
-        Vector3 position = Player.position - rotation * Vector3.forward * Distance;
+        Vector3 position = Player.transform.position - rotation * Vector3.forward * Distance;
         transform.position = position;
-        transform.LookAt(Player);
+        transform.LookAt(Player.transform);
     }
     
     void Rotate()

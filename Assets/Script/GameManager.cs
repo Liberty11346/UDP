@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
   
-    public Transform Player; // 플레이어 Transform
+    public GameObject Player; // 플레이어 Transform
     public Material[] materials; // 몬스터에 적용될 Material 배열
     public GameObject enemyPrefab; // 몬스터 프리팹
     public float spawnInterval = 2f; // 몬스터 생성 간격 (초 단위)
@@ -21,12 +21,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Player = GameObject.FindWithTag("Player");
         StartCoroutine(Spawn());
     }
 
     void Update()
     {
-
+        if( Player != null ) transform.position = Player.transform.position;
     }
 
     IEnumerator Spawn()

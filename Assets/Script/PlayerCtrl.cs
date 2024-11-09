@@ -13,14 +13,17 @@ public class PlayerCtrl : MonoBehaviour
     [SerializeField] float originalFOV = 60f;
     [SerializeField] bool isSkill = false;
     [SerializeField] float selecetedWeaponType;
-    [SerializeField] Camera mainCam;
-    [SerializeField] Camera playerCam;
+    [SerializeField] GameObject mainCamObj, playerCamObj;
+    [SerializeField] Camera mainCam, playerCam;
    
     void Start()
     {
+        mainCamObj = GameObject.Find("Main Camera");
+        playerCamObj = GameObject.Find("PlayerCamera");
+        mainCam = mainCamObj.GetComponent<Camera>();
+        playerCam = playerCamObj.GetComponent<Camera>();
+        ActivateCamera(playerCam, false);
         originalFOV = playerCam.fieldOfView;
-        mainCam.gameObject.SetActive(true);
-        playerCam.gameObject.SetActive(false);
     }
 
     void Update()
@@ -36,30 +39,39 @@ public class PlayerCtrl : MonoBehaviour
         swap();
     }
 
-    // ¼öÁ÷ ÀÌµ¿
+    void ActivateCamera(Camera cam, bool isActivated)
+    {
+        cam.enabled = isActivated;
+        cam.gameObject.GetComponent<AudioListener>().enabled = isActivated;
+    }
+
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
     void verticalMove()
     {
+        // ìƒìŠ¹
         if (Input.GetKey("w"))
         {
             if (rotationX >= 90f)
             {
                 rotationX = 90f;
             }
-            rotationX += 10f * Time.deltaTime * moveSpeed;
+            rotationX -= 10f * Time.deltaTime * moveSpeed;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
+
+        // í•˜ê°•
         if (Input.GetKey("s"))
         {
             if (rotationX <= -70f)
             {
                 rotationX = -70f;
             }
-            rotationX -= 10f * Time.deltaTime * moveSpeed;
+            rotationX += 10f * Time.deltaTime * moveSpeed;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
     }
 
-    // ¼öÆò ÀÌµ¿
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
     void horizontalMove()
     {
         if (Input.GetKey("a"))
@@ -82,7 +94,7 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
 
-    // °¡¼Ó
+    // ï¿½ï¿½ï¿½ï¿½
     void acceleration()
     {
         if (Input.GetKey(KeyCode.Space))
@@ -91,7 +103,7 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
 
-    //°¨¼Ó
+    //ï¿½ï¿½ï¿½ï¿½
     void deceleration()
     {
         if (Input.GetKey(KeyCode.LeftShift))
@@ -100,59 +112,58 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
 
-    // ÁÖÆ÷
+    // ï¿½ï¿½ï¿½ï¿½
     void fire()
     {
         if (Input.GetMouseButton(0))
         {
             if (selecetedWeaponType > 0)
             {
-                Debug.Log(selecetedWeaponType + "¹ø ÁÖÆ÷ ¹ß»ç");
+                Debug.Log(selecetedWeaponType + "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½");
             }
         }
     }
 
-    // ÁÜ
+    // ï¿½ï¿½
     void zoom()
     {
-        
         if (Input.GetMouseButton(1))
         {
-            playerCam.gameObject.SetActive(true);
-            mainCam.gameObject.SetActive(false);
+            ActivateCamera(playerCam, true);
+            ActivateCamera(mainCam, false);
             playerCam.fieldOfView = maxZoom;
         }
         else
         {
-            playerCam.gameObject.SetActive(false);
-            mainCam.gameObject.SetActive(true);
+            ActivateCamera(playerCam, false);
+            ActivateCamera(mainCam, true);
             playerCam.fieldOfView = originalFOV;
         }
     }
 
-    // ÁÖÆ÷ or ½ºÅ³ ¼±ÅÃ
+    // ï¿½ï¿½ï¿½ï¿½ or ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½
     void selectType()
     {
         if (isSkill == true)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                Debug.Log("1¹ø ½ºÅ³ »ç¿ë");
+                Debug.Log("1ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                Debug.Log("2¹ø ½ºÅ³ »ç¿ë");
+                Debug.Log("2ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                Debug.Log("3¹ø ½ºÅ³ »ç¿ë");
+                Debug.Log("3ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                Debug.Log("4¹ø ½ºÅ³ »ç¿ë");
+                Debug.Log("4ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½");
             }
         }
 
@@ -161,36 +172,36 @@ public class PlayerCtrl : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 selecetedWeaponType = 1;
-                Debug.Log("1¹ø ÁÖÆ÷");
+                Debug.Log("1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 selecetedWeaponType = 2;
-                Debug.Log("2¹ø ÁÖÆ÷");
+                Debug.Log("2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 selecetedWeaponType = 3;
-                Debug.Log("3¹ø ÁÖÆ÷");
+                Debug.Log("3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 selecetedWeaponType = 4;
-                Debug.Log("4¹ø ÁÖÆ÷");
+                Debug.Log("4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
         }
     }
 
-    // ÁÖÆ÷ or ½ºÅ³ ¼±ÅÃ ÀüÈ¯
+    // ï¿½ï¿½ï¿½ï¿½ or ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     void swap()
     {
         if (Input.GetKeyDown("q"))
         {
             isSkill = !isSkill;
-            Debug.Log("ÁÖÆ÷, ½ºÅ³ ÀüÈ¯: " + (isSkill ? "½ºÅ³ ¸ðµå" : "ÁÖÆ÷ ¸ðµå"));
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Å³ ï¿½ï¿½È¯: " + (isSkill ? "ï¿½ï¿½Å³ ï¿½ï¿½ï¿½" : "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½"));
         }
     }
 }

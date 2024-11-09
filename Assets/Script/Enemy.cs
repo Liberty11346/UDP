@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 // 적 오브젝트에 탑재될 AI 스크립트
 public class Enemy : MonoBehaviour
 {
     private GameObject playerObject; // 플레이어 오브젝트
     private Player playerScript; // 플레이어 스크립트
-    private Transform moveTargetPos; // 이동 목표 위치
-    private List<Transform> firePos; // 공격 시 투사체가 발사될 위치들의 집합
-    public float fireTime; // 공격 속도. 높을수록 느리다.
+    private Quaternion moveTargetRotation; // 이동 시 목표 회전값
+    private Vector3 moveTargetVector; // 이동 시 목표 벡터
+    private List<Transform> firePos = new List<Transform>(); // 공격 시 투사체가 발사될 위치들의 집합
+    public float fireDelay, // 공격 쿨타임. 높을수록 공속이 느리다. (초 단위)
+                 moveSpeed, // 이동 속도. 높을수록 이동이 빠르다.
+                 rotateSpeed; // 회전 속도. 높을수록 회전이 빠르다.
+    private float playerMaxDistance, // 플레이어와 유지할 최대 거리
+                  playerMinDistance; // 플레이어와 유지할 최소 거리
+
     public GameObject attackProjectile; // 공격 시 발사할 공격 투사체
     void Start()
     {
@@ -19,28 +23,67 @@ public class Enemy : MonoBehaviour
         playerObject = GameObject.FindWithTag("Player");
         playerScript = playerObject.GetComponent<Player>();
         
-        // 이름에 "FirePos"를 포함하는 자식 오브젝트의 transform을 가져와 firePos 리스트에 넣는다.
-        for( int i = 0 ; i < transform.childCount ; i++ ) if( transform.GetChild(i).name.Contains("FirePos") ) firePos.Add(transform.GetChild(i).transform);
+        // "FirePos"를 태그를 가진 자식 오브젝트의 transform을 가져와 firePos 리스트에 넣는다.
+        for( int i = 0 ; i < transform.childCount ; i++ ) if( transform.GetChild(i).tag == "FirePos" ) firePos.Add(transform.GetChild(i).transform);
     
+        // 플레이어와 유지할 최소 거리를 산출
+        playerMinDistance = Random.Range(10, 30);
 
+        // 최소 거리에 10~100 사이 무작위 값을 더하여 최대 거리를 산출
+        playerMaxDistance = playerMinDistance + Random.Range(30, 100);
+
+        // 기본적으로 플레이어의 이동 방향과 동일한 방향을 이동 목표 방향으로 잡는다.
+        moveTargetRotation = Quaternion.LookRotation(playerObject.transform.forward);
+
+        // 플레이어 공격 시작
+        StartCoroutine(Attack());
     }
 
     void Update()
     {
+        // 기본적으로 직진만 한다
+        transform.Translate( Vector3.forward * moveSpeed * Time.deltaTime );
+
+        // 이동 목표를 계산
+        CalMoveTargetPos();        
         
+        // 이동 목표 지점을 바라보도록 회전
+        transform.rotation = Quaternion.Slerp(transform.rotation, moveTargetRotation, rotateSpeed * Time.deltaTime);
     }
 
-    // moveTargetPos를 바라보도록 함선을 회전
-    void Rotate()
+    // 플레이어의 이동을 기반으로 이동 목표를 설정
+    // 이동할 지점을 구하고, 해당 지점을 바라보는 회전 값을 구한다.
+    void CalMoveTargetPos()
     {
+        // 자기 자신과 플레이어와의 거리를 계산한다.
+        float playerCurrentDistance = Vector3.Distance(transform.position, playerObject.transform.position);
 
+        // 플레이어와의 거리가 최소 거리보다 짧다면 플레이어를 등지는 방향을 목표로 잡는다.
+        if( playerCurrentDistance < playerMinDistance )
+        {
+            moveTargetRotation = Quaternion.LookRotation(transform.position - playerObject.transform.position);
+        }
+        // 플레이어와의 거리가 최대 거리보다 멀다면 플레이어를 바라보는 방향을 목표로 잡는다.
+        else if( playerCurrentDistance > playerMaxDistance )
+        {
+            moveTargetRotation = Quaternion.LookRotation(playerObject.transform.position - transform.position);
+        }
+        // 그 외의 경우 현재 이동 방향을 유지한다.
+    }
+
+    // 공격 쿨타임마다 플레이어를 공격하는 코루틴.
+    IEnumerator Attack()
+    {
+        yield return new WaitForSeconds(fireDelay);
+        Fire();
+        StartCoroutine(Attack());
     }
 
     // 공격 목표를 향해 공격 투사체 발사
-    // CalAttackTargetPos()에서 계산한 공격 목표 위치를 이용
-    void Attack()
+    // CalAttackTargetPos()에서 계산한 값을 사용
+    void Fire()
     {
-        // 플레이어의 예상 위치를 계산하여 공격 위치를 설정 
+        // 플레이어의 예상 위치를 계산하여 공격 위치를 설정
         Vector3 attackTarget = CalAttackTargetPos();
         
         // 각각의 주포 위치에서 공격 투사체가 발사된다.
@@ -52,37 +95,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // 플레이어의 이동 위치를 예상하여 공격 목표를 설정
+    // 플레이어의 움직임을 기반으로 예상 위치를 계산
     Vector3 CalAttackTargetPos()
     {
-        float projectileSpeed = attackProjectile.GetComponent<EnemyAttackProjectile>().moveSpeed; // 공격 투사체의 이동 속도
-        float playerMoveSpeed = playerScript.currentMoveSpeed; // 플레이어의 현재 속도
-        Vector3 playerMoveDirection = playerScript.currentMoveDirection; // 플레이어의 현재 이동 방향
-        Vector3 predictedPlayerPos; // 플레이어의 예상 위치
+        float attackMoveSpeed = attackProjectile.GetComponent<EnemyAttackProjectile>().moveSpeed;
 
-        // 1. 플레이어와 NPC 사이의 현재 거리를 계산
-        float currentDistance = Vector3.Distance(transform.position, playerObject.transform.position);
+        // 플레이어의 현재 위치와 속도를 기반으로 예측 위치 계산
+        Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentMoveSpeed; // 플레이어의 이동 벡터
+        Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player까지의 상대 위치
 
-        // 2. 공격 투사체가 플레이어 위치에 도달하기까지 시간을 계산
-        float attackTime = currentDistance/projectileSpeed;
+        // 공격이 도달해야 할 플레이어의 예측 위치를 계산
+        float timeToHit = relativePosition.magnitude / attackMoveSpeed; // 공격이 목표에 도달할 시간
+        Vector3 predictedPosition = playerObject.transform.position + playerVelocity * timeToHit;
 
-        // 3. 플레이어의 예상 위치를 1차 계산
-        predictedPlayerPos = ( playerObject.transform.position + playerMoveDirection ) * playerMoveSpeed * attackTime;
-
-        // 플레이어의 예상 위치를 여러 번 계산하여 정확도를 높이기 위한 for루프
-        for( int i = 0 ; i < 3 ; i++ )
-        {
-            // 4. 1차 계산한 플레이어의 예상 위치와 NPC 사이의 거리를 계산
-            currentDistance = Vector3.Distance(transform.position, predictedPlayerPos);
-
-            // 5. 공격 투사체가 플레이어의 예상 위치에 도달하기까지 시간을 계산
-            attackTime = currentDistance/projectileSpeed;
-
-            // 6. 플레이어 예상 위치를 2차 계산
-            predictedPlayerPos = ( playerObject.transform.position + playerMoveDirection ) * playerMoveSpeed * attackTime;
-        }
-
-        // 최종적으로 계산된 플레이어 예상 위치를 반환
-        return predictedPlayerPos;
+        return predictedPosition;
     }
 }

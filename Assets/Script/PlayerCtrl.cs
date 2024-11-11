@@ -4,39 +4,49 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 10f;
-    [SerializeField] float maxSpeed = 20f;
-    [SerializeField] float minSpeed = 5f;
-    [SerializeField] float rotationX = 0f;
-    [SerializeField] float rotationY = 0f;
-    [SerializeField] float maxZoom = 30f;
-    [SerializeField] float originalFOV = 60f;
-    [SerializeField] bool isSkill = false;
-    [SerializeField] float selecetedWeaponType;
-    [SerializeField] GameObject mainCamObj, playerCamObj;
-    [SerializeField] Camera mainCam, playerCam;
+    public float moveSpeed = 10f; // 플레이어의 현재 이동 속도
+    private float maxSpeed = 20f, // 플레이어의 최대 이동 속도
+                  minSpeed = 5f; // 플레이어의 최소 이동 속도
+    private float rotationX = 0f, // 플레이어의 X축 회전값
+                  rotationY = 0f; // 플레이어의 Y축 회전값
+    private float maxZoomFOV = 30f, // 줌인 시 카메라 FOV
+                  originalFOV = 60f; // 평상시 카메라 FOV
+    private int selecetedWeaponType; // 선택된 주포 타입
+    private GameObject mainCamObj, // 평상시 시야를 보여줄 카메라
+                       playerCamObj; // 줌인 시 시야를 보여줄 카메라
+    private Camera mainCam, playerCam; // 두 카메라 클래스
    
     void Start()
     {
+        // 씬 내에서 카메라를 찾아 접근
         mainCamObj = GameObject.Find("Main Camera");
         playerCamObj = GameObject.Find("PlayerCamera");
         mainCam = mainCamObj.GetComponent<Camera>();
         playerCam = playerCamObj.GetComponent<Camera>();
+        
+        // 줌인 시 시야를 보여줄 카메라는 비활성화
         ActivateCamera(playerCam, false);
+
+        // 평상시 카메라의 FOV값 초기화
         originalFOV = playerCam.fieldOfView;
     }
 
     void Update()
     {
+        // 기본적으로 플레이어는 직진만 한다.
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        verticalMove();
-        horizontalMove();
-        acceleration();
-        deceleration();
-        fire();
-        zoom();
-        selectType();
-        swap();
+        
+        verticalMove(); // W, S 입력으로 위 아래 기울기
+        horizontalMove(); // A, D 입력으로 좌 우 기울기
+        
+        acceleration(); // Space 입력으로 가속
+        deceleration(); // Shift 입력으로 감속
+
+        fire(); // 왼쪽 마우스 클릭으로 발사
+        zoom(); // 오른쪽 마우스 클릭으로 줌
+
+        selectType(); // 1 ~ 4 입력으로 주포 선택
+        Skill(); // Q, E 입력으로 스킬 사용
     }
 
     void ActivateCamera(Camera cam, bool isActivated)
@@ -49,7 +59,7 @@ public class PlayerCtrl : MonoBehaviour
     void verticalMove()
     {
         // 상승
-        if (Input.GetKey("w"))
+        if (Input.GetKey(KeyCode.W))
         {
             if (rotationX >= 90f)
             {
@@ -60,7 +70,7 @@ public class PlayerCtrl : MonoBehaviour
         }
 
         // 하강
-        if (Input.GetKey("s"))
+        if (Input.GetKey(KeyCode.S))
         {
             if (rotationX <= -70f)
             {
@@ -74,7 +84,7 @@ public class PlayerCtrl : MonoBehaviour
     // ���� �̵�
     void horizontalMove()
     {
-        if (Input.GetKey("a"))
+        if (Input.GetKey(KeyCode.A))
         {
             if (rotationY <= -360f)
             {
@@ -83,7 +93,7 @@ public class PlayerCtrl : MonoBehaviour
             rotationY -= 10f * Time.deltaTime * moveSpeed;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
-        if (Input.GetKey("d"))
+        if (Input.GetKey(KeyCode.D))
         {
             if (rotationY >= 360f)
             {
@@ -117,9 +127,9 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            if (selecetedWeaponType > 0)
+            switch( selecetedWeaponType )
             {
-                Debug.Log(selecetedWeaponType + "�� ���� �߻�");
+                
             }
         }
     }
@@ -131,7 +141,7 @@ public class PlayerCtrl : MonoBehaviour
         {
             ActivateCamera(playerCam, true);
             ActivateCamera(mainCam, false);
-            playerCam.fieldOfView = maxZoom;
+            playerCam.fieldOfView = maxZoomFOV;
         }
         else
         {
@@ -144,64 +154,42 @@ public class PlayerCtrl : MonoBehaviour
     // ���� or ��ų ����
     void selectType()
     {
-        if (isSkill == true)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                Debug.Log("1�� ��ų ���");
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                Debug.Log("2�� ��ų ���");
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                Debug.Log("3�� ��ų ���");
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                Debug.Log("4�� ��ų ���");
-            }
+            selecetedWeaponType = 1;
+            Debug.Log("1�� ����");
         }
 
-        else
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                selecetedWeaponType = 1;
-                Debug.Log("1�� ����");
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                selecetedWeaponType = 2;
-                Debug.Log("2�� ����");
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                selecetedWeaponType = 3;
-                Debug.Log("3�� ����");
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                selecetedWeaponType = 4;
-                Debug.Log("4�� ����");
-            }
+            selecetedWeaponType = 2;
+            Debug.Log("2�� ����");
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            selecetedWeaponType = 3;
+            Debug.Log("3�� ����");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            selecetedWeaponType = 4;
+            Debug.Log("4�� ����");
+        }
+
     }
 
-    // ���� or ��ų ���� ��ȯ
-    void swap()
+    void Skill()
     {
-        if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            isSkill = !isSkill;
-            Debug.Log("����, ��ų ��ȯ: " + (isSkill ? "��ų ���" : "���� ���"));
+
+        }
+
+        if( Input.GetKeyDown(KeyCode.E))
+        {
+
         }
     }
 }

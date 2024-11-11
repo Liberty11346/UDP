@@ -6,7 +6,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private GameObject playerObject; // 플레이어 오브젝트
-    private Player playerScript; // 플레이어 스크립트
+    private PlayerCtrl playerScript; // 플레이어 스크립트
     private Quaternion moveTargetRotation; // 이동 시 목표 회전값
     private Vector3 moveTargetVector; // 이동 시 목표 벡터
     private List<Transform> firePos = new List<Transform>(); // 공격 시 투사체가 발사될 위치들의 집합
@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
     {
         // 플레이어 오브젝트와 플레이어 스크립트 클래스에 접근
         playerObject = GameObject.FindWithTag("Player");
-        playerScript = playerObject.GetComponent<Player>();
+        playerScript = playerObject.GetComponent<PlayerCtrl>();
         
         // "FirePos"를 태그를 가진 자식 오브젝트의 transform을 가져와 firePos 리스트에 넣는다.
         for( int i = 0 ; i < transform.childCount ; i++ ) if( transform.GetChild(i).tag == "FirePos" ) firePos.Add(transform.GetChild(i).transform);
@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
         // 플레이어와 유지할 최소 거리를 산출
         playerMinDistance = Random.Range(10, 30);
 
-        // 최소 거리에 10~100 사이 무작위 값을 더하여 최대 거리를 산출
+        // 최소 거리에 30~100 사이 무작위 값을 더하여 최대 거리를 산출
         playerMaxDistance = playerMinDistance + Random.Range(30, 100);
 
         // 기본적으로 플레이어의 이동 방향과 동일한 방향을 이동 목표 방향으로 잡는다.
@@ -101,7 +101,7 @@ public class Enemy : MonoBehaviour
         float attackMoveSpeed = attackProjectile.GetComponent<EnemyAttackProjectile>().moveSpeed;
 
         // 플레이어의 현재 위치와 속도를 기반으로 예측 위치 계산
-        Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentMoveSpeed; // 플레이어의 이동 벡터
+        Vector3 playerVelocity = playerObject.transform.forward * playerScript.moveSpeed; // 플레이어의 이동 벡터
         Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player까지의 상대 위치
 
         // 공격이 도달해야 할 플레이어의 예측 위치를 계산

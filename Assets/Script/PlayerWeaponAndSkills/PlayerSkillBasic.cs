@@ -9,7 +9,7 @@ public class PlayerSkillBasic : MonoBehaviour
     // 이곳의 변수들은 그대로 두고, 이 클래스를 상속 받는 클래스에서 값을 집어 넣어줍니다.
     protected string skillName, // 스킬의 이름
                      skillExplain; // 플레이어에게 보여줄 설명
-    protected int currentLevel = 0, // 현재 스킬의 레벨 (0일 경우 배우지 않은 상태)
+    protected int currentLevel = -1, // 현재 스킬의 레벨 (-1일 경우 배우지 않은 상태)
                   maxLevel = 1, // 스킬의 최대 레벨
                   maxCoolTime, // 스킬의 재사용 대기시간
                   currentCoolTime; // 현재 남은 재사용 시간

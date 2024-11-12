@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
@@ -15,8 +16,8 @@ public class PlayerCtrl : MonoBehaviour
     private GameObject mainCamObj, // 평상시 시야를 보여줄 카메라
                        playerCamObj; // 줌인 시 시야를 보여줄 카메라
     private Camera mainCam, playerCam; // 두 카메라 클래스
-    private PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
-    private PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
+    [SerializeField] private PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
+    [SerializeField] private PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
    
     void Start()
     {
@@ -31,6 +32,13 @@ public class PlayerCtrl : MonoBehaviour
 
         // 평상시 카메라의 FOV값 초기화
         originalFOV = playerCam.fieldOfView;
+
+        TestInit();
+    }
+
+    void TestInit()
+    {
+        playerWeapon[0] = GameObject.Find("RangeWeaponFirst").GetComponent<RangeWeaponFirst>();
     }
 
     void Update()
@@ -129,8 +137,14 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
+            PlayerWeaponBasic selectedWeapon = playerWeapon[selecetedWeaponType];
+            
             // 현재 선택된 주포를 발사
-            if( playerWeapon[selecetedWeaponType].isUseAble() ) playerWeapon[selecetedWeaponType].Fire();
+            if( selectedWeapon.isUseAble() )
+            {
+                selectedWeapon.Fire(); // 주포 발사
+                StartCoroutine(selectedWeapon.CoolDown()); // 발사한 주포의 쿨타임을 돌리기 시작한다
+            }
         }
     }
 
@@ -156,25 +170,25 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selecetedWeaponType = 1;
+            selecetedWeaponType = 0;
             Debug.Log("1�� ����");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selecetedWeaponType = 2;
+            selecetedWeaponType = 1;
             Debug.Log("2�� ����");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            selecetedWeaponType = 3;
+            selecetedWeaponType = 2;
             Debug.Log("3�� ����");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            selecetedWeaponType = 4;
+            selecetedWeaponType = 3;
             Debug.Log("4�� ����");
         }
 
@@ -185,13 +199,19 @@ public class PlayerCtrl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             // 0번 스킬을 사용
-            if( playerSkill[0].isUseAble() ) playerSkill[0].Activate();
+            if( playerSkill[0].isUseAble() )
+            {
+                playerSkill[0].Activate();
+            }
         }
 
         if( Input.GetKeyDown(KeyCode.E))
         {
             // 1번 스킬을 사용
-            if( playerSkill[1].isUseAble() ) playerSkill[1].Activate();
+            if( playerSkill[1].isUseAble() )
+            {
+                playerSkill[1].Activate();
+            }
         }
     }
 }

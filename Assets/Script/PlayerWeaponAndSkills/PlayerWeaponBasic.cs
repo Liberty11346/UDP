@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // 플레이어 함선의 주포를 PlayerCtrl의 PlayerWeaponBasic 배열을 이용하여 관리하기 위한 클래스입니다.
@@ -10,13 +11,21 @@ public class PlayerWeaponBasic : MonoBehaviour
     protected string weaponName, // 주포의 이름
                      weaponExplain; // 플레이어에게 보여줄 설명
     protected GameObject projectile; // 주포 발사 시 날아갈 포탄
-    protected int[] projectileDamage = new int[4], // 레벨 별 투사체의 피해량
-                    projectileSpeed = new int[4], // 레벨 별 투사체의 이동속도
-                    projectileAmount = new int[4], // 레벨 별 포탄 수
-                    maxCoolTime = new int[4]; // 레벨 별 쿨타임
-    public int currentCoolTime; // 현재 쿨타임 (남은 쿨타임 시간)
-    protected int currentLevel = 0, // 현재 주포의 레벨 (0일 경우 배우지 않은 상태)
+    public int[] projectileDamage = new int[4], // 레벨 별 투사체의 피해량
+                 projectileSpeed = new int[4], // 레벨 별 투사체의 이동속도
+                 projectileAmount = new int[4], // 레벨 별 포탄 수
+                 maxCoolTime = new int[4]; // 레벨 별 쿨타임
+    public int currentCoolTime = 0; // 현재 쿨타임 (남은 쿨타임 시간)
+    protected int currentLevel = -1, // 현재 주포의 레벨 (-1일 경우 배우지 않은 상태)
                   maxLevel = 4; // 주포의 최대 레벨
+    protected Transform playerCameraTransform;
+
+    // 플레이어 카메라가 바라보는 방향으로 포탄을 발사하기 때문에 필요합니다.
+    // 이 클래스를 상속 받는 클래스의 Start()에서 꼭 호출하세요.
+    protected void GetCameraTransform()
+    {
+        playerCameraTransform = GameObject.Find("PlayerCamera").GetComponent<Transform>();
+    }
 
     // PlayerCtrl에서 주포를 발사할 때, Fire() 함수를 호출합니다.
     // Fire() 함수를 오버라이딩하여 각 플레이어 함선들의 주포를 구현합니다.
@@ -32,7 +41,16 @@ public class PlayerWeaponBasic : MonoBehaviour
         // 쿨타임 중이라면 false를 반환
         if( currentCoolTime > 0 ) return false;
 
-        // 아무 조건에도 걸리지 않았다면 true를 반환
+        // 아무 조건에도 걸리지 않았다면 쿨타임을 채우고 true 반환(주포 발사)
+        currentCoolTime = maxCoolTime[currentLevel];
         return true;
+    }
+
+    // 1초마다 쿨타임을 줄이는 함수. PlayerCtrl에서 주포 발사 후 호출
+    public IEnumerator CoolDown()
+    {
+        yield return new WaitForSeconds(1);
+        currentCoolTime--;
+        if( currentCoolTime > 0 ) StartCoroutine(CoolDown());
     }
 }

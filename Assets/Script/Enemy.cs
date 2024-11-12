@@ -12,7 +12,10 @@ public class Enemy : MonoBehaviour
     private List<Transform> firePos = new List<Transform>(); // 공격 시 투사체가 발사될 위치들의 집합
     public float fireDelay, // 공격 쿨타임. 높을수록 공속이 느리다. (초 단위)
                  moveSpeed, // 이동 속도. 높을수록 이동이 빠르다.
-                 rotateSpeed; // 회전 속도. 높을수록 회전이 빠르다.
+                 rotateSpeed, // 회전 속도. 높을수록 회전이 빠르다.
+                 maxHealth, // 최대 체력
+                 currentHealth, // 현재 체력
+                 defense; // 방어력(방어력 1당 피해감소 1%)
     private float playerMaxDistance, // 플레이어와 유지할 최대 거리
                   playerMinDistance; // 플레이어와 유지할 최소 거리
 
@@ -109,5 +112,20 @@ public class Enemy : MonoBehaviour
         Vector3 predictedPosition = playerObject.transform.position + playerVelocity * timeToHit;
 
         return predictedPosition;
+    }
+
+    // 플레이어에게 공격 받을 경우 호출
+    public void GetDamage(float damage)
+    {
+        float realDamage = damage * (defense/100);
+        currentHealth -= realDamage;
+        if( currentHealth < 1 ) Destroy(gameObject); // TODO: 사망 시 연출 추가 예정
+    }
+
+    // 일정 시간 후 방어력을 초기화 하는 함수
+    public IEnumerator RecoverDefense(int time)
+    {
+        yield return new WaitForSeconds(time);
+        defense = 0;
     }
 }

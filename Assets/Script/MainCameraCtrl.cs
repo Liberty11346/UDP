@@ -36,5 +36,4 @@ public class MainCameraCtrl : MonoBehaviour
         MouseY -= Input.GetAxisRaw("Mouse Y") * sens * Time.deltaTime;
         MouseY = Mathf.Clamp(MouseY, -90f, 90f);
     }
-
 }

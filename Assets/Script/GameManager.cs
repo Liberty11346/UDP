@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private int currentMonsterCount = 0; // 현재 씬에 존재하는 몬스터 수
 
     public float minToDistance = 10f; // 플레이어와의 최소 거리
-    public float minToEnemyDistance = 2f; // 다른 몬스터와의 최소 거리S
+    public float minToEnemyDistance = 2f; // 다른 몬스터와의 최소 거리
 
     void Start()
     {

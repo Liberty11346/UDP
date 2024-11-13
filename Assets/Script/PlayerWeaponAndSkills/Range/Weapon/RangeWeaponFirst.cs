@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class RangeWeaponFirst : PlayerWeaponBasic
 {
@@ -22,8 +18,8 @@ public class RangeWeaponFirst : PlayerWeaponBasic
         }
 
         GetCameraTransform();
-        projectile = Resources.Load<GameObject>("PlayerTestBullet");
-        currentLevel = 3;
+        projectile = Resources.Load<GameObject>("Range/RangeBulletFirst");
+        currentLevel = 3; // 테스트용으로 레벨업 해둔 것
     }
 
     // 0.2초 간격으로 2연장 함포를 두 번 발사한다.

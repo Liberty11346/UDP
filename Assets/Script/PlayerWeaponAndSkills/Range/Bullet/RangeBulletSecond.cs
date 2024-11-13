@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class RangeBulletSecond : PlayerBulletBasic
 {
-    private bool isTarget = false;
-    private GameObject target;
+    private bool isTarget = false; // 타겟을 찾은 경우 true
+    private GameObject target; // 찾아낸 타겟
 
     public override void Update()
     {
@@ -35,6 +35,8 @@ public class RangeBulletSecond : PlayerBulletBasic
         foreach( GameObject enemy in enemyList )
         {
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
+
+            // 레벨이 증가함에 따라 더 먼 거리의 적을 탐색
             if( distance < 6 + currentLevel * 2 )
             {
                 target = enemy;

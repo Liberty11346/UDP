@@ -233,6 +233,7 @@ GameObject:
   - component: {fileID: 4381961781453455711}
   - component: {fileID: 3773263546213710906}
   - component: {fileID: 7001484059365700651}
+  - component: {fileID: 820755328974566974}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -326,6 +327,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35feb8eecafea074bacaf2b4b6bcaead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!45 &820755328974566974
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2901432001531425707}
+  m_Enabled: 0
+  m_CustomSkybox: {fileID: 2100000, guid: a4be220830e90ea4eb88b48b7fd376ce, type: 2}
 --- !u!1 &2969867908147366053
 GameObject:
   m_ObjectHideFlags: 0

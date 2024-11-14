@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6633579408542890277}
-  - component: {fileID: 1713215643236959869}
+  - component: {fileID: 4270885343470902821}
   m_Layer: 0
-  m_Name: RangeWeaponThird
+  m_Name: RangeWeapon2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1713215643236959869
+--- !u!114 &4270885343470902821
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

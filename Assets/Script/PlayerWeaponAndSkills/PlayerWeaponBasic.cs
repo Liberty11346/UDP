@@ -19,12 +19,17 @@ public class PlayerWeaponBasic : MonoBehaviour
     protected int currentLevel = -1, // 현재 주포의 레벨 (-1일 경우 배우지 않은 상태)
                   maxLevel = 4; // 주포의 최대 레벨
     protected Transform playerCameraTransform;
+    protected PlayerCtrl player;
 
     // 플레이어 카메라가 바라보는 방향으로 포탄을 발사하기 때문에 필요합니다.
     // 이 클래스를 상속 받는 클래스의 Start()에서 꼭 호출하세요.
     protected void GetCameraTransform()
     {
+        // 플레이어 카메라의 transform 정보를 가져온다
         playerCameraTransform = GameObject.Find("PlayerCamera").GetComponent<Transform>();
+        
+        // 플레이어 스크립트를 참조
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
     }
 
     // PlayerCtrl에서 주포를 발사할 때, Fire() 함수를 호출합니다.
@@ -36,21 +41,26 @@ public class PlayerWeaponBasic : MonoBehaviour
     public bool isUseAble()
     {
         // 배우지 않은 상태라면 false를 반환
-        if( currentLevel <= 0 ) return false;
+        if( currentLevel < 0 ) return false;
         
         // 쿨타임 중이라면 false를 반환
         if( currentCoolTime > 0 ) return false;
 
         // 아무 조건에도 걸리지 않았다면 쿨타임을 채우고 true 반환(주포 발사)
-        currentCoolTime = maxCoolTime[currentLevel];
+        // 원거리 함선 두 번째 스킬이 사용된 상태라면 쿨타임을 채우지 않는다.
+        if( player.isRangeSecondSkilled == false ) currentCoolTime = maxCoolTime[currentLevel];
+        else player.isRangeSecondSkilled = false;
         return true;
     }
 
-    // 1초마다 쿨타임을 줄이는 함수. PlayerCtrl에서 주포 발사 후 호출
+    // 1초마다 쿨타임을 줄이는 함수. PlayerCtrl에서 주포 발사 후 호출.
     public IEnumerator CoolDown()
     {
+        // 1초간 대기 후 쿨타임을 1 줄인다.
         yield return new WaitForSeconds(1);
         currentCoolTime--;
+        
+        // 쿨타임이 남아있다면 한 번 더 호출하여 쿨타임을 계속 줄임
         if( currentCoolTime > 0 ) StartCoroutine(CoolDown());
     }
 }

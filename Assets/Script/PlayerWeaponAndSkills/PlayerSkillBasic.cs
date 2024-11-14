@@ -23,12 +23,24 @@ public class PlayerSkillBasic : MonoBehaviour
     public bool isUseAble()
     {
         // 배우지 않은 상태라면 false를 반환
-        if( currentLevel <= 0 ) return false;
+        if( currentLevel < 0 ) return false;
         
         // 쿨타임 중이라면 false를 반환
         if( currentCoolTime > 0 ) return false;
 
-        // 아무 조건에도 걸리지 않았다면 true를 반환
+        // 아무 조건에도 걸리지 않았다면 쿨타임을 채운 후 true를 반환(스킬 사용)
+        currentCoolTime = maxCoolTime;
         return true;
+    }
+
+    // 1초마다 쿨타임을 줄이는 함수. PlayerCtrl에서 스킬 사용 후 호출
+    public IEnumerator CoolDown()
+    {
+        // 1초간 대기 후 쿨타임을 1 줄인다.
+        yield return new WaitForSeconds(1);
+        currentCoolTime--;
+
+        // 아직 쿨타임이 0이 아니라면 추가로 호출하여 쿨타임을 계속 줄임 
+        if( currentCoolTime > 0 ) StartCoroutine(CoolDown());
     }
 }

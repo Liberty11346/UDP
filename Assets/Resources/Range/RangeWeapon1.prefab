@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6633579408542890277}
-  - component: {fileID: 3756677906417423663}
+  - component: {fileID: -1768020153510491997}
   m_Layer: 0
-  m_Name: RangeWeaponFirst
+  m_Name: RangeWeapon1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3756677906417423663
+--- !u!114 &-1768020153510491997
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7878577051605197196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e73da767c5fde454e89d27a77d95d612, type: 3}
+  m_Script: {fileID: 11500000, guid: 74e15413a32512949a3ec357b055431b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectileDamage: 00000000000000000000000000000000

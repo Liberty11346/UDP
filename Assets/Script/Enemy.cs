@@ -20,8 +20,12 @@ public class Enemy : MonoBehaviour
                   playerMinDistance; // 플레이어와 유지할 최소 거리
 
     public GameObject attackProjectile; // 공격 시 발사할 공격 투사체
+    public GameManager gameManager; // 게임매니저.
     void Start()
     {
+        // 게임매니저 스크립트에 접근
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         // 플레이어 오브젝트와 플레이어 스크립트 클래스에 접근
         playerObject = GameObject.FindWithTag("Player");
         playerScript = playerObject.GetComponent<PlayerCtrl>();
@@ -37,6 +41,10 @@ public class Enemy : MonoBehaviour
 
         // 기본적으로 플레이어의 이동 방향과 동일한 방향을 이동 목표 방향으로 잡는다.
         moveTargetRotation = Quaternion.LookRotation(playerObject.transform.forward);
+
+        // 현재 체력 초기화
+        maxHealth = 100; // 테스트용 수치
+        currentHealth = maxHealth;
 
         // 플레이어 공격 시작
         StartCoroutine(Attack());
@@ -117,9 +125,17 @@ public class Enemy : MonoBehaviour
     // 플레이어에게 공격 받을 경우 호출
     public void GetDamage(float damage)
     {
+        // 플레이어로부터 입은 피해량만큼 자신의 체력을 깎는다.
         float realDamage = damage * (defense/100);
         currentHealth -= realDamage;
-        if( currentHealth < 1 ) Destroy(gameObject); // TODO: 사망 시 연출 추가 예정
+        
+        // 체력을 깎은 후 남은 체력이 1 미만이라면 사망
+        if( currentHealth < 1 ) 
+        {
+            // TODO: 사망 시 연출 추가 예정
+            gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다. 
+            Destroy(gameObject); // 스스로를 파괴
+        }
     }
 
     // 일정 시간 후 방어력을 초기화 하는 함수

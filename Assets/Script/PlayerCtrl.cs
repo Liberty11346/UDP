@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -18,7 +19,9 @@ public class PlayerCtrl : MonoBehaviour
     private Camera mainCam, playerCam; // 두 카메라 클래스
     [SerializeField] private PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
     [SerializeField] private PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
-   
+    public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
+    public string playerType; // 플레이어의 함선 타입
+     
     void Start()
     {
         // 씬 내에서 카메라를 찾아 접근
@@ -32,13 +35,28 @@ public class PlayerCtrl : MonoBehaviour
 
         // 평상시 카메라의 FOV값 초기화
         originalFOV = playerCam.fieldOfView;
-
-        TestInit();
     }
 
-    void TestInit()
+    // 플레이어의 함선 타입에 맞게 주포와 스킬을 설정하는 함수
+    // 플레이어 생성 후 게임매니저에서 적절한 타입을 매개변수로 넣어 이 함수를 호출한다.
+    public void PlayerTypeSetting(string type)
     {
-        playerWeapon[0] = GameObject.Find("RangeWeaponFirst").GetComponent<RangeWeaponFirst>();
+        // 타입에 맞는 플레이어 주포를 설정
+        for( int i = 0 ; i < playerWeapon.Length ; i++ )
+        {
+            GameObject weaponObject = Instantiate(Resources.Load<GameObject>(type + "/" + type + "Weapon" + i.ToString()));
+            weaponObject.transform.SetParent(gameObject.transform);
+            playerWeapon[i] = weaponObject.GetComponent<PlayerWeaponBasic>();
+        }
+
+        // 타입에 맞는 플레이어 스킬을 설정
+        for( int i = 0 ; i < playerSkill.Length ; i++ )
+        {
+            GameObject skillObject = Instantiate(Resources.Load<GameObject>(type + "/" + type + "Skill" + i.ToString()));
+            skillObject.transform.SetParent(gameObject.transform);
+            playerSkill[i] = skillObject.GetComponent<PlayerSkillBasic>();
+        }
+            
     }
 
     void Update()
@@ -201,7 +219,8 @@ public class PlayerCtrl : MonoBehaviour
             // 0번 스킬을 사용
             if( playerSkill[0].isUseAble() )
             {
-                playerSkill[0].Activate();
+                playerSkill[0].Activate(); // 스킬 사용
+                StartCoroutine(playerSkill[0].CoolDown()); // 사용한 스킬의 쿨타임을 돌리기 시작한다.
             }
         }
 

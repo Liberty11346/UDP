@@ -18,7 +18,7 @@ public class MainCameraCtrl : MonoBehaviour
 
     void Update()
     {
-        Move();
+         Move();
         Rotate();
     }
 

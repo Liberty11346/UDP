@@ -8,11 +8,20 @@ using UnityEngine;
 public class PlayerBulletBasic : MonoBehaviour
 {
     public float moveSpeed, attackDamage, currentLevel;
+    public GameObject player;
+
+    void Start()
+    {
+        player = GameObject.FindWithTag("Player");
+    }
     
     public virtual void Update()
     {
         // 플레이어의 공격 투사체는 기본적으로 직진만 한다.
         transform.Translate( Vector3.forward * moveSpeed * Time.deltaTime );
+
+        // 플레이어와 일정 거리 이상 떨어지면 스스로를 삭제
+        if( Vector3.Distance(transform.position, player.transform.position) > 300 ) Destroy(gameObject);
     }
 
     // 이 투사체를 발사한 주포의 정보에 맞추어 피해량과 이동속도 조절
@@ -33,6 +42,7 @@ public class PlayerBulletBasic : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.GetDamage(attackDamage); // 맞은 적에게 피해를 입힌다
             ActivateWhenHit(other); // 오버라이딩 된 추가 효과가 있다면 발동
+            Destroy(gameObject); // 스스로를 삭제
         }
     }
 }

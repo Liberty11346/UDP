@@ -27,6 +27,9 @@ public class RangeBulletSecond : PlayerBulletBasic
             Vector3 targetPos = transform.position - target.transform.position;
             transform.Translate( targetPos * moveSpeed * Time.deltaTime );
         }
+
+        // 플레이어와 일정 거리 이상 떨어지면 스스로를 삭제
+        if( Vector3.Distance(transform.position, player.transform.position) > 300 ) Destroy(gameObject);
     }
 
     void FindEnemy()

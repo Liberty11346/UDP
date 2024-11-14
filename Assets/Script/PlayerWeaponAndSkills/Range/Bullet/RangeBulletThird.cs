@@ -11,6 +11,9 @@ public class RangeBulletThird : PlayerBulletBasic
 
         // 지속적으로 주변 적 탐색
         FindTarget();
+
+        // 플레이어와 일정 거리 이상 떨어지면 스스로를 삭제
+        if( Vector3.Distance(transform.position, player.transform.position) > 300 ) Destroy(gameObject);
     }
 
     void FindTarget()

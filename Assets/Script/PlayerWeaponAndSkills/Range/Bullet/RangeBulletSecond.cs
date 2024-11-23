@@ -24,7 +24,7 @@ public class RangeBulletSecond : PlayerBulletBasic
         if( isTarget == true )
         {
             // 타겟의 위치로 이동
-            Vector3 targetPos = transform.position - target.transform.position;
+            Vector3 targetPos = target.transform.position - transform.position;
             transform.Translate( targetPos * moveSpeed * Time.deltaTime );
         }
 

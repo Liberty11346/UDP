@@ -54,7 +54,6 @@ public class Dashboard : MonoBehaviour
         // 현재값, 최소값, 최대값으로 0 ~ 1 사이 비율을 구한 후 180을 곱하여 각도를 계산
         // z값이 음수가 되어야 시계방향으로 회전하기 때문에, 마지막에 -1을 곱한다.
         float rawAngle = (currentValue - minValue) / (maxValue - minValue) * 180 *-1;
-        if( gameObject.name == "Speed") Debug.Log(rawAngle);
 
         // 이전의 z값과 현재의 z값 사이의 보간 값을 계산 후 계기판 바늘에 적용
         float zAngle = Mathf.LerpAngle(needleTR.rotation.eulerAngles.z, rawAngle, 1);

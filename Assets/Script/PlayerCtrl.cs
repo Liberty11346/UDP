@@ -23,8 +23,8 @@ public class PlayerCtrl : MonoBehaviour
     private GameObject mainCamObj, // 평상시 시야를 보여줄 카메라
                        playerCamObj; // 줌인 시 시야를 보여줄 카메라
     private Camera mainCam, playerCam; // 두 카메라 클래스
-    [SerializeField] private PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
-    [SerializeField] private PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
+    public PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
+    public PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
     public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
     public string playerType; // 플레이어의 함선 타입
      

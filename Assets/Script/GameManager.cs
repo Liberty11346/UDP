@@ -32,6 +32,10 @@ public class GameManager : MonoBehaviour
         GameObject[] dashboard = GameObject.FindGameObjectsWithTag("Dashboard");
         foreach( GameObject obj in dashboard ) obj.GetComponent<Dashboard>().enabled = true;
 
+        // HotKey UI의 스크립트를 활성화
+        GameObject[] hotKey = GameObject.FindGameObjectsWithTag("HotKey");
+        foreach( GameObject obj in hotKey ) obj.GetComponent<HotKey>().enabled = true;
+
         // 적 생성 시작
         StartCoroutine(Spawn());
     }

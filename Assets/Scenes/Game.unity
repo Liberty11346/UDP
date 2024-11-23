@@ -6024,7 +6024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 267259270720557218, guid: e63d878062c03a64bb53a2f6ea8565a5, type: 3}
-  playerType: Range
+  playerType: Melee
   materials: []
   enemyPrefab: {fileID: 8965360927790345782, guid: c90d7b2901350954aab3bef27f5154e1, type: 3}
   spawnInterval: 2

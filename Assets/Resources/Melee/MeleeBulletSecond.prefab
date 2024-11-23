@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1323588892120695696}
   - component: {fileID: 4286383833754605392}
   - component: {fileID: 1548536805748461177}
-  - component: {fileID: -8587485906605982500}
+  - component: {fileID: 5771830124837230214}
   m_Layer: 0
-  m_Name: PlayerTestBullet
+  m_Name: MeleeBulletSecond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-8587485906605982500
+--- !u!114 &5771830124837230214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,10 +115,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8974389503579334312}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edbccffb16a65db4e8bcf02d03da15f7, type: 3}
+  m_Script: {fileID: 11500000, guid: c179a39490662df45baf8a345e9513af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
+  moveSpeed: 0
   attackDamage: 0
   currentLevel: 0
   player: {fileID: 0}

@@ -24,9 +24,17 @@ public class GameManager : MonoBehaviour
         // 플레이어의 타입에 맞춰 플레이어 무기를 설정
         player.GetComponent<PlayerCtrl>().PlayerTypeSetting(playerType);
 
-        // 카메라의 스크립트 활성화
+        // 카메라의 스크립트를 활성화
         GameObject.Find("Main Camera").GetComponent<MainCameraCtrl>().enabled = true;
         GameObject.Find("PlayerCamera").GetComponent<PlayerCameraCtrl>().enabled = true;
+
+        // Dashboard UI의 스크립트를 활성화
+        GameObject[] dashboard = GameObject.FindGameObjectsWithTag("Dashboard");
+        foreach( GameObject obj in dashboard ) obj.GetComponent<Dashboard>().enabled = true;
+
+        // HotKey UI의 스크립트를 활성화
+        GameObject[] hotKey = GameObject.FindGameObjectsWithTag("HotKey");
+        foreach( GameObject obj in hotKey ) obj.GetComponent<HotKey>().enabled = true;
 
         // 적 생성 시작
         StartCoroutine(Spawn());

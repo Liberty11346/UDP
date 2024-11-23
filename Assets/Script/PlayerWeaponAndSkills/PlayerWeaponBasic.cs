@@ -15,9 +15,9 @@ public class PlayerWeaponBasic : MonoBehaviour
                  projectileSpeed = new int[4], // 레벨 별 투사체의 이동속도
                  projectileAmount = new int[4], // 레벨 별 포탄 수
                  maxCoolTime = new int[4]; // 레벨 별 쿨타임
-    public int currentCoolTime = 0; // 현재 쿨타임 (남은 쿨타임 시간)
-    protected int currentLevel = -1, // 현재 주포의 레벨 (-1일 경우 배우지 않은 상태)
-                  maxLevel = 4; // 주포의 최대 레벨
+    public int currentCoolTime = 0, // 현재 쿨타임 (남은 쿨타임 시간)
+               currentLevel = -1; // 현재 주포의 레벨 (-1일 경우 배우지 않은 상태)
+    protected int maxLevel = 4; // 주포의 최대 레벨
     protected Transform playerCameraTransform;
     protected PlayerCtrl player;
 

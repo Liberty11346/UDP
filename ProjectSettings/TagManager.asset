@@ -7,6 +7,8 @@ TagManager:
   - FirePos
   - Enemy
   - EnemyBullet
+  - Dashboard
+  - HotKey
   layers:
   - Default
   - TransparentFX

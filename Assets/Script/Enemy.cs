@@ -112,7 +112,7 @@ public class Enemy : MonoBehaviour
         float attackMoveSpeed = attackProjectile.GetComponent<EnemyAttackProjectile>().moveSpeed;
 
         // 플레이어의 현재 위치와 속도를 기반으로 예측 위치 계산
-        Vector3 playerVelocity = playerObject.transform.forward * playerScript.moveSpeed; // 플레이어의 이동 벡터
+        Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentSpeed; // 플레이어의 이동 벡터
         Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player까지의 상대 위치
 
         // 공격이 도달해야 할 플레이어의 예측 위치를 계산

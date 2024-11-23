@@ -6,9 +6,15 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    public float moveSpeed = 10f; // 플레이어의 현재 이동 속도
-    private float maxSpeed = 20f, // 플레이어의 최대 이동 속도
-                  minSpeed = 5f; // 플레이어의 최소 이동 속도
+    public float currentSpeed = 10f, // 플레이어의 현재 이동 속도
+                 maxSpeed = 20f, // 플레이어의 최대 이동 속도
+                 minSpeed = 5f; // 플레이어의 최소 이동 속도
+    public int currentHealth = 100, // 체력
+               maxHealth = 100,
+               minHealth = 0;
+    public int currentFuel = 100, // 연료
+               maxFuel = 100,
+               minFuel = 0;
     private float rotationX = 0f, // 플레이어의 X축 회전값
                   rotationY = 0f; // 플레이어의 Y축 회전값
     private float maxZoomFOV = 30f, // 줌인 시 카메라 FOV
@@ -17,8 +23,8 @@ public class PlayerCtrl : MonoBehaviour
     private GameObject mainCamObj, // 평상시 시야를 보여줄 카메라
                        playerCamObj; // 줌인 시 시야를 보여줄 카메라
     private Camera mainCam, playerCam; // 두 카메라 클래스
-    [SerializeField] private PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
-    [SerializeField] private PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
+    public PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
+    public PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
     public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
     public string playerType; // 플레이어의 함선 타입
      
@@ -62,7 +68,7 @@ public class PlayerCtrl : MonoBehaviour
     void Update()
     {
         // 기본적으로 플레이어는 직진만 한다.
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
         
         verticalMove(); // W, S 입력으로 위 아래 기울기
         horizontalMove(); // A, D 입력으로 좌 우 기울기
@@ -93,7 +99,7 @@ public class PlayerCtrl : MonoBehaviour
             {
                 rotationX = 90f;
             }
-            rotationX -= 10f * Time.deltaTime * moveSpeed;
+            rotationX -= 10f * Time.deltaTime * currentSpeed;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
 
@@ -104,7 +110,7 @@ public class PlayerCtrl : MonoBehaviour
             {
                 rotationX = -70f;
             }
-            rotationX += 10f * Time.deltaTime * moveSpeed;
+            rotationX += 10f * Time.deltaTime * currentSpeed;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
     }
@@ -118,7 +124,7 @@ public class PlayerCtrl : MonoBehaviour
             {
                 rotationY = 0f;
             }
-            rotationY -= 10f * Time.deltaTime * moveSpeed;
+            rotationY -= 10f * Time.deltaTime * currentSpeed;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
         if (Input.GetKey(KeyCode.D))
@@ -127,7 +133,7 @@ public class PlayerCtrl : MonoBehaviour
             {
                 rotationY = 0f;
             }
-            rotationY += 10f * Time.deltaTime * moveSpeed;
+            rotationY += 10f * Time.deltaTime * currentSpeed;
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
     }
@@ -137,7 +143,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            moveSpeed = Mathf.MoveTowards(moveSpeed, maxSpeed, Time.deltaTime);
+            currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, Time.deltaTime);
         }
     }
 
@@ -146,7 +152,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            moveSpeed = Mathf.MoveTowards(moveSpeed, minSpeed, Time.deltaTime);
+            currentSpeed = Mathf.MoveTowards(currentSpeed, minSpeed, Time.deltaTime);
         }
     }
 

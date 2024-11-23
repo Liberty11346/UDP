@@ -4,46 +4,45 @@ using UnityEngine;
 
 public class MeleeBulletThird : PlayerBulletBasic
 {
-    // ÀûÁßÇÑ Àû¿¡°Ô ÇÃ·¹ÀÌ¾î°¡ 60ÀÇ ¼Óµµ·Î ÀÌµ¿
+    // ì ì¤‘í•œ ì ì—ê²Œ í”Œë ˆì´ì–´ê°€ 60ì˜ ì†ë„ë¡œ ì´ë™
     public override void ActivateWhenHit(Collider other)
     {
-        // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®¿Í ½ºÅ©¸³Æ®
+        // í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ì™€ ìŠ¤í¬ë¦½íŠ¸
         GameObject playerObject = GameObject.FindWithTag("Player");
         PlayerCtrl player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
 
-        // Àû ¿ÀºêÁ§Æ®¿Í ½ºÅ©¸³Æ®
+        // ì  ì˜¤ë¸Œì íŠ¸ì™€ ìŠ¤í¬ë¦½íŠ¸
         GameObject enemyObject = GameObject.FindWithTag("Enemy");
         Enemy enemy = other.GetComponent<Enemy>();
 
-        // ÃÑ¾Ë¿¡ ¸ÂÀº Àû À§Ä¡
+        // ì´ì•Œì— ë§ì€ ì  ìœ„ì¹˜
         Vector3 targetPos = other.transform.position;
 
-        // ¿ø·¡ ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿ ¼Óµµ
-        float originalSpeed = player.moveSpeed;
+        // ì›ë˜ í”Œë ˆì´ì–´ì˜ ì´ë™ ì†ë„
+        float originalSpeed = player.currentSpeed;
 
-        // Àû¿¡°Ô ÀÌµ¿ÇÏ´Â ¼Óµµ
-        player.moveSpeed = 60f;
+        // ì ì—ê²Œ ì´ë™í•˜ëŠ” ì†ë„
+        player.currentSpeed = 60f;
 
-        // ÇÃ·¹ÀÌ¾î À§Ä¡ ÀÌµ¿ ÄÚ·çÆ¾ ½ÇÇà
+        // í”Œë ˆì´ì–´ ìœ„ì¹˜ ì´ë™ ì½”ë£¨í‹´ ì‹¤í–‰
         player.StartCoroutine(Move(playerObject, targetPos, 3f, originalSpeed));
     }
-
     
-    // Àû¿¡°Ô ÇÃ·¹ÀÌ¾î°¡ 60ÀÇ ¼Óµµ·Î ÀÌµ¿ÇÏ´Â ÄÚ·çÆ¾
+    // ì ì—ê²Œ í”Œë ˆì´ì–´ê°€ 60ì˜ ì†ë„ë¡œ ì´ë™í•˜ëŠ” ì½”ë£¨í‹´
     private IEnumerator Move(GameObject playerObject, Vector3 targetPos, float duration, float originalSpeed)
     {
-        float timeElapsed = 0f; // °æ°úµÈ ½Ã°£
-        Vector3 startPos = playerObject.transform.position; // ÇÃ·¹ÀÌ¾îÀÇ ÇöÀç À§Ä¡
+        float timeElapsed = 0f; // ê²½ê³¼ëœ ì‹œê°„
+        Vector3 startPos = playerObject.transform.position; // í”Œë ˆì´ì–´ì˜ í˜„ì¬ ìœ„ì¹˜
 
         while (timeElapsed < duration)
         {
-            // ÇÃ·¹ÀÌ¾î¸¦ ÃÑ¾Ë¿¡ ¸ÂÀº Àû À§Ä¡·Î ºÎµå·´°Ô ÀÌµ¿
+            // í”Œë ˆì´ì–´ë¥¼ ì´ì•Œì— ë§ì€ ì  ìœ„ì¹˜ë¡œ ë¶€ë“œëŸ½ê²Œ ì´ë™
             playerObject.transform.position = Vector3.Lerp(startPos, targetPos, timeElapsed / duration);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
-        // ¿ø·¡ÀÇ ÇÃ·¹ÀÌ¾î ÀÌµ¿ ¼Óµµ·Î º¹¿ø
-        playerObject.GetComponent<PlayerCtrl>().moveSpeed = originalSpeed;
+        // ì›ë˜ì˜ í”Œë ˆì´ì–´ ì´ë™ ì†ë„ë¡œ ë³µì›
+        playerObject.GetComponent<PlayerCtrl>().currentSpeed = originalSpeed;
     }
 }

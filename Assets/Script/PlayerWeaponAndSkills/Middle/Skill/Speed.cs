@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Speed : PlayerSkillBasic
+public class MiddleSkill1 : PlayerSkillBasic
 {
     PlayerCtrl player;
     
@@ -31,10 +31,9 @@ public class Speed : PlayerSkillBasic
 
     public IEnumerable AccelerationSpeed()
     {
-        float originalSpeed = player.moveSpeed;
-        player.moveSpeed = player.maxSpeed;
+        player.currentSpeed = player.maxSpeed;
         yield return new WaitForSeconds(5f);
-        player.maxSpeed = originalSpeed;
+        player.currentSpeed = 10f;
 
     }
 }

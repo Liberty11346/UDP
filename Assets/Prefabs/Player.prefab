@@ -127,7 +127,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8105eebab1a6c499d187e09747f8f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  currentSpeed: 10
+  maxSpeed: 20
+  minSpeed: 5
+  currentHealth: 100
+  maxHealth: 100
+  minHealth: 0
+  currentFuel: 100
+  maxFuel: 100
+  minFuel: 0
   playerWeapon:
   - {fileID: 0}
   - {fileID: 0}

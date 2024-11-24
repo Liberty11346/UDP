@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine.UIElements;
 using UnityEngine;
 
-public class FirstWeapon_2 : PlayerWeaponBasic
+
+public class MiddleWeaponSecond : PlayerWeaponBasic
 {
 
     public float[] projectileSlow = new float[4];
@@ -14,7 +17,7 @@ public class FirstWeapon_2 : PlayerWeaponBasic
 
          
 
-        for(int i = 1; i <= 4; i++)
+        for(int i = 0; i < 4; i++)
         {
             projectileDamage[i] = 25 + i * 5;
             projectileSpeed[i] = 15;
@@ -26,7 +29,7 @@ public class FirstWeapon_2 : PlayerWeaponBasic
         }
 
         GetCameraTransform();
-        projectile =  Resources.Load<GameObject>("PlayerTestBullet");
+        projectile =  Resources.Load<GameObject>("Middle/MiddleBullet2");
         currentLevel = 3;
     }
 

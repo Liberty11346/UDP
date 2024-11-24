@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heal : PlayerSkillBasic
+public class MiddleSkill0 : PlayerSkillBasic
 {
     PlayerCtrl player;
 
@@ -15,8 +15,8 @@ public class Heal : PlayerSkillBasic
     public override void Activate()
     {
         if(player != null){
-        player.currentHp += player.maxHp * 0.2f;
-        player.currentHp = Mathf.Clamp(player.currentHp, 0, player.maxHp);
+        player.currentHealth += (int)(player.maxHealth * 0.2f);
+        player.currentHealth = Mathf.Clamp(player.currentHealth, 0, player.maxHealth);
         }
     }
 

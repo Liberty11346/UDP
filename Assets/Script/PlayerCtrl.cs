@@ -19,16 +19,14 @@ public class PlayerCtrl : MonoBehaviour
                   rotationY = 0f; // 플레이어의 Y축 회전값
     private float maxZoomFOV = 30f, // 줌인 시 카메라 FOV
                   originalFOV = 60f; // 평상시 카메라 FOV
-    public int selectedWeaponIndex; // 선택된 주포 타입
+    private int selecetedWeaponType; // 선택된 주포 타입
     private GameObject mainCamObj, // 평상시 시야를 보여줄 카메라
                        playerCamObj; // 줌인 시 시야를 보여줄 카메라
     private Camera mainCam, playerCam; // 두 카메라 클래스
-    public Camera currentCam; // 현재 활성화된 카메라 저장용
     public PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
     public PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
     public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
     public string playerType; // 플레이어의 함선 타입
-    public Action whenSelectWeapon;
      
     void Start()
     {
@@ -163,7 +161,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            PlayerWeaponBasic selectedWeapon = playerWeapon[selectedWeaponIndex];
+            PlayerWeaponBasic selectedWeapon = playerWeapon[selecetedWeaponType];
             
             // 현재 선택된 주포를 발사
             if( selectedWeapon.isUseAble() )
@@ -182,14 +180,12 @@ public class PlayerCtrl : MonoBehaviour
             ActivateCamera(playerCam, true);
             ActivateCamera(mainCam, false);
             playerCam.fieldOfView = maxZoomFOV;
-            currentCam = playerCam;
         }
         else
         {
             ActivateCamera(playerCam, false);
             ActivateCamera(mainCam, true);
             playerCam.fieldOfView = originalFOV;
-            currentCam = mainCam;
         }
     }
 
@@ -198,27 +194,28 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selectedWeaponIndex = 0;
-            whenSelectWeapon?.Invoke(); // 주포 슬롯 UI들에게 선택된 주포를 강조하게 하는 메세지를 보낸다.
+            selecetedWeaponType = 0;
+            Debug.Log("1�� ����");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selectedWeaponIndex = 1;
-            whenSelectWeapon?.Invoke();
+            selecetedWeaponType = 1;
+            Debug.Log("2�� ����");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            selectedWeaponIndex = 2;
-            whenSelectWeapon?.Invoke();
+            selecetedWeaponType = 2;
+            Debug.Log("3�� ����");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            selectedWeaponIndex = 3;
-            whenSelectWeapon?.Invoke();
+            selecetedWeaponType = 3;
+            Debug.Log("4�� ����");
         }
+
     }
 
     void Skill()

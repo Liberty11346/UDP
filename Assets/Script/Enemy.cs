@@ -11,7 +11,6 @@ public class Enemy : MonoBehaviour
     private Vector3 moveTargetVector; // 이동 시 목표 벡터
     private List<Transform> firePos = new List<Transform>(); // 공격 시 투사체가 발사될 위치들의 집합
     public float fireDelay, // 공격 쿨타임. 높을수록 공속이 느리다. (초 단위)
-                 attackDamage, // 공격력
                  moveSpeed, // 이동 속도. 높을수록 이동이 빠르다.
                  rotateSpeed, // 회전 속도. 높을수록 회전이 빠르다.
                  maxHealth, // 최대 체력
@@ -20,8 +19,7 @@ public class Enemy : MonoBehaviour
     private float playerMaxDistance, // 플레이어와 유지할 최대 거리
                   playerMinDistance; // 플레이어와 유지할 최소 거리
 
-    public GameObject attackProjectile, // 공격 시 발사할 공격 투사체
-                      enemyHPGauge; // 체력 게이지 오브젝트
+    public GameObject attackProjectile; // 공격 시 발사할 공격 투사체
     public GameManager gameManager; // 게임매니저.
     void Start()
     {
@@ -47,8 +45,6 @@ public class Enemy : MonoBehaviour
         // 현재 체력 초기화
         maxHealth = 100; // 테스트용 수치
         currentHealth = maxHealth;
-
-        GenerateHPUI(); // 캔버스에 자신의 체력 게이지 생성
 
         // 플레이어 공격 시작
         StartCoroutine(Attack());
@@ -137,7 +133,7 @@ public class Enemy : MonoBehaviour
         if( currentHealth < 1 ) 
         {
             // TODO: 사망 시 연출 추가 예정
-            gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
+            gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다. 
             Destroy(gameObject); // 스스로를 파괴
         }
     }
@@ -147,17 +143,5 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         defense = 0;
-    }
-
-    // 캔버스에 자신의 체력 게이지 UI 생성
-    private void GenerateHPUI()
-    {
-        GameObject canvas = GameObject.Find("Canvas");
-        GameObject UIObj = Instantiate(enemyHPGauge, transform.position, Quaternion.identity);
-        EnemyHP UIScript = UIObj.GetComponent<EnemyHP>();
-        UIObj.transform.SetParent(canvas.GetComponent<RectTransform>());
-        UIScript.myEnemyObj = gameObject;
-        UIScript.myEnemyScript = gameObject.GetComponent<Enemy>();
-        UIScript.isReady = true;
     }
 }

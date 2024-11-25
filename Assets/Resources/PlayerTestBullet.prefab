@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4286383833754605392}
   - component: {fileID: 1548536805748461177}
   - component: {fileID: -8587485906605982500}
-  - component: {fileID: -3375677677322921599}
   m_Layer: 0
   m_Name: PlayerTestBullet
   m_TagString: Untagged
@@ -123,20 +122,3 @@ MonoBehaviour:
   attackDamage: 0
   currentLevel: 0
   player: {fileID: 0}
---- !u!114 &-3375677677322921599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8974389503579334312}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dc4b7a4490f8af41afc28d9a867ae6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 15
-  attackDamage: 50
-  currentLevel: 0
-  player: {fileID: 0}
-  darkMatter: {fileID: 0}

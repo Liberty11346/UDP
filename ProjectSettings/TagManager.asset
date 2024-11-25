@@ -9,6 +9,7 @@ TagManager:
   - EnemyBullet
   - Dashboard
   - HotKey
+  - GoalObject
   layers:
   - Default
   - TransparentFX

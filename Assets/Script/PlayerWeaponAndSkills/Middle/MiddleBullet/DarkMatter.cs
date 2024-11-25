@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Data;
 using UnityEngine;
 
 public class DarkMatter : PlayerBulletBasic
@@ -8,9 +9,8 @@ public class DarkMatter : PlayerBulletBasic
     private float explosionForce = 10f; // 폭발력
 
     private bool isPulled = false; // 적을 끌어당겼는지 여부
-    public MiddleWeaponThird middleWeaponThird; // MiddleWeaponThird 인스턴스 참조
 
-   
+    private float destroyDelay = 0.5f;
   
     public override void Update()
     {
@@ -18,17 +18,18 @@ public class DarkMatter : PlayerBulletBasic
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
 
         // 마우스 왼쪽 버튼 클릭 시 적을 끌어당기고 폭발
-        if (Input.GetMouseButtonDown(0) && !isPulled)
+        if (Input.GetKey(KeyCode.Alpha3) && !isPulled)
         {
             Debug.Log("Mouse button clicked. Finding and pulling targets.");
             FindTargetAndPull();
+            Explode();
         }
 
         // 플레이어와 일정 거리 이상 떨어지면 스스로를 삭제
         if (Vector3.Distance(transform.position, player.transform.position) > 300)
         {
             Debug.Log("DarkMatter is too far from the player, destroying.");
-            Destroy(gameObject);
+            Destroy(gameObject, destroyDelay);
         }
 
         
@@ -50,13 +51,6 @@ public class DarkMatter : PlayerBulletBasic
                 Debug.Log("Enemy found within range. Pulling enemy.");
                 StartCoroutine(PullEnemy(enemy)); // 적을 끌어당기는 코루틴 실행
             }
-        }
-
-        // MiddleWeaponThird가 활성화된 상태일 때만 폭발
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Debug.Log("MiddleWeaponThird is active. Triggering explosion.");
-            Explode();
         }
       
     }
@@ -84,6 +78,7 @@ public class DarkMatter : PlayerBulletBasic
 
                 yield return null; // 다음 프레임으로 넘어감
             }
+
         }
         Debug.Log("PullEnemy coroutine completed.");
     }
@@ -114,6 +109,6 @@ public class DarkMatter : PlayerBulletBasic
 
         // 폭발 후 스스로를 삭제
         Debug.Log("DarkMatter destroyed after explosion.");
-        Destroy(gameObject);
+        Destroy(gameObject, destroyDelay);
     }
 }

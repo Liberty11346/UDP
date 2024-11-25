@@ -31,9 +31,9 @@ public class Dashboard : MonoBehaviour
         var rawCurrentValue = value.GetValue(player); // 변수의 현재 값을 가져온다
         
         // 가져온 값의 타입에 맞춰 적절히 형 변환하여 저장
-        maxValue = rawMaxValue is float ? (float)rawMaxValue : (int)rawMaxValue;
-        minValue = rawMinValue is float ? (float)rawMinValue : (int)rawMinValue;
-        currentValue = rawCurrentValue is float ? (float)rawCurrentValue : (int)rawCurrentValue;
+        maxValue = (float)rawMaxValue;
+        minValue = (float)rawMinValue;
+        currentValue = (float)rawCurrentValue;
     }
 
     void Update()
@@ -47,7 +47,7 @@ public class Dashboard : MonoBehaviour
     {
         // 변수의 현재 값을 가져온다
         var rawCurrentValue = value.GetValue(player);
-        currentValue = rawCurrentValue is float ? (float)rawCurrentValue : (int)rawCurrentValue;
+        currentValue = (float)rawCurrentValue;
 
         // 현재 값으로 텍스트를 업데이트
         text.text = ((int)currentValue).ToString();

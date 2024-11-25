@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
 
     public GameObject attackProjectile, // 공격 시 발사할 공격 투사체
                       enemyHPGauge; // 체력 게이지 오브젝트
+    private GameObject myHPGauge;
     public GameManager gameManager; // 게임매니저.
     void Start()
     {
@@ -89,7 +90,9 @@ public class Enemy : MonoBehaviour
     // 공격 쿨타임마다 플레이어를 공격하는 코루틴.
     IEnumerator Attack()
     {
+        Debug.Log("Attack1");
         yield return new WaitForSeconds(fireDelay);
+        Debug.Log("Attack2");
         Fire();
         StartCoroutine(Attack());
     }
@@ -106,6 +109,10 @@ public class Enemy : MonoBehaviour
         {
             // 공격 투사체를 생성하고 공격 위치를 바라보게 함.
             GameObject projectile = Instantiate(attackProjectile, pos.position, Quaternion.identity);
+
+            // 투사체의 공격력을 자신의 공격력에 맞춰 수정
+            projectile.GetComponent<EnemyAttackProjectile>().damage = attackDamage;
+
             projectile.transform.LookAt(attackTarget);
         }
     }
@@ -130,7 +137,7 @@ public class Enemy : MonoBehaviour
     public void GetDamage(float damage)
     {
         // 플레이어로부터 입은 피해량만큼 자신의 체력을 깎는다.
-        float realDamage = damage * (defense/100);
+        float realDamage = damage * (1 + defense / 100f);
         currentHealth -= realDamage;
         
         // 체력을 깎은 후 남은 체력이 1 미만이라면 사망
@@ -138,6 +145,7 @@ public class Enemy : MonoBehaviour
         {
             // TODO: 사망 시 연출 추가 예정
             gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
+            Destroy(myHPGauge);
             Destroy(gameObject); // 스스로를 파괴
         }
     }
@@ -159,5 +167,6 @@ public class Enemy : MonoBehaviour
         UIScript.myEnemyObj = gameObject;
         UIScript.myEnemyScript = gameObject.GetComponent<Enemy>();
         UIScript.isReady = true;
+        myHPGauge = UIObj;
     }
 }

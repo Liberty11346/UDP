@@ -52,6 +52,7 @@ public class RangeWeaponFourth : PlayerWeaponBasic
                     target.collider.GetComponent<Enemy>().GetDamage(projectileDamage[currentLevel]);
                 }
             }
+            Debug.Log(other);
         }
 
         // TODO: Ray의 궤적에 맞게 레이저 파티클을 출력하는 코드 추가 필요

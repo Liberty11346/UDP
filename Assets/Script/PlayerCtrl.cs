@@ -9,12 +9,12 @@ public class PlayerCtrl : MonoBehaviour
     public float currentSpeed = 10f, // 플레이어의 현재 이동 속도
                  maxSpeed = 20f, // 플레이어의 최대 이동 속도
                  minSpeed = 5f; // 플레이어의 최소 이동 속도
-    public int currentHealth = 100, // 체력
-               maxHealth = 100,
-               minHealth = 0;
-    public int currentFuel = 100, // 연료
-               maxFuel = 100,
-               minFuel = 0;
+    public float currentHealth = 100, // 체력
+                 maxHealth = 100,
+                 minHealth = 0;
+    public float currentFuel = 100, // 연료
+                 maxFuel = 100,
+                 minFuel = 0;
     private float rotationX = 0f, // 플레이어의 X축 회전값
                   rotationY = 0f; // 플레이어의 Y축 회전값
     private float maxZoomFOV = 30f, // 줌인 시 카메라 FOV
@@ -240,6 +240,16 @@ public class PlayerCtrl : MonoBehaviour
             {
                 playerSkill[1].Activate();
             }
+        }
+    }
+
+    public void GetDamage(float damage)
+    {
+        currentHealth -= damage;
+        if( currentHealth < 0 )
+        {
+            // 여기에 게임 오버 코드 입력
+            Debug.Log("Game over");
         }
     }
 }

@@ -11,7 +11,7 @@ public class RangeWeaponThird : PlayerWeaponBasic
         // 주포의 레벨 별 수치를 입력
         for( int i = 0 ; i < 4; i++ )
         {
-            projectileDamage[i] = 0; // 피해량
+            projectileDamage[i] = 10 + i; // 피해량
             projectileSpeed[i] = 20; // 이동속도
             projectileAmount[i] = 1; // 포탄 수
             maxCoolTime[i] = 12 - i; // 쿨타임

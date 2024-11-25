@@ -12,7 +12,7 @@ public class Dashboard : MonoBehaviour
     private TextMeshProUGUI text; // 계기판에 값을 표시할 텍스트
     private Transform needleTR; // 계기판에서 회전할 바늘의 트랜스폼
     private string valueName;
-    private float currentValue, maxValue, minValue;
+    private float currentValue, maxValue, minValue, rawAngle, zAngle;
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>(); // 플레이어 스크립트를 참조
@@ -38,11 +38,12 @@ public class Dashboard : MonoBehaviour
 
     void Update()
     {
-        Display();
+        CalNeedleAngle();
+        DisplayNeedle();
     }
 
     // 계기판의 바늘이 이동할 각도를 계산, 변수의 현재 값을 텍스트로 출력
-    void Display()
+    void CalNeedleAngle()
     {
         // 변수의 현재 값을 가져온다
         var rawCurrentValue = value.GetValue(player);
@@ -53,10 +54,14 @@ public class Dashboard : MonoBehaviour
 
         // 현재값, 최소값, 최대값으로 0 ~ 1 사이 비율을 구한 후 180을 곱하여 각도를 계산
         // z값이 음수가 되어야 시계방향으로 회전하기 때문에, 마지막에 -1을 곱한다.
-        float rawAngle = (currentValue - minValue) / (maxValue - minValue) * 180 *-1;
+        rawAngle = (currentValue - minValue) / (maxValue - minValue) * 180;
+        if( rawAngle > 0 ) rawAngle *= -1;
+    }
 
+    void DisplayNeedle()
+    {
         // 이전의 z값과 현재의 z값 사이의 보간 값을 계산 후 계기판 바늘에 적용
-        float zAngle = Mathf.LerpAngle(needleTR.rotation.eulerAngles.z, rawAngle, 1);
+        zAngle = Mathf.LerpAngle(needleTR.rotation.eulerAngles.z, rawAngle, 0.2f);
         needleTR.rotation = Quaternion.Euler(0, 0, zAngle);
     }
 }

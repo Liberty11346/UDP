@@ -121,12 +121,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireDelay: 1000
+  attackDamage: 0
   moveSpeed: 10
   rotateSpeed: 0.2
   maxHealth: 0
   currentHealth: 0
   defense: 0
   attackProjectile: {fileID: 0}
+  enemyHPGauge: {fileID: 8129347530230241429, guid: 741113ecb852019418e1f5cf3b3e9414, type: 3}
   gameManager: {fileID: 0}
 --- !u!54 &-6550132769825773776
 Rigidbody:

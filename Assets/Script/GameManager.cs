@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public float minToDistance = 10f; // 플레이어와의 최소 거리
     public float minToEnemyDistance = 2f; // 다른 몬스터와의 최소 거리
 
-    void Start()
+    public void StartGame()
     {
         // 게임 시작 시 플레이어를 생성
         player = Instantiate(playerPrefab, transform.position, Quaternion.identity);

@@ -5,8 +5,8 @@ public class RangeWeaponSecond : PlayerWeaponBasic
     void Start()
     {
         // 플레이어에게 보여질 주포의 정보를 입력
-        weaponName = "근접 유도 어뢰";
-        weaponExplain = "이동 중 가까운 적을 탐색하여 추적하는 2연장 어뢰를 발사합니다.";
+        weaponName = "근접 유도탄";
+        weaponExplain = "이동 중 가까운 적을 탐색하여 추적하는 포탄을 둘 발사합니다.";
         
         // 주포의 레벨 별 수치를 입력
         for( int i = 0 ; i < 4; i++ )

@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    public float currentSpeed = 10f, // 플레이어의 현재 이동 속도
-                 maxSpeed = 20f, // 플레이어의 최대 이동 속도
-                 minSpeed = 5f; // 플레이어의 최소 이동 속도
+    private float rotateSpeed = 15; // 플레이어 회전 속도
+    public float currentSpeed = 10, // 플레이어의 현재 이동 속도
+                 maxSpeed = 20, // 플레이어의 최대 이동 속도
+                 minSpeed = 5; // 플레이어의 최소 이동 속도
     public float currentHealth = 100, // 체력
                  maxHealth = 100,
                  minHealth = 0;
@@ -68,103 +69,41 @@ public class PlayerCtrl : MonoBehaviour
     }
 
     void Update()
-    {
-        // 기본적으로 플레이어는 직진만 한다.
-        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
-        
-        verticalMove(); // W, S 입력으로 위 아래 기울기
-        horizontalMove(); // A, D 입력으로 좌 우 기울기
-        
-        acceleration(); // Space 입력으로 가속
-        deceleration(); // Shift 입력으로 감속
+    {      
+        Move(); // 키보드로 이동
+        Attack(); // 마우스로 공격
 
-        fire(); // 왼쪽 마우스 클릭으로 발사
-        zoom(); // 오른쪽 마우스 클릭으로 줌
-
-        selectType(); // 1 ~ 4 입력으로 주포 선택
+        SelectType(); // 1 ~ 4 입력으로 주포 선택
         Skill(); // Q, E 입력으로 스킬 사용
     }
 
-    void ActivateCamera(Camera cam, bool isActivated)
+    // 플레이어로부터 입력을 받아 함선을 기울임
+    void Move()
     {
-        cam.enabled = isActivated;
-        cam.gameObject.GetComponent<AudioListener>().enabled = isActivated;
+        // 기본적으로 플레이어는 직진만 한다.
+        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+
+        // 스페이스 바를 누르고 있으면 가속, 왼쪽 쉬프트를 누르고 있으면 감속
+        if (Input.GetKey(KeyCode.Space)) currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, Time.deltaTime); // 가속
+        if (Input.GetKey(KeyCode.LeftShift)) currentSpeed = Mathf.MoveTowards(currentSpeed, minSpeed, Time.deltaTime); // 감속
+
+        // W A S D 키를 받아서 함선을 기울임
+        if (Input.GetKey(KeyCode.W)) rotationX -= 10f * Time.deltaTime * rotateSpeed; // 상승
+        if (Input.GetKey(KeyCode.S)) rotationX += 10f * Time.deltaTime * currentSpeed; // 하강
+        if (Input.GetKey(KeyCode.A)) rotationY -= 10f * Time.deltaTime * currentSpeed; // 좌회전
+        if (Input.GetKey(KeyCode.D)) rotationY += 10f * Time.deltaTime * currentSpeed; // 우회전
+
+        // W A S D 키를 눌러서 변경한 함선의 기울기를 적용
+        transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
     }
 
-    // ���� �̵�
-    void verticalMove()
+    // 좌클릭으로 포탄 발사, 우클릭을 누르고 있는 동안 줌
+    void Attack()
     {
-        // 상승
-        if (Input.GetKey(KeyCode.W))
-        {
-            if (rotationX >= 90f)
-            {
-                rotationX = 90f;
-            }
-            rotationX -= 10f * Time.deltaTime * currentSpeed;
-            transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
-        }
-
-        // 하강
-        if (Input.GetKey(KeyCode.S))
-        {
-            if (rotationX <= -70f)
-            {
-                rotationX = -70f;
-            }
-            rotationX += 10f * Time.deltaTime * currentSpeed;
-            transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
-        }
-    }
-
-    // ���� �̵�
-    void horizontalMove()
-    {
-        if (Input.GetKey(KeyCode.A))
-        {
-            if (rotationY <= -360f)
-            {
-                rotationY = 0f;
-            }
-            rotationY -= 10f * Time.deltaTime * currentSpeed;
-            transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            if (rotationY >= 360f)
-            {
-                rotationY = 0f;
-            }
-            rotationY += 10f * Time.deltaTime * currentSpeed;
-            transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
-        }
-    }
-
-    // ����
-    void acceleration()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, Time.deltaTime);
-        }
-    }
-
-    //����
-    void deceleration()
-    {
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            currentSpeed = Mathf.MoveTowards(currentSpeed, minSpeed, Time.deltaTime);
-        }
-    }
-
-    // ����
-    void fire()
-    {
+        // 포탄 발사
         if (Input.GetMouseButton(0))
         {
             PlayerWeaponBasic selectedWeapon = playerWeapon[selectedWeaponIndex];
-            
             // 현재 선택된 주포를 발사
             if( selectedWeapon.isUseAble() )
             {
@@ -172,11 +111,8 @@ public class PlayerCtrl : MonoBehaviour
                 StartCoroutine(selectedWeapon.CoolDown()); // 발사한 주포의 쿨타임을 돌리기 시작한다
             }
         }
-    }
 
-    // ��
-    void zoom()
-    {
+        // 줌 인
         if (Input.GetMouseButton(1))
         {
             ActivateCamera(playerCam, true);
@@ -184,7 +120,7 @@ public class PlayerCtrl : MonoBehaviour
             playerCam.fieldOfView = maxZoomFOV;
             currentCam = playerCam;
         }
-        else
+        else // 줌 아웃
         {
             ActivateCamera(playerCam, false);
             ActivateCamera(mainCam, true);
@@ -194,7 +130,7 @@ public class PlayerCtrl : MonoBehaviour
     }
 
     // ���� or ��ų ����
-    void selectType()
+    void SelectType()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -239,14 +175,24 @@ public class PlayerCtrl : MonoBehaviour
             if( playerSkill[1].isUseAble() )
             {
                 playerSkill[1].Activate();
+                StartCoroutine(playerSkill[1].CoolDown()); // 사용한 스킬의 쿨타임을 돌리기 시작한다.
             }
         }
     }
 
+    void ActivateCamera(Camera cam, bool isActivated)
+    {
+        cam.enabled = isActivated;
+        cam.gameObject.GetComponent<AudioListener>().enabled = isActivated;
+    }
+
     public void GetDamage(float damage)
     {
+        // 입은 피해 만큼 자신의 체력을 깎는다
         currentHealth -= damage;
-        if( currentHealth < 0 )
+
+        // 체력이 1 미만이라면 게임 오버
+        if( currentHealth < 1 )
         {
             // 여기에 게임 오버 코드 입력
             Debug.Log("Game over");

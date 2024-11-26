@@ -1308,8 +1308,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190258
-  m_fontColor: {r: 0.7, g: 0, b: 0, a: 1}
+    rgba: 4279435519
+  m_fontColor: {r: 1, g: 0, b: 0.07585335, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1442,8 +1442,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190258
-  m_fontColor: {r: 0.7, g: 0, b: 0, a: 1}
+    rgba: 4279435519
+  m_fontColor: {r: 1, g: 0, b: 0.07585335, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1706,7 +1706,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3ecfd3bbff4866b4e9977efe0afc94e7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2320,8 +2320,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190258
-  m_fontColor: {r: 0.7, g: 0, b: 0, a: 1}
+    rgba: 4279435519
+  m_fontColor: {r: 1, g: 0, b: 0.07585335, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2897,8 +2897,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190258
-  m_fontColor: {r: 0.7, g: 0, b: 0, a: 1}
+    rgba: 4279435519
+  m_fontColor: {r: 1, g: 0, b: 0.07585335, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3567,8 +3567,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190258
-  m_fontColor: {r: 0.7, g: 0, b: 0, a: 1}
+    rgba: 4279435519
+  m_fontColor: {r: 1, g: 0, b: 0.07585335, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4702,8 +4702,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190258
-  m_fontColor: {r: 0.7, g: 0, b: 0, a: 1}
+    rgba: 4279435519
+  m_fontColor: {r: 1, g: 0, b: 0.07585335, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6259,7 +6259,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 83440540658264513, guid: f66bd09c7a668b643a091278701c5ea8, type: 3}
   enemyPrefab: {fileID: 3385360391997897396, guid: cdf233e224781b449a89f63b2321b8a2, type: 3}
   goalPrefab: {fileID: 4949470019285126847, guid: 43288ff6ccaa37d4d83bac8efa46d670, type: 3}
-  playerType: Range
+  playerType: Middle
   materials: []
   spawnInterval: 2
   maxMonsterCount: 10

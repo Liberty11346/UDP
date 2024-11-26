@@ -10,7 +10,8 @@ public class HotKey : MonoBehaviour
     private GameManager gameManager;
     private PlayerWeaponBasic myWeapon; // 자신이 주포 슬롯인 경우, 자신이 담당할 주포
     private PlayerSkillBasic mySkill; // 자신이 스킬 슬롯인 경우, 자신이 담당할 스킬
-    private Image weaponBorder; // 자신의 주포 슬롯의 테두리
+    private Image weaponBorder, // 자신의 주포 슬롯의 테두리
+                  icon; // 자신의 주포/스킬의 아이콘
     private TextMeshProUGUI cooltimeText,
                             levelText;
     private Color origin = Color.white, // 기본 테두리 색상
@@ -41,12 +42,25 @@ public class HotKey : MonoBehaviour
             weaponBorder = transform.Find("Border").GetComponent<Image>();
             player.whenSelectWeapon += HighLightSelectedWeapon; // 플레이어의 무기 선택 감지 시작
         }
+        icon = GetComponent<Image>();
+
+        // 슬롯 내 아이콘 설정
+        DisplayIcon();
     }
 
     void Update()
     {
         if( myType == "Weapon" ) DisplayWeaponCooltime();
         else DisplaySkillCooltime();
+    }
+
+    // 자신이 담당한 주포/스킬의 아이콘을 표시
+    void DisplayIcon()
+    {
+        // 자신의 타입과 인덱스, 플레이어의 타입을 기반으로 적절한 스킬 아이콘을 로드하여 적용
+        string myPath = gameManager.playerType + myType + myIndex.ToString();
+        Sprite myIcon = Resources.Load<Sprite>("Icon/" + myPath);
+        icon.sprite = myIcon;
     }
 
     // 자신이 담당한 주포의 쿨타임을 표시

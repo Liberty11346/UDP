@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RangeBulletThird : PlayerBulletBasic
 {
+    public GameObject explosion; // 폭발 오브젝트
     public override void Update()
     {
         // 기본적으로 직진
@@ -24,19 +25,22 @@ public class RangeBulletThird : PlayerBulletBasic
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
             // 10 거리 이내의 적을 탐지하면 폭발함
-            if( distance <= 10 ) Explode();
+            if( distance <= 20 ) Explode();
         }
     }
 
     void Explode()
     {
+        // 폭발 오브젝트 생성
+        Instantiate(explosion, transform.position, Quaternion.identity);
+
         GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
         foreach( GameObject enemy in enemyList )
         {
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
             // 폭발 범위 내에 있는 적들에게 피해를 주고 밀쳐냄
-            if( distance < 12 + currentLevel )
+            if( distance < 35 + currentLevel * 5 )
             {
                 enemy.GetComponent<Enemy>().GetDamage(attackDamage);
                 enemy.GetComponent<Rigidbody>().AddForce((enemy.transform.position - transform.position) * 10, ForceMode.Impulse);

@@ -90,9 +90,7 @@ public class Enemy : MonoBehaviour
     // 공격 쿨타임마다 플레이어를 공격하는 코루틴.
     IEnumerator Attack()
     {
-        Debug.Log("Attack1");
         yield return new WaitForSeconds(fireDelay);
-        Debug.Log("Attack2");
         Fire();
         StartCoroutine(Attack());
     }
@@ -129,6 +127,9 @@ public class Enemy : MonoBehaviour
         // 공격이 도달해야 할 플레이어의 예측 위치를 계산
         float timeToHit = relativePosition.magnitude / attackMoveSpeed; // 공격이 목표에 도달할 시간
         Vector3 predictedPosition = playerObject.transform.position + playerVelocity * timeToHit;
+
+        // 계속 플레이어 아래로 아슬아슬하게 빗맞추길래 보정값 추가
+        predictedPosition = new Vector3(predictedPosition.x, predictedPosition.y + 2, predictedPosition.z);
 
         return predictedPosition;
     }

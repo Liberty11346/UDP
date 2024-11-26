@@ -20,7 +20,7 @@ public class EnemyHP : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
-        canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        canvas = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
         gauge = transform.Find("HPG").GetComponent<RectTransform>();
         BGImage = transform.Find("HPBG").GetComponent<Image>();
         GImage = transform.Find("HPG").GetComponent<Image>();

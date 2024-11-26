@@ -161,7 +161,7 @@ public class Enemy : MonoBehaviour
     // 캔버스에 자신의 체력 게이지 UI 생성
     private void GenerateHPUI()
     {
-        GameObject canvas = GameObject.Find("Canvas");
+        GameObject canvas = GameObject.Find("PlayerUI");
         GameObject UIObj = Instantiate(enemyHPGauge, transform.position, Quaternion.identity);
         EnemyHP UIScript = UIObj.GetComponent<EnemyHP>();
         UIObj.transform.SetParent(canvas.GetComponent<RectTransform>());

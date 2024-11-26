@@ -20,7 +20,7 @@ public class MiddleSkill1 : PlayerSkillBasic
     {
         if(player != null)
         {
-        StartCoroutine(AccelerationSpeed());
+            StartCoroutine(AccelerationSpeed());
         }
     }
 

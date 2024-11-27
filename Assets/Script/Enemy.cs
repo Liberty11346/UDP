@@ -5,7 +5,8 @@ using UnityEngine;
 // 적 오브젝트에 탑재될 AI 스크립트
 public class Enemy : MonoBehaviour
 {
-    private GameObject playerObject; // 플레이어 오브젝트
+    private GameObject playerObject,
+                        goalObject;
     private PlayerCtrl playerScript; // 플레이어 스크립트
     private Quaternion moveTargetRotation; // 이동 시 목표 회전값
     private Vector3 moveTargetVector; // 이동 시 목표 벡터
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviour
                  rotateSpeed, // 회전 속도. 높을수록 회전이 빠르다.
                  maxHealth, // 최대 체력
                  currentHealth, // 현재 체력
+                 maxDistance = 2100f, // 목표지점까지의 거리
                  defense; // 방어력(방어력 1당 피해감소 1%)
     private float playerMaxDistance, // 플레이어와 유지할 최대 거리
                   playerMinDistance; // 플레이어와 유지할 최소 거리
@@ -24,6 +26,9 @@ public class Enemy : MonoBehaviour
                       enemyHPGauge; // 체력 게이지 오브젝트
     private GameObject myHPGauge;
     public GameManager gameManager; // 게임매니저.
+
+    private float distanceBetweenGoal,
+                baseSpeed = 10;
     void Start()
     {
         // 게임매니저 스크립트에 접근
@@ -32,6 +37,8 @@ public class Enemy : MonoBehaviour
         // 플레이어 오브젝트와 플레이어 스크립트 클래스에 접근
         playerObject = GameObject.FindWithTag("Player");
         playerScript = playerObject.GetComponent<PlayerCtrl>();
+
+        goalObject = GameObject.FindWithTag("GoalObject");
         
         // "FirePos"를 태그를 가진 자식 오브젝트의 transform을 가져와 firePos 리스트에 넣는다.
         for( int i = 0 ; i < transform.childCount ; i++ ) if( transform.GetChild(i).tag == "FirePos" ) firePos.Add(transform.GetChild(i).transform);
@@ -46,8 +53,6 @@ public class Enemy : MonoBehaviour
         moveTargetRotation = Quaternion.LookRotation(playerObject.transform.forward);
 
         // 현재 체력 초기화
-        maxHealth = 100; // 테스트용 수치
-        currentHealth = maxHealth;
 
         GenerateHPUI(); // 캔버스에 자신의 체력 게이지 생성
 
@@ -60,11 +65,17 @@ public class Enemy : MonoBehaviour
         // 기본적으로 직진만 한다
         transform.Translate( Vector3.forward * moveSpeed * Time.deltaTime );
 
+        distanceBetweenGoal = Vector3.Distance(playerObject.transform.position, goalObject.transform.position);
+
         // 이동 목표를 계산
         CalMoveTargetPos();        
         
         // 이동 목표 지점을 바라보도록 회전
         transform.rotation = Quaternion.Slerp(transform.rotation, moveTargetRotation, rotateSpeed * Time.deltaTime);
+
+         AdjustStatsBasedOnDistance(distanceBetweenGoal);
+
+        Die();
     }
 
     // 플레이어의 이동을 기반으로 이동 목표를 설정
@@ -158,6 +169,19 @@ public class Enemy : MonoBehaviour
         defense = 0;
     }
 
+    private void Die()
+    {
+        int experienceGained = 100;
+
+        PlayerCtrl player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
+        if(player != null)
+        {
+            player.GainExperience(experienceGained);
+        }
+        Debug.Log("경험치를 얻습니다!" + experienceGained);
+        gameObject.SetActive(false);
+    }
+
     // 캔버스에 자신의 체력 게이지 UI 생성
     private void GenerateHPUI()
     {
@@ -169,5 +193,15 @@ public class Enemy : MonoBehaviour
         UIScript.myEnemyScript = gameObject.GetComponent<Enemy>();
         UIScript.isReady = true;
         myHPGauge = UIObj;
+    }
+
+   void AdjustStatsBasedOnDistance(float distance)
+    {
+        // 거리 비율 계산 (가까울수록 스탯이 증가하도록 함)
+        float distanceRatio = Mathf.InverseLerp(maxDistance, 0f, distance); // 0: 가까움, 1: 멀리 있음
+
+        // 공격력 및 방어력에 가중치 적용
+        currentHealth = Mathf.RoundToInt(maxHealth * (1 + distanceRatio)); // 공격력 증가
+        moveSpeed = Mathf.RoundToInt(baseSpeed * (1 + distanceRatio)); // 속도 증가
     }
 }

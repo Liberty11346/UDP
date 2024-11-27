@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public int currentMonsterCount = 0; // 현재 씬에 존재하는 몬스터 수
     public float minToDistance = 10f; // 플레이어와의 최소 거리
     public float minToEnemyDistance = 2f; // 다른 몬스터와의 최소 거리
+    public float toGoalDistance; // 플레이어와 목표지점과의 거리
 
     public void StartGame()
     {
@@ -30,8 +31,11 @@ public class GameManager : MonoBehaviour
 
         // 적 생성 시작
         StartCoroutine(Spawn());
-    }
 
+        toGoalDistance = Vector3.Distance(player.transform.position, goalPrefab.transform.position);
+        SpawnGoalPoint();
+        DistanceCalculate();
+    }
     void Update()
     {
         // 항상 플레이어를 따라다닌다.
@@ -86,5 +90,24 @@ public class GameManager : MonoBehaviour
 
         // 레벨업 텍스트의 스크립트를 활성화
         GameObject.Find("LevelUpText").GetComponent<LevelUpText>().enabled = true;
+    }
+
+    void SpawnGoalPoint()
+    {
+        // 플레이어 위치를 중심으로 무작위 방향 벡터와 거리를 생성한 후
+        Vector3 randomVector = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+        float spawnMinDistance = 1000f;
+        float spawnRandomDistance = Random.Range(1000, 1100);
+
+        // 생성한 방향으로, 생성한 거리만큼 떨어진 곳에 목적지을 생성한다.
+        float spawnDistance = spawnMinDistance + spawnRandomDistance;
+        Vector3 spawnPosition = randomVector * spawnDistance;
+        Instantiate(goalPrefab, spawnPosition, Quaternion.identity);
+    }
+    void DistanceCalculate()
+    {
+        while(true){
+        Debug.Log("남은 거리 :  " + toGoalDistance);
+        }
     }
 }

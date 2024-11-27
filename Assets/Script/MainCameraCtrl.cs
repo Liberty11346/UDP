@@ -9,11 +9,12 @@ public class MainCameraCtrl : MonoBehaviour
     [SerializeField] float MouseY;
     [SerializeField] float sens = 800f;
     [SerializeField] float Distance = 10f;
-    [SerializeField] GameObject Player;
+    [SerializeField] GameObject player;
 
+    // 게임 시작 시 플레이어를 탐색하여 따라가기 시작
     void Start()
     {
-        Player = GameObject.FindWithTag("Player");
+        player = GameObject.FindWithTag("Player");
     }
 
     void Update()
@@ -22,14 +23,16 @@ public class MainCameraCtrl : MonoBehaviour
         Rotate();
     }
 
+    // 플레이어의 움직임을 따라 위치를 변경
     void Move()
     {
         Quaternion rotation = Quaternion.Euler(MouseY, MouseX, 0f);
-        Vector3 position = Player.transform.position - rotation * Vector3.forward * Distance;
+        Vector3 position = player.transform.position - rotation * Vector3.forward * Distance;
         transform.position = position;
-        transform.LookAt(Player.transform);
+        transform.LookAt(player.transform);
     }
     
+    // 마우스의 움직임을 따라 각도를 변경
     void Rotate()
     {
         MouseX += Input.GetAxisRaw("Mouse X") * sens * Time.deltaTime;

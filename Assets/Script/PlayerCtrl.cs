@@ -89,9 +89,9 @@ public class PlayerCtrl : MonoBehaviour
 
         // W A S D 키를 받아서 함선을 기울임
         if (Input.GetKey(KeyCode.W)) rotationX -= 10f * Time.deltaTime * rotateSpeed; // 상승
-        if (Input.GetKey(KeyCode.S)) rotationX += 10f * Time.deltaTime * currentSpeed; // 하강
-        if (Input.GetKey(KeyCode.A)) rotationY -= 10f * Time.deltaTime * currentSpeed; // 좌회전
-        if (Input.GetKey(KeyCode.D)) rotationY += 10f * Time.deltaTime * currentSpeed; // 우회전
+        if (Input.GetKey(KeyCode.S)) rotationX += 10f * Time.deltaTime * rotateSpeed; // 하강
+        if (Input.GetKey(KeyCode.A)) rotationY -= 10f * Time.deltaTime * rotateSpeed; // 좌회전
+        if (Input.GetKey(KeyCode.D)) rotationY += 10f * Time.deltaTime * rotateSpeed; // 우회전
 
         // W A S D 키를 눌러서 변경한 함선의 기울기를 적용
         transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);

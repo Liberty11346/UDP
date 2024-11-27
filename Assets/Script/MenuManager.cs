@@ -7,84 +7,68 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    public GameManager gameManager; // °ÔÀÓ¸Å´ÏÀú
-    public GameObject menuCanvas; // ¸Ş´º UI
-    public GameObject playerUICanvas; // ÇÃ·¹ÀÌ¾î UI
-    public GameObject meleeToolTipText; // ±Ù°Å¸® ÅøÆÁ
-    public GameObject middleToolTipText; // Áß°Å¸® ÅøÆÁ
-    public GameObject rangeToolTipText; // ¿ø°Å¸® ÅøÆÁ
+    public GameManager gameManager; // ê²Œì„ë§¤ë‹ˆì €
+    public GameObject menuCanvas; // ë©”ë‰´ UI
+    public GameObject playerUICanvas; // í”Œë ˆì´ì–´ UI
+    public GameObject meleeToolTipText; // ê·¼ê±°ë¦¬ íˆ´íŒ
+    public GameObject middleToolTipText; // ì¤‘ê±°ë¦¬ íˆ´íŒ
+    public GameObject rangeToolTipText; // ì›ê±°ë¦¬ íˆ´íŒ
 
     public void WhenClick(string name)
     {
-        // Melee ¹öÆ° Å¬¸¯ ½Ã playerTypeÀ» Melee·Î ¼³Á¤ÇÏ°í °ÔÀÓ ½ÃÀÛ
-        if (name == "Melee")
+        // Back ë²„íŠ¼ì„ í´ë¦­í•˜ì§€ ì•Šì•˜ë‹¤ë©´ í•´ë‹¹ ë²„íŠ¼ì— ë§ëŠ” í”Œë ˆì´ì–´ ìƒì„±
+        if( name != "Back" )
         {
-            gameManager.playerType = "Melee";
+            gameManager.playerType = name;
             StartGame();
         }
-
-        // Middle ¹öÆ° Å¬¸¯ ½Ã playerTypeÀ» Middle·Î ¼³Á¤ÇÏ°í °ÔÀÓ ½ÃÀÛ
-        else if (name == "Middle")
-        {
-            gameManager.playerType = "Middle";
-            StartGame();
-        }
-
-        // Range ¹öÆ° Å¬¸¯ ½Ã playerTypeÀ» Range·Î ¼³Á¤ÇÏ°í °ÔÀÓ ½ÃÀÛ
-        else if (name == "Range")
-        {
-            gameManager.playerType = "Range";
-            StartGame();
-        }
-
-        // Back ¹öÆ° Å¬¸¯ ½Ã ¸ŞÀÎ ¸Ş´º·Î ÀüÈ¯
-        else if (name == "Back")
-            SceneManager.LoadScene("Retreat Protocol");
+        // ëˆ„ë¥¸ ë²„íŠ¼ì´ Back ë²„íŠ¼ì´ë¼ë©´ ë©”ì¸ìœ¼ë¡œ ëŒì•„ê°
+        else SceneManager.LoadScene("Retreat Protocol");
     }
 
     void StartGame()
     {
-        // ¸Ş´º UI ºñÈ°¼ºÈ­
+        // ë©”ë‰´ UI ë¹„í™œì„±í™”
         menuCanvas.SetActive(false);
 
-        // °ÔÀÓ UI È°¼ºÈ­
+        // ê²Œì„ UI í™œì„±í™”
         playerUICanvas.SetActive(true);
 
-        // °ÔÀÓ¸Å´ÏÀú StartGameÇÔ¼ö ½ÇÇà
+        // ê²Œì„ë§¤ë‹ˆì € StartGameí•¨ìˆ˜ ì‹¤í–‰
         gameManager.StartGame();
     }
 
-    // ±Ù°Å¸® ÅøÆÁ È°¼ºÈ­
+    // ê·¼ê±°ë¦¬ íˆ´íŒ í™œì„±í™”
     public void ShowMeleeTooltip()
     {
         meleeToolTipText.SetActive(true);
     }
 
-    // ±Ù°Å¸® ÅøÆÁ ºñÈ°¼ºÈ­
+    // ê·¼ê±°ë¦¬ íˆ´íŒ ë¹„í™œì„±í™”
     public void HideMeleeTooltip()
     {
         meleeToolTipText.SetActive(false);
     }
 
-    // Áß°Å¸® ÅøÆÁ È°¼ºÈ­
+    // ì¤‘ê±°ë¦¬ íˆ´íŒ í™œì„±í™”
     public void ShowMiddleTooltip()
     {
         middleToolTipText.SetActive(true);
     }
 
-    // Áß°Å¸® ÅøÆÁ ºñÈ°¼ºÈ­
+    // ì¤‘ê±°ë¦¬ íˆ´íŒ ë¹„í™œì„±í™”
     public void HideMiddleTooltip()
     {
         middleToolTipText.SetActive(false);
     }
 
-    // ¿ø°Å¸® ÅøÆÁ È°¼ºÈ­
+    // ì›ê±°ë¦¬ íˆ´íŒ í™œì„±í™”
     public void ShowRangeTooltip()
     {
         rangeToolTipText.SetActive(true);
     }
 
-    // ¿ø°Å¸® ÅøÆÁ ºñÈ°¼ºÈ­
+    // ì›ê±°ë¦¬ íˆ´íŒ ë¹„í™œì„±í™”
     public void HideRangeTooltip()
     {
         rangeToolTipText.SetActive(false);

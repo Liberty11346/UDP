@@ -34,7 +34,6 @@ public class PlayerCtrl : MonoBehaviour
     public Camera currentCam; // 현재 활성화된 카메라 저장용
     public PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
     public PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
-    private int selectedSkillIndex;
     public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
     public string playerType; // 플레이어의 함선 타입
     public Action whenSelectWeapon;
@@ -46,6 +45,7 @@ public class PlayerCtrl : MonoBehaviour
         playerCamObj = GameObject.Find("PlayerCamera");
         mainCam = mainCamObj.GetComponent<Camera>();
         playerCam = playerCamObj.GetComponent<Camera>();
+        experienceTable = FindObjectOfType<ExperienceTable>();
         
         // 줌인 시 시야를 보여줄 카메라는 비활성화
         ActivateCamera(playerCam, false);

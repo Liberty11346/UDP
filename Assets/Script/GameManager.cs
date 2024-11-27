@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     {
         // 게임 시작 시 플레이어를 생성
         player = Instantiate(playerPrefab, transform.position, Quaternion.identity);
-        
+
         // 플레이어의 타입에 맞춰 플레이어 무기를 설정
         player.GetComponent<PlayerCtrl>().PlayerTypeSetting(playerType);
 
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         
         // 적을 생성하고 플레이어와 묙표 지점 사이의 거리에 따라 스탯을 재설정
         GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        Enemy enemyScript = spawnedEnemy.GetComponent<Enemy>(); // Enemy 컴포넌트 참조
+        Enemy enemyScript = spawnedEnemy.GetComponent<Enemy>();
         enemyScript.SetStatus(currentDistance, 2100);
 
         // 적의 수 증가
@@ -112,5 +112,7 @@ public class GameManager : MonoBehaviour
         float spawnDistance = spawnMinDistance;
         Vector3 spawnPosition = randomVector * spawnDistance;
         goal = Instantiate(goalPrefab, spawnPosition, Quaternion.identity);
+
     }
+
 }

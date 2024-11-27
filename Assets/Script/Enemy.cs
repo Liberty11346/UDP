@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
                       enemyHPGauge; // 체력 게이지 오브젝트
     private GameObject myHPGauge;
     public GameManager gameManager; // 게임매니저.
-
+    
     void Start()
     {
         // 게임매니저 스크립트에 접근
@@ -150,6 +150,7 @@ public class Enemy : MonoBehaviour
             gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
             Destroy(myHPGauge);
             Destroy(gameObject); // 스스로를 파괴
+            Die();
         }
     }
 

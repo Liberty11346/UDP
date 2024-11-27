@@ -19,7 +19,6 @@ public class RangeWeaponFirst : PlayerWeaponBasic
 
         GetCameraTransform();
         projectile = Resources.Load<GameObject>("Range/RangeBulletFirst");
-        currentLevel = 3; // 테스트용으로 레벨업 해둔 것
     }
 
     // 0.2초 간격으로 2연장 함포를 두 번 발사한다.

@@ -19,7 +19,6 @@ public class RangeWeaponFourth : PlayerWeaponBasic
         }
 
         GetCameraTransform();
-        currentLevel = 3; // 테스트용으로 레벨업 해둔 것
     }
 
     // 2초 후 바라보는 방향으로 Ray를 쏴서 충돌한 모든 대상에게 피해를 준다

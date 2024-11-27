@@ -19,7 +19,6 @@ public class RangeWeaponThird : PlayerWeaponBasic
 
         GetCameraTransform();
         projectile = Resources.Load<GameObject>("Range/RangeBulletThird");
-        currentLevel = 3; // 테스트용으로 레벨업 해둔 것
     }
 
     // 포탄 발사

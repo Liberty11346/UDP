@@ -50,8 +50,12 @@ public class HotKey : MonoBehaviour
 
     void Update()
     {
+        // 쿨타임 표시
         if( myType == "Weapon" ) DisplayWeaponCooltime();
         else DisplaySkillCooltime();
+
+        // 레벨 표시
+        if( myType == "Weapon" ) levelText.text = (myWeapon.currentLevel + 1).ToString();
     }
 
     // 자신이 담당한 주포/스킬의 아이콘을 표시
@@ -75,13 +79,6 @@ public class HotKey : MonoBehaviour
     {
         cooltimeText.text = mySkill.currentCoolTime.ToString();
         if( mySkill.currentCoolTime < 1 ) cooltimeText.text = " ";
-    }
-
-    // 현재 주포와 스킬의 레벨에 맞춰 텍스트를 수정
-    // 주포와 스킬을 레벨업 할 때, 게임매니저에서 이 함수를 호출
-    void UpdateLevelText()
-    {
-        if( myType == "Weapon" ) levelText.text = myWeapon.currentLevel.ToString();
     }
 
     // 현재 선택된 주포를 강조

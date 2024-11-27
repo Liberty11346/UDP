@@ -21,9 +21,14 @@ public class LevelUpText : MonoBehaviour
         text = GetComponent<TextMeshProUGUI>();
     }
 
+    void Update()
+    {
+        WhenPlayerLevelUp();
+    }
+
     // 플레이어에게 주포 포인트나 스킬 포인트가 남아있으면 출력되어서 포인트 사용을 유도
     // 포인트가 둘 다 있다면 스킬 포인트 소모를 우선 유도
-/*    public void WhenPlayerLevelUp()
+    private void WhenPlayerLevelUp()
     {
         if( player.skillPoint > 0 )
         {
@@ -39,5 +44,5 @@ public class LevelUpText : MonoBehaviour
         {
             text.text = blankText;
         }
-    } */
+    }
 }

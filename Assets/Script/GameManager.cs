@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
 
         toGoalDistance = Vector3.Distance(player.transform.position, goalPrefab.transform.position);
         SpawnGoalPoint();
+        DistanceCalculate();
     }
     void Update()
     {
@@ -102,5 +103,11 @@ public class GameManager : MonoBehaviour
         float spawnDistance = spawnMinDistance + spawnRandomDistance;
         Vector3 spawnPosition = randomVector * spawnDistance;
         Instantiate(goalPrefab, spawnPosition, Quaternion.identity);
+    }
+    void DistanceCalculate()
+    {
+        while(true){
+        Debug.Log("남은 거리 :  " + toGoalDistance);
+        }
     }
 }

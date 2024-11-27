@@ -10,7 +10,7 @@ public class TitleManager : MonoBehaviour
     {
         // Play 버튼 클릭 시 Game 씬으로 전환
         if (name == "Play")
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene("New Game Scene");
         // Exit 버튼 클릭 시 게임 종료
         else if (name == "Exit")
         {

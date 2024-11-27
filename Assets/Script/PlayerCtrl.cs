@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,6 +17,14 @@ public class PlayerCtrl : MonoBehaviour
     public float currentFuel = 100, // 연료
                  maxFuel = 100,
                  minFuel = 0;
+
+    public int level,
+                experience,
+                weaponPoint,
+                skillPoint;
+
+    private  ExperienceTable experienceTable;
+
     private float rotationX = 0f, // 플레이어의 X축 회전값
                   rotationY = 0f; // 플레이어의 Y축 회전값
     private float maxZoomFOV = 30f, // 줌인 시 카메라 FOV
@@ -27,6 +36,7 @@ public class PlayerCtrl : MonoBehaviour
     public Camera currentCam; // 현재 활성화된 카메라 저장용
     public PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
     public PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
+    private int selectedSkillIndex;
     public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
     public string playerType; // 플레이어의 함선 타입
     public Action whenSelectWeapon;
@@ -75,6 +85,7 @@ public class PlayerCtrl : MonoBehaviour
 
         SelectType(); // 1 ~ 4 입력으로 주포 선택
         Skill(); // Q, E 입력으로 스킬 사용
+        GainExperience(experience);
     }
 
     // 플레이어로부터 입력을 받아 함선을 기울임
@@ -198,4 +209,85 @@ public class PlayerCtrl : MonoBehaviour
             Debug.Log("Game over");
         }
     }
+
+    public void GainExperience(int amount)
+    {
+        experience += amount;
+        CheckForLevelUp();
+    }
+
+    private void CheckForLevelUp()
+{
+    // 다음 레벨 요구 경험치 계산
+    int requiredEXP = experienceTable.GetExpForLevel(level + 1);
+    
+    // 경험치가 요구 경험치를 초과하거나 같을 경우 레벨 업 처리
+    while (experience >= requiredEXP)
+    {
+        LevelUp();
+        experience -= requiredEXP; // 초과된 경험치 차감
+        Debug.Log("현재 경험치 : " + experience);
+
+        // 다음 레벨의 요구 경험치를 다시 계산
+        requiredEXP = experienceTable.GetExpForLevel(level + 1);
+    }
 }
+
+    private void LevelUp()
+    {
+        level++;
+        Debug.Log("레벨이 올라갔습니다" + level);
+        weaponPoint = 1;
+        Debug.Log("주포의 레벨을 올릴 수 있습니다!" + weaponPoint);
+        if(level == 4 || level == 8)
+        {
+            skillPoint++;
+            Debug.Log("스킬포인트가 증가하였습니다!" + skillPoint);
+        }
+        WeaponLevelUp();
+
+        SkillLevelUp();
+    }
+
+    private void WeaponLevelUp()
+    {
+        if(weaponPoint >= 1 && Input.GetKeyDown(KeyCode.LeftControl) && playerWeapon[selectedWeaponIndex].currentLevel < 4)
+        {
+            PlayerWeaponBasic SelectWeapon = playerWeapon[selectedWeaponIndex];
+            
+            SelectType();
+            Debug.Log("주포" + selectedWeaponIndex + "가 선택되었습니다");
+
+            if(selectedWeaponIndex >= 0 && selectedWeaponIndex < playerWeapon.Length)
+            {    
+                SelectWeapon.currentLevel++;
+                Debug.Log("현재 주포"+ selectedWeaponIndex + "의 레벨 : " + SelectWeapon.currentLevel);
+                weaponPoint--;
+                Debug.Log("현재 주포 포인트 : " + weaponPoint);
+            }
+        }
+    }
+    private void SkillLevelUp()
+{
+    // 스킬 포인트가 1 이상이고 LeftControl 키가 눌렸을 때 실행
+    if (skillPoint >= 1 && Input.GetKeyDown(KeyCode.LeftControl))
+    {
+        // Q 키로 첫 번째 스킬 레벨 업
+        if (Input.GetKey(KeyCode.Q) && playerSkill.Length > 0 && playerSkill[0] != null && playerSkill[0].currentLevel < 2)
+        {
+            playerSkill[0].currentLevel++;
+            skillPoint--;
+            Debug.Log("첫 번째 스킬의 레벨이 " + playerSkill[0].currentLevel + "로 증가했습니다.");
+        }
+
+        // E 키로 두 번째 스킬 레벨 업
+        if (Input.GetKey(KeyCode.E) && playerSkill.Length > 1 && playerSkill[1] != null  && playerSkill[0].currentLevel < 2)
+        {
+            playerSkill[1].currentLevel++;
+            skillPoint--;
+            Debug.Log("두 번째 스킬의 레벨이 " + playerSkill[1].currentLevel + "로 증가했습니다.");
+        }
+    }
+}
+}
+

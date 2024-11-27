@@ -11,7 +11,7 @@ public class GoalGauge : MonoBehaviour
     private Transform playerPos, // 플레이어의 위치
                       goalPos; // 골 오브젝트의 위치
     private RectTransform rectTransform;
-    private float maxDistance, // 게임 시작 시 플레이어와 골 오브젝트 사이의 거리
+    public float maxDistance, // 게임 시작 시 플레이어와 골 오브젝트 사이의 거리
                   currentDistance, // 현재 거리
                   gaugeLength; // 게이지 길이
     private float percentage; // 달성도

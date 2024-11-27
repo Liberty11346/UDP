@@ -22,7 +22,6 @@ public class MiddleWeaponFirst : PlayerWeaponBasic
 
         GetCameraTransform();
         projectile =  Resources.Load<GameObject>("PlayerTestBullet");
-        currentLevel = 3;
     }
 
     // Update is called once per frame

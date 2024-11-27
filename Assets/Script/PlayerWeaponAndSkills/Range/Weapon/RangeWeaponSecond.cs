@@ -19,7 +19,6 @@ public class RangeWeaponSecond : PlayerWeaponBasic
 
         GetCameraTransform();
         projectile = Resources.Load<GameObject>("Range/RangeBulletSecond");
-        currentLevel = 3; // 테스트용으로 레벨업 해둔 것
     }
 
     // 2연장 어뢰를 발사한다.

@@ -161,6 +161,11 @@ MonoBehaviour:
   currentFuel: 100
   maxFuel: 100
   minFuel: 0
+  requireExp: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  level: 0
+  experience: 0
+  weaponPoint: 0
+  skillPoint: 0
   selectedWeaponIndex: 0
   currentCam: {fileID: 0}
   playerWeapon:
@@ -9988,7 +9993,7 @@ Skybox:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3511716390118185793}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CustomSkybox: {fileID: 2100000, guid: a4be220830e90ea4eb88b48b7fd376ce, type: 2}
 --- !u!1 &3672869929835812260
 GameObject:

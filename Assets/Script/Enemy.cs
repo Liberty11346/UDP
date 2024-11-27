@@ -27,7 +27,8 @@ public class Enemy : MonoBehaviour
     private GameObject myHPGauge;
     public GameManager gameManager; // 게임매니저.
 
-    public float baseSpeed = 10;
+    private float distanceBetweenGoal,
+                baseSpeed = 10;
     void Start()
     {
         // 게임매니저 스크립트에 접근
@@ -64,12 +65,17 @@ public class Enemy : MonoBehaviour
         // 기본적으로 직진만 한다
         transform.Translate( Vector3.forward * moveSpeed * Time.deltaTime );
 
+        distanceBetweenGoal = Vector3.Distance(playerObject.transform.position, goalObject.transform.position);
+
         // 이동 목표를 계산
         CalMoveTargetPos();        
         
         // 이동 목표 지점을 바라보도록 회전
         transform.rotation = Quaternion.Slerp(transform.rotation, moveTargetRotation, rotateSpeed * Time.deltaTime);
-        
+
+         AdjustStatsBasedOnDistance(distanceBetweenGoal);
+
+        Die();
     }
 
     // 플레이어의 이동을 기반으로 이동 목표를 설정
@@ -153,7 +159,6 @@ public class Enemy : MonoBehaviour
             gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
             Destroy(myHPGauge);
             Destroy(gameObject); // 스스로를 파괴
-            Die();
         }
     }
 
@@ -171,7 +176,7 @@ public class Enemy : MonoBehaviour
         PlayerCtrl player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
         if(player != null)
         {
-            playerScript.GainExperience(experienceGained);
+            player.GainExperience(experienceGained);
         }
         Debug.Log("경험치를 얻습니다!" + experienceGained);
         gameObject.SetActive(false);
@@ -190,7 +195,7 @@ public class Enemy : MonoBehaviour
         myHPGauge = UIObj;
     }
 
-    public void AdjustStatsBasedOnDistance(float distance)
+   void AdjustStatsBasedOnDistance(float distance)
     {
         // 거리 비율 계산 (가까울수록 스탯이 증가하도록 함)
         float distanceRatio = Mathf.InverseLerp(maxDistance, 0f, distance); // 0: 가까움, 1: 멀리 있음
@@ -198,7 +203,5 @@ public class Enemy : MonoBehaviour
         // 공격력 및 방어력에 가중치 적용
         currentHealth = Mathf.RoundToInt(maxHealth * (1 + distanceRatio)); // 공격력 증가
         moveSpeed = Mathf.RoundToInt(baseSpeed * (1 + distanceRatio)); // 속도 증가
-
-   
-}
+    }
 }

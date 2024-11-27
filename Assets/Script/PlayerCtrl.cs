@@ -36,7 +36,6 @@ public class PlayerCtrl : MonoBehaviour
     public Camera currentCam; // 현재 활성화된 카메라 저장용
     public PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
     public PlayerSkillBasic[] playerSkill = new PlayerSkillBasic[2]; // 플레이어가 사용할 스킬
-    private int selectedSkillIndex;
     public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
     public string playerType; // 플레이어의 함선 타입
     public Action whenSelectWeapon;
@@ -48,6 +47,7 @@ public class PlayerCtrl : MonoBehaviour
         playerCamObj = GameObject.Find("PlayerCamera");
         mainCam = mainCamObj.GetComponent<Camera>();
         playerCam = playerCamObj.GetComponent<Camera>();
+        experienceTable = FindObjectOfType<ExperienceTable>();
         
         // 줌인 시 시야를 보여줄 카메라는 비활성화
         ActivateCamera(playerCam, false);
@@ -85,7 +85,6 @@ public class PlayerCtrl : MonoBehaviour
 
         SelectType(); // 1 ~ 4 입력으로 주포 선택
         Skill(); // Q, E 입력으로 스킬 사용
-        GainExperience(experience);
     }
 
     // 플레이어로부터 입력을 받아 함선을 기울임
@@ -100,9 +99,9 @@ public class PlayerCtrl : MonoBehaviour
 
         // W A S D 키를 받아서 함선을 기울임
         if (Input.GetKey(KeyCode.W)) rotationX -= 10f * Time.deltaTime * rotateSpeed; // 상승
-        if (Input.GetKey(KeyCode.S)) rotationX += 10f * Time.deltaTime * currentSpeed; // 하강
-        if (Input.GetKey(KeyCode.A)) rotationY -= 10f * Time.deltaTime * currentSpeed; // 좌회전
-        if (Input.GetKey(KeyCode.D)) rotationY += 10f * Time.deltaTime * currentSpeed; // 우회전
+        if (Input.GetKey(KeyCode.S)) rotationX += 10f * Time.deltaTime * rotateSpeed; // 하강
+        if (Input.GetKey(KeyCode.A)) rotationY -= 10f * Time.deltaTime * rotateSpeed; // 좌회전
+        if (Input.GetKey(KeyCode.D)) rotationY += 10f * Time.deltaTime * rotateSpeed; // 우회전
 
         // W A S D 키를 눌러서 변경한 함선의 기울기를 적용
         transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
@@ -229,7 +228,7 @@ public class PlayerCtrl : MonoBehaviour
         Debug.Log("현재 경험치 : " + experience);
 
         // 다음 레벨의 요구 경험치를 다시 계산
-        requiredEXP = experienceTable.GetExpForLevel(level + 1);
+        requiredEXP = experienceTable.GetExpForLevel(level + 1); // nullreferance
     }
 }
 

@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Retreat Protocol.unity
-    guid: 6151fef21f05e0a47ba58f99bdba4aad
+    path: Assets/Scenes/Title.unity
+    guid: 923e4983a947b6d43b0477fee0aadf5f
   - enabled: 1
     path: Assets/Scenes/MainGame.unity
     guid: a34cd8dbac258a541a780e4f4a342b4d

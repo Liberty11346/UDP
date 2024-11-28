@@ -81,7 +81,6 @@ public class PlayerCtrl : MonoBehaviour
             skillObject.transform.SetParent(gameObject.transform);
             playerSkill[i] = skillObject.GetComponent<PlayerSkillBasic>();
         }
-            
     }
 
     void Update()

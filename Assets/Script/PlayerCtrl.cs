@@ -45,7 +45,6 @@ public class PlayerCtrl : MonoBehaviour
         playerCamObj = GameObject.Find("PlayerCamera");
         mainCam = mainCamObj.GetComponent<Camera>();
         playerCam = playerCamObj.GetComponent<Camera>();
-        experienceTable = FindObjectOfType<ExperienceTable>();
         
         // 줌인 시 시야를 보여줄 카메라는 비활성화
         ActivateCamera(playerCam, false);
@@ -60,6 +59,7 @@ public class PlayerCtrl : MonoBehaviour
         level = 0;
         experience = 1;
         CheckForLevelUp();
+        experience = 0;
     }
 
     // 플레이어의 함선 타입에 맞게 주포와 스킬을 설정하는 함수

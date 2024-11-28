@@ -18,7 +18,7 @@ public class DarkMatter : PlayerBulletBasic
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
 
         // 마우스 왼쪽 버튼 클릭 시 적을 끌어당기고 폭발
-        if (Input.GetKey(KeyCode.Alpha3) && !isPulled)
+        if (Input.GetMouseButtonDown(0) && !isPulled)
         {
             Debug.Log("Mouse button clicked. Finding and pulling targets.");
             FindTargetAndPull();

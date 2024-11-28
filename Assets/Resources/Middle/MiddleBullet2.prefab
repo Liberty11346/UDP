@@ -118,8 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc4b7a4490f8af41afc28d9a867ae6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  moveSpeed: 15
   attackDamage: 0
   currentLevel: 0
   player: {fileID: 0}
-  darkMatter: {fileID: 0}

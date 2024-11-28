@@ -112,7 +112,6 @@ public class GameManager : MonoBehaviour
         float spawnDistance = spawnMinDistance;
         Vector3 spawnPosition = randomVector * spawnDistance;
         goal = Instantiate(goalPrefab, spawnPosition, Quaternion.identity);
-
     }
 
 }

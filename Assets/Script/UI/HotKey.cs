@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HotKey : MonoBehaviour
 {
     private PlayerCtrl player;
-    private GameManager gameManager;
     private PlayerWeaponBasic myWeapon; // 자신이 주포 슬롯인 경우, 자신이 담당할 주포
     private PlayerSkillBasic mySkill; // 자신이 스킬 슬롯인 경우, 자신이 담당할 스킬
     private Image weaponBorder, // 자신의 주포 슬롯의 테두리
@@ -20,9 +21,8 @@ public class HotKey : MonoBehaviour
     private int myIndex; // 자신의 슬롯 번호
     void Start()
     {
-        // 플레이어와 게임매니저를 찾는다.
+        // 플레이어를 찾는다.
         player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // 자신의 이름을 통해 자신이 스킬 슬롯인지, 주포 슬롯인지 확인
         myType = gameObject.name.Contains("Weapon") ? "Weapon" : "Skill";
@@ -62,7 +62,7 @@ public class HotKey : MonoBehaviour
     void DisplayIcon()
     {
         // 자신의 타입과 인덱스, 플레이어의 타입을 기반으로 적절한 스킬 아이콘을 로드하여 적용
-        string myPath = gameManager.playerType + myType + myIndex.ToString();
+        string myPath = player.playerType + myType + myIndex.ToString();
         Sprite myIcon = Resources.Load<Sprite>("Icon/" + myPath);
         icon.sprite = myIcon;
     }

@@ -33,6 +33,9 @@ public class ExpGauge : MonoBehaviour
         expGauge.sizeDelta = new Vector2(gaugeLength, 10);
 
         // 텍스트에 현재 경험치 양을 표시
-        expAmountText.text = player.experience + " / " + player.requireExp[player.level]; 
+        expAmountText.text = player.experience + " / " + player.requireExp[player.level];
+
+        // 텍스트에 현재 함선 레벨을 표시
+        playerLevelText.text = player.level.ToString();
     }
 }

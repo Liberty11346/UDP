@@ -66,6 +66,9 @@ public class PlayerCtrl : MonoBehaviour
     // 플레이어 생성 후 게임매니저에서 적절한 타입을 매개변수로 넣어 이 함수를 호출한다.
     public void PlayerTypeSetting(string type)
     {
+        // 매개변수로 현재 자신의 타입을 설정
+        playerType = type;
+
         // 타입에 맞는 플레이어 주포를 설정
         for( int i = 0 ; i < playerWeapon.Length ; i++ )
         {
@@ -224,10 +227,10 @@ public class PlayerCtrl : MonoBehaviour
         CheckForLevelUp();
     }
 
-    private void CheckForLevelUp()
+    public void CheckForLevelUp()
     {
-        // 현재 경험치가 레벨 업에 필요한 경험치 보다 많다면
-        if( experience > requireExp[level])
+        // 플레이어가 최대 레벨이 아니면서, 현재 경험치가 레벨 업에 필요한 경험치 보다 많다면
+        if( level < 16 && experience > requireExp[level])
         {
             experience -= requireExp[level]; // 현재 경험치 차감
             level++; // 플레이어의 레벨 증가

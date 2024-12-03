@@ -123,7 +123,7 @@ public class Enemy : MonoBehaviour
 
         // 플레이어의 현재 위치와 속도를 기반으로 예측 위치 계산
         Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentSpeed; // 플레이어의 이동 벡터
-        Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player까지의 상대 위치
+        Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player를 바라보는 벡터
 
         // 공격이 도달해야 할 플레이어의 예측 위치를 계산
         float timeToHit = relativePosition.magnitude / attackMoveSpeed; // 공격이 목표에 도달할 시간

@@ -244,28 +244,40 @@ public class PlayerCtrl : MonoBehaviour
         // 임시로 탭으로 설정해둠
         if( Input.GetKey(KeyCode.Tab) )
         {
-            if( Input.GetKey(KeyCode.Alpha1) )
+            if( Input.GetKeyDown(KeyCode.Alpha1) )
             {
-                playerWeapon[0].currentLevel++;
-                weaponPoint--;
+                if( playerWeapon[0].currentLevel < 3 )
+                {
+                    playerWeapon[0].currentLevel++;
+                    weaponPoint--;
+                }
             }
 
-            if( Input.GetKey(KeyCode.Alpha2) )
+            if( Input.GetKeyDown(KeyCode.Alpha2) )
             {
-                playerWeapon[1].currentLevel++;
-                weaponPoint--;
+                if( playerWeapon[1].currentLevel < 3 )
+                {
+                    playerWeapon[1].currentLevel++;
+                    weaponPoint--;
+                }
             }
 
-            if( Input.GetKey(KeyCode.Alpha3) )
+            if( Input.GetKeyDown(KeyCode.Alpha3) )
             {
-                playerWeapon[2].currentLevel++;
-                weaponPoint--;
+                if( playerWeapon[2].currentLevel < 3 )
+                {
+                    playerWeapon[2].currentLevel++;
+                    weaponPoint--;
+                }
             }
 
-            if( Input.GetKey(KeyCode.Alpha4) )
+            if( Input.GetKeyDown(KeyCode.Alpha4) )
             {
-                playerWeapon[3].currentLevel++;
-                weaponPoint--;
+                if( playerWeapon[3].currentLevel < 3 )
+                {
+                    playerWeapon[3].currentLevel++;
+                    weaponPoint--;
+                }
             }
         }
     }
@@ -274,13 +286,13 @@ public class PlayerCtrl : MonoBehaviour
     {
         if( Input.GetKey(KeyCode.Tab) )
         {
-            if( Input.GetKey(KeyCode.Q) )
+            if( Input.GetKeyDown(KeyCode.Q) )
             {
                 playerSkill[0].currentLevel = 1;
                 skillPoint--;
             }
 
-            if( Input.GetKey(KeyCode.E) )
+            if( Input.GetKeyDown(KeyCode.E) )
             {
                 playerSkill[1].currentLevel = 1;
                 skillPoint--;

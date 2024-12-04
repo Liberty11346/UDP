@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // 적 오브젝트에 탑재될 AI 스크립트
 public class Enemy : MonoBehaviour
@@ -29,8 +31,8 @@ public class Enemy : MonoBehaviour
     
     void Start()
     {
-        // 게임매니저 스크립트에 접근
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        // 게임매니저 스크립트에 접근 (튜토리얼 중엔 안함)
+        if( SceneManager.GetActiveScene().name == "MainGame" ) gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // 플레이어 오브젝트와 플레이어 스크립트 클래스에 접근
         playerObject = GameObject.FindWithTag("Player");
@@ -123,7 +125,7 @@ public class Enemy : MonoBehaviour
 
         // 플레이어의 현재 위치와 속도를 기반으로 예측 위치 계산
         Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentSpeed; // 플레이어의 이동 벡터
-        Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player까지의 상대 위치
+        Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player를 바라보는 벡터
 
         // 공격이 도달해야 할 플레이어의 예측 위치를 계산
         float timeToHit = relativePosition.magnitude / attackMoveSpeed; // 공격이 목표에 도달할 시간
@@ -148,9 +150,8 @@ public class Enemy : MonoBehaviour
             // TODO: 사망 시 연출 추가 예정
             Die();
             gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
-            Destroy(myHPGauge);
+            Destroy(myHPGauge); // 자신의 체력을 표시하는 UI를 제거
             Destroy(gameObject); // 스스로를 파괴
-            Die();
         }
     }
 
@@ -164,8 +165,7 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         int experienceGained = 100;
-        PlayerCtrl player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
-        player.GainExperience(experienceGained);
+        playerScript.GainExperience(experienceGained);
     }
 
     // 캔버스에 자신의 체력 게이지 UI 생성

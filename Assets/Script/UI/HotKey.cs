@@ -15,8 +15,9 @@ public class HotKey : MonoBehaviour
                   icon; // 자신의 주포/스킬의 아이콘
     private TextMeshProUGUI cooltimeText,
                             levelText;
-    private Color origin = Color.white, // 기본 테두리 색상
-                  selected = new Color(0, 1, 0, 1); // 주포 선택 시 테두리 색상
+    private Color origin = new Color(1, 1, 1, 1), // 기본 테두리 색상
+                  selected = new Color(0, 1, 0, 1), // 주포 선택 시 테두리 색상
+                  unOpend = new Color(1, 1, 1, 0.5f); // 배우지 않은 무기/스킬일 경우 아이콘 색깔
     private string myType; // 자신의 슬롯 타입
     private int myIndex; // 자신의 슬롯 번호
     void Start()
@@ -72,6 +73,9 @@ public class HotKey : MonoBehaviour
     {
         cooltimeText.text = myWeapon.currentCoolTime.ToString();
         if( myWeapon.currentCoolTime < 1 ) cooltimeText.text = " ";
+
+        if( myWeapon.currentLevel < 0 ) icon.color = unOpend;
+        else icon.color = origin;
     }
 
     // 자신이 담당한 스킬의 쿨타임을 표시
@@ -79,6 +83,9 @@ public class HotKey : MonoBehaviour
     {
         cooltimeText.text = mySkill.currentCoolTime.ToString();
         if( mySkill.currentCoolTime < 1 ) cooltimeText.text = " ";
+
+        if( mySkill.currentLevel < 0 ) icon.color = unOpend;
+        else icon.color = origin;
     }
 
     // 현재 선택된 주포를 강조

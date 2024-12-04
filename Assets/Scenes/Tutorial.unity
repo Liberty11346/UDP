@@ -3376,7 +3376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 83440540658264513, guid: f66bd09c7a668b643a091278701c5ea8, type: 3}
   goalPrefab: {fileID: 4949470019285126847, guid: 43288ff6ccaa37d4d83bac8efa46d670, type: 3}
-  enemyPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 3385360391997897396, guid: 562d6c4bb41e7fe448076f40f685b6e8, type: 3}
 --- !u!4 &1006050175
 Transform:
   m_ObjectHideFlags: 0

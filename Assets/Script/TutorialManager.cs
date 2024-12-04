@@ -46,17 +46,22 @@ public class TutorialManager : MonoBehaviour
 
     void Update()
     {
-        if( Input.GetKeyDown(KeyCode.Return) && isPassable )
+        if( Input.GetKeyDown(KeyCode.Tab) && isPassable )
         {
+            // 22단계(튜토리얼 마지막)에서 탭을 누르면 타이틀로 돌아감
+            if( currentTutorStep == 22 ) SceneManager.LoadScene("Title");
+
+            // 그게 아닌 경우 다음 단계 진행
             StartCoroutine(ShowExplainText());
             StartCoroutine(ShowGuideText());
             currentTutorStep++;
             isPassable = false;
         }
 
+        // 7단계: 상단 게이지가 30에 도달하면 다음 단계 진행
         if( currentTutorStep == 7 )
         {
-            if( goalGauge.percentage > 20 )
+            if( goalGauge.percentage > 30 )
             {
                 StartCoroutine(ShowExplainText());
                 StartCoroutine(ShowGuideText());
@@ -65,6 +70,7 @@ public class TutorialManager : MonoBehaviour
             }
         }
 
+        // 14단계: 무기, 스킬 포인트를 모두 소모하면 다음 단계 진행
         if( currentTutorStep == 14 )
         {
             if( playerScript.weaponPoint < 1 && playerScript.skillPoint < 1 )
@@ -75,8 +81,6 @@ public class TutorialManager : MonoBehaviour
                 isPassable = false;
             }
         }
-
-        if( currentTutorStep == 22 ) SceneManager.LoadScene("Title");
     }
 
     void SpawnGoalPoint()
@@ -132,6 +136,17 @@ public class TutorialManager : MonoBehaviour
         if( currentTutorStep < 1 ) yield return new WaitForSeconds(2);
         
         tutorText.text = tutorTexts[currentTutorStep];
+
+        // "당신이 순순히 복귀하지 못하게 방해하는 추격자들이 있습니다."
+        // 문구가 등장하면서 적 생성 (튜토리얼 전용이라 공격력이 1)
+        if( currentTutorStep == 8 )
+        {
+            Vector3 spawnPos = new Vector3(1, 0, -1) * 150 + playerObj.transform.position;
+            Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        }
+
+        // "일시적으로 경험치를 지급해 드릴테니 직접 레벨을 올려보세요."
+        // 문구가 등장하면서 레벨을 올려 준다.
         if( currentTutorStep == 14 )
         {
             playerScript.experience += 8000;
@@ -148,9 +163,9 @@ public class TutorialManager : MonoBehaviour
 
         switch( currentTutorStep )
         {
-            case 7: guideText.text = "상단 게이지 20%에 도달하여 다음 단계 진행"; break;
+            case 7: guideText.text = "상단 게이지 30%에 도달하여 다음 단계 진행"; break;
             case 14: guideText.text = "포인트를 모두 소모하여 다음 단계 진행"; break;
-            default: guideText.text = "엔터 키를 눌러 다음 단계 진행"; isPassable = true; break;
+            default: guideText.text = "TAB을 눌러 다음 단계 진행"; isPassable = true; break;
         }
     }
 
@@ -166,7 +181,7 @@ public class TutorialManager : MonoBehaviour
         tutorTexts.Add("함선은 기본적으로 직진만 가능하지만,\nW, A, S, D 버튼으로 함선을 기울여 이동 방향을 변경할 수 있습니다.");
         tutorTexts.Add("또한 SPACE로 가속, SHIFT로 감속할 수 있습니다.");
         tutorTexts.Add("좌표와 게이지를 확인하면서 정거장 방향으로 이동하도록 함선을 조종해보세요.");
-        // 목표 게이지 20%에 도달하면 다음 시작
+        // 목표 게이지 30%에 도달하면 다음 시작
         
         // 8 ~ 14
         tutorTexts.Add("당신이 순순히 복귀하지 못하게 방해하는 추격자들이 있습니다.");
@@ -188,6 +203,6 @@ public class TutorialManager : MonoBehaviour
         tutorTexts.Add("HP 또는 Fuel이 모두 소진되면 게임에서 패배합니다.");
         tutorTexts.Add("HP는 추격자에게 공격 받으면 줄어들고,\n레벨 업할 때 회복됩니다.");
         tutorTexts.Add("Fuel은 현재 이동 속도에 비례하여 지속적으로 줄어들고,\n적을 격추할 때 회복됩니다.");
-        tutorTexts.Add("게임의 전반적인 설명을 모두 마쳤습니다.\n엔터 키를 누르면 메인 화면으로 돌아갑니다.");
+        tutorTexts.Add("게임의 전반적인 설명을 모두 마쳤습니다.\nTAB을 누르면 메인 화면으로 돌아갑니다.");
     }
 }

@@ -25,7 +25,8 @@ public class Enemy : MonoBehaviour
                   playerMinDistance; // 플레이어와 유지할 최소 거리
 
     public GameObject attackProjectile, // 공격 시 발사할 공격 투사체
-                      enemyHPGauge; // 체력 게이지 오브젝트
+                      enemyHPGauge, // 체력 게이지 오브젝트
+                      onDeath; // 사망 시 발생할 폭발 오브젝트
     private GameObject myHPGauge;
     public GameManager gameManager; // 게임매니저.
     
@@ -145,14 +146,7 @@ public class Enemy : MonoBehaviour
         currentHealth -= realDamage;
         
         // 체력을 깎은 후 남은 체력이 1 미만이라면 사망
-        if( currentHealth < 1 ) 
-        {
-            // TODO: 사망 시 연출 추가 예정
-            Die();
-            gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
-            Destroy(myHPGauge); // 자신의 체력을 표시하는 UI를 제거
-            Destroy(gameObject); // 스스로를 파괴
-        }
+        if( currentHealth < 1 ) Die();   
     }
 
     // 일정 시간 후 방어력을 초기화 하는 함수
@@ -166,6 +160,10 @@ public class Enemy : MonoBehaviour
     {
         int experienceGained = 100;
         playerScript.GainExperience(experienceGained);
+        Instantiate(onDeath, transform.position, Quaternion.identity); // 사망 시 폭발 이펙트 생성
+        gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
+        Destroy(myHPGauge); // 자신의 체력을 표시하는 UI를 제거
+        Destroy(gameObject); // 스스로를 파괴
     }
 
     // 캔버스에 자신의 체력 게이지 UI 생성

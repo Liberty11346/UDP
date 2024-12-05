@@ -8,11 +8,13 @@ using UnityEngine;
 public class PlayerBulletBasic : MonoBehaviour
 {
     public float moveSpeed, attackDamage, currentLevel;
-    public GameObject player;
+    public GameObject player,
+                      onHitPrefab;
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        onHitPrefab = Resources.Load<GameObject>("onHit");
     }
     
     public virtual void Update()
@@ -42,6 +44,7 @@ public class PlayerBulletBasic : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.GetDamage(attackDamage); // 맞은 적에게 피해를 입힌다
             ActivateWhenHit(other); // 오버라이딩 된 추가 효과가 있다면 발동
+            Instantiate(onHitPrefab, transform.position, Quaternion.identity); // 폭발 이펙트 생성
             Destroy(gameObject); // 스스로를 삭제
         }
     }

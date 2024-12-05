@@ -7005,6 +7005,7 @@ MonoBehaviour:
   maxDistance: 0
   currentDistance: 0
   gaugeLength: 0
+  percentage: 0
 --- !u!1 &1918350426
 GameObject:
   m_ObjectHideFlags: 0

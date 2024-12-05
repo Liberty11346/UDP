@@ -32,7 +32,7 @@ public class MiddleWeaponFourth : PlayerWeaponBasic
         }
 
         GetCameraTransform();
-        projectile =  Resources.Load<GameObject>("PlayerTestBullet");
+        projectile =  Resources.Load<GameObject>("Middle/MiddleBullet1");
        
     }
 

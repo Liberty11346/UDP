@@ -23,7 +23,7 @@ public class MiddleWeaponFirst : PlayerWeaponBasic
         }
 
         GetCameraTransform();
-        projectile =  Resources.Load<GameObject>("PlayerTestBullet");
+        projectile =  Resources.Load<GameObject>("Middle/MiddleBullet1");
     }
 
     // Update is called once per frame

@@ -14,14 +14,13 @@ public class MeleeWeaponFirst : PlayerWeaponBasic
         for(int i = 0; i < 4; i++)
         {
             projectileDamage[i] = 3 + i; // 피해량
-            projectileSpeed[i] = 20; // 이동속도
+            projectileSpeed[i] = 60; // 이동속도
             projectileAmount[i] = 5 + i; // 포탄 수
             maxCoolTime[i] = 3; // 쿨타임
         }
 
         GetCameraTransform();
-        projectile = Resources.Load<GameObject>("PlayerTestBullet");
-        currentLevel = 1;
+        projectile = Resources.Load<GameObject>("Melee/MeleeBulletFirst");
     }
 
     public override void Fire()

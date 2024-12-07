@@ -14,14 +14,13 @@ public class MeleeWeaponThird : PlayerWeaponBasic
         for (int i = 0; i < 4; i++)
         {
             projectileDamage[i] = 10; // 피해량
-            projectileSpeed[i] = 20 + (i * 10); // 이동속도
+            projectileSpeed[i] = 60 + (i * 10); // 이동속도
             projectileAmount[i] = 1; // 포탄 수
             maxCoolTime[i] = 6 - i; // 쿨타임
         }
 
         GetCameraTransform();
         projectile = Resources.Load<GameObject>("Melee/MeleeBulletThird");
-        currentLevel = 1;
     }
 
     public override void Fire()

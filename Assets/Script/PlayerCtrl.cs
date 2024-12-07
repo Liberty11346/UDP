@@ -53,11 +53,11 @@ public class PlayerCtrl : MonoBehaviour
         originalFOV = playerCam.fieldOfView;
 
         // 레벨 업에 필요한 경험치 배열 초기화
-        for( int i = 0 ; i < requireExp.Length ; i++ ) requireExp[i] = i * 400;
+        for( int i = 0 ; i < requireExp.Length ; i++ ) requireExp[i] = i * 50 + 50;
 
         // 0레벨에서 1레벨로 레벨 업
         level = 0;
-        experience = 1;
+        experience = 51;
         CheckForLevelUp();
         experience = 0;
     }
@@ -288,14 +288,21 @@ public class PlayerCtrl : MonoBehaviour
         {
             if( Input.GetKeyDown(KeyCode.Q) )
             {
-                playerSkill[0].currentLevel = 1;
-                skillPoint--;
+                if( playerSkill[0].currentLevel < 0 )
+                {
+                
+                    playerSkill[0].currentLevel = 1;
+                    skillPoint--;
+                }
             }
 
             if( Input.GetKeyDown(KeyCode.E) )
             {
-                playerSkill[1].currentLevel = 1;
-                skillPoint--;
+                if( playerSkill[1].currnetLevel < 0 )
+                {
+                    playerSkill[1].currentLevel = 1;
+                    skillPoint--;
+                }
             }
         }
     }

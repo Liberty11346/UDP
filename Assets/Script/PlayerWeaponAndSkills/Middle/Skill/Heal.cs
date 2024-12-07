@@ -14,9 +14,10 @@ public class MiddleSkill0 : PlayerSkillBasic
 
     public override void Activate()
     {
-        if(player != null){
-        player.currentHealth += (int)(player.maxHealth * 0.2f);
-        player.currentHealth = Mathf.Clamp(player.currentHealth, 0, player.maxHealth);
+        if(player != null)
+        {
+            player.currentHealth += (int)(player.maxHealth * 0.2f);
+            player.currentHealth = Mathf.Clamp(player.currentHealth, 0, player.maxHealth);
         }
     }
 

@@ -5,19 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
-    // ¹öÆ° Å¬¸¯ ½Ã ¾À ÀüÈ¯
+    // ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È¯
     public void WhenClick(string name)
     {
-        // Play ¹öÆ° Å¬¸¯ ½Ã Game ¾ÀÀ¸·Î ÀüÈ¯
+        // Play ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½ï¿½ Game ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         if (name == "Play")
-            SceneManager.LoadScene("New Game Scene");
-        // Exit ¹öÆ° Å¬¸¯ ½Ã °ÔÀÓ Á¾·á
+            SceneManager.LoadScene("MainGame");
+        // Exit ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         else if (name == "Exit")
         {
             #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false; // À¯´ÏÆ¼ ÇÃ·¹ÀÌ ¸ðµå Á¾·á
+                UnityEditor.EditorApplication.isPlaying = false; // ï¿½ï¿½ï¿½ï¿½Æ¼ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             #else
-                Application.Quit(); // ¾ÖÇÃ¸®ÄÉÀÌ¼Ç Á¾·á
+                Application.Quit(); // ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
             #endif
         }
     }

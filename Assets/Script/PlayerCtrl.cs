@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,6 +17,12 @@ public class PlayerCtrl : MonoBehaviour
     public float currentFuel = 100, // 연료
                  maxFuel = 100,
                  minFuel = 0;
+    public int[] requireExp = new int[17];
+    public int level,
+               experience,
+               weaponPoint,
+               skillPoint;
+
     private float rotationX = 0f, // 플레이어의 X축 회전값
                   rotationY = 0f; // 플레이어의 Y축 회전값
     private float maxZoomFOV = 30f, // 줌인 시 카메라 FOV
@@ -44,6 +51,15 @@ public class PlayerCtrl : MonoBehaviour
 
         // 평상시 카메라의 FOV값 초기화
         originalFOV = playerCam.fieldOfView;
+
+        // 레벨 업에 필요한 경험치 배열 초기화
+        for( int i = 0 ; i < requireExp.Length ; i++ ) requireExp[i] = i * 400;
+
+        // 0레벨에서 1레벨로 레벨 업
+        level = 0;
+        experience = 1;
+        CheckForLevelUp();
+        experience = 0;
     }
 
     // 플레이어의 함선 타입에 맞게 주포와 스킬을 설정하는 함수
@@ -65,7 +81,6 @@ public class PlayerCtrl : MonoBehaviour
             skillObject.transform.SetParent(gameObject.transform);
             playerSkill[i] = skillObject.GetComponent<PlayerSkillBasic>();
         }
-            
     }
 
     void Update()
@@ -75,6 +90,10 @@ public class PlayerCtrl : MonoBehaviour
 
         SelectType(); // 1 ~ 4 입력으로 주포 선택
         Skill(); // Q, E 입력으로 스킬 사용
+
+        // 포인트 보유 시 주포/스킬 레벨 업 가능
+        if( weaponPoint > 0 ) WeaponLevelUp();
+        if( skillPoint > 0 ) SkillLevelUp();
     }
 
     // 플레이어로부터 입력을 받아 함선을 기울임
@@ -89,9 +108,9 @@ public class PlayerCtrl : MonoBehaviour
 
         // W A S D 키를 받아서 함선을 기울임
         if (Input.GetKey(KeyCode.W)) rotationX -= 10f * Time.deltaTime * rotateSpeed; // 상승
-        if (Input.GetKey(KeyCode.S)) rotationX += 10f * Time.deltaTime * currentSpeed; // 하강
-        if (Input.GetKey(KeyCode.A)) rotationY -= 10f * Time.deltaTime * currentSpeed; // 좌회전
-        if (Input.GetKey(KeyCode.D)) rotationY += 10f * Time.deltaTime * currentSpeed; // 우회전
+        if (Input.GetKey(KeyCode.S)) rotationX += 10f * Time.deltaTime * rotateSpeed; // 하강
+        if (Input.GetKey(KeyCode.A)) rotationY -= 10f * Time.deltaTime * rotateSpeed; // 좌회전
+        if (Input.GetKey(KeyCode.D)) rotationY += 10f * Time.deltaTime * rotateSpeed; // 우회전
 
         // W A S D 키를 눌러서 변경한 함선의 기울기를 적용
         transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
@@ -198,4 +217,72 @@ public class PlayerCtrl : MonoBehaviour
             Debug.Log("Game over");
         }
     }
+
+    public void GainExperience(int amount)
+    {
+        experience += amount;
+        CheckForLevelUp();
+    }
+
+    private void CheckForLevelUp()
+    {
+        // 현재 경험치가 레벨 업에 필요한 경험치 보다 많다면
+        if( experience > requireExp[level])
+        {
+            experience -= requireExp[level]; // 현재 경험치 차감
+            level++; // 플레이어의 레벨 증가
+            weaponPoint++; // 주포 포인트 증가
+            if(level == 4 || level == 8) skillPoint++; // 4, 8 레벨엔 스킬 포인트도 증가
+        }
+    }
+
+    private void WeaponLevelUp()
+    {
+        // 임시로 탭으로 설정해둠
+        if( Input.GetKey(KeyCode.Tab) )
+        {
+            if( Input.GetKey(KeyCode.Alpha1) )
+            {
+                playerWeapon[0].currentLevel++;
+                weaponPoint--;
+            }
+
+            if( Input.GetKey(KeyCode.Alpha2) )
+            {
+                playerWeapon[1].currentLevel++;
+                weaponPoint--;
+            }
+
+            if( Input.GetKey(KeyCode.Alpha3) )
+            {
+                playerWeapon[2].currentLevel++;
+                weaponPoint--;
+            }
+
+            if( Input.GetKey(KeyCode.Alpha4) )
+            {
+                playerWeapon[3].currentLevel++;
+                weaponPoint--;
+            }
+        }
+    }
+
+    private void SkillLevelUp()
+    {
+        if( Input.GetKey(KeyCode.Tab) )
+        {
+            if( Input.GetKey(KeyCode.Q) )
+            {
+                playerSkill[0].currentLevel = 1;
+                skillPoint--;
+            }
+
+            if( Input.GetKey(KeyCode.E) )
+            {
+                playerSkill[1].currentLevel = 1;
+                skillPoint--;
+            }
+        }
+    }
 }
+

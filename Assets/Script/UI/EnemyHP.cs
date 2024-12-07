@@ -61,7 +61,7 @@ public class EnemyHP : MonoBehaviour
     // myEnemy의 최대 체력과 현재 체력의 비율을 계산
     void CalPercentage()
     {
-        percentage = myEnemyScript.currentHealth / myEnemyScript.maxHealth * 300;
+        percentage = myEnemyScript.currentHealth / myEnemyScript.maxHealth * 100;
     }
 
     void DisplayGauge()

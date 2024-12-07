@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // 적 오브젝트에 탑재될 AI 스크립트
 public class Enemy : MonoBehaviour
 {
-    private GameObject playerObject; // 플레이어 오브젝트
+    private GameObject playerObject,
+                        goalObject;
     private PlayerCtrl playerScript; // 플레이어 스크립트
     private Quaternion moveTargetRotation; // 이동 시 목표 회전값
     private Vector3 moveTargetVector; // 이동 시 목표 벡터
@@ -24,6 +26,7 @@ public class Enemy : MonoBehaviour
                       enemyHPGauge; // 체력 게이지 오브젝트
     private GameObject myHPGauge;
     public GameManager gameManager; // 게임매니저.
+    
     void Start()
     {
         // 게임매니저 스크립트에 접근
@@ -32,6 +35,8 @@ public class Enemy : MonoBehaviour
         // 플레이어 오브젝트와 플레이어 스크립트 클래스에 접근
         playerObject = GameObject.FindWithTag("Player");
         playerScript = playerObject.GetComponent<PlayerCtrl>();
+
+        goalObject = GameObject.FindWithTag("GoalObject");
         
         // "FirePos"를 태그를 가진 자식 오브젝트의 transform을 가져와 firePos 리스트에 넣는다.
         for( int i = 0 ; i < transform.childCount ; i++ ) if( transform.GetChild(i).tag == "FirePos" ) firePos.Add(transform.GetChild(i).transform);
@@ -44,10 +49,6 @@ public class Enemy : MonoBehaviour
 
         // 기본적으로 플레이어의 이동 방향과 동일한 방향을 이동 목표 방향으로 잡는다.
         moveTargetRotation = Quaternion.LookRotation(playerObject.transform.forward);
-
-        // 현재 체력 초기화
-        maxHealth = 100; // 테스트용 수치
-        currentHealth = maxHealth;
 
         GenerateHPUI(); // 캔버스에 자신의 체력 게이지 생성
 
@@ -145,9 +146,11 @@ public class Enemy : MonoBehaviour
         if( currentHealth < 1 ) 
         {
             // TODO: 사망 시 연출 추가 예정
+            Die();
             gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
             Destroy(myHPGauge);
             Destroy(gameObject); // 스스로를 파괴
+            Die();
         }
     }
 
@@ -156,6 +159,13 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         defense = 0;
+    }
+
+    private void Die()
+    {
+        int experienceGained = 100;
+        PlayerCtrl player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
+        player.GainExperience(experienceGained);
     }
 
     // 캔버스에 자신의 체력 게이지 UI 생성
@@ -169,5 +179,25 @@ public class Enemy : MonoBehaviour
         UIScript.myEnemyScript = gameObject.GetComponent<Enemy>();
         UIScript.isReady = true;
         myHPGauge = UIObj;
+    }
+
+    public void SetStatus(float currentDistance, float maxDistance)
+    {
+        // 현재 플레이어어와 목표 지점 사이의 거리에 따라 가중치를 계산 (0 ~ 1)
+        float difficultyValue;
+        if( currentDistance > maxDistance ) difficultyValue = 0;
+        else difficultyValue = currentDistance / maxDistance;
+    
+        // 체력과 공격력에 가중치 적용
+        // 체력과 공격력은 난이도에 따라 최대 두 배까지 증가
+        maxHealth += maxHealth * difficultyValue;
+        attackDamage += attackDamage * difficultyValue;
+
+        // 이동 속도와 공격 속도는 무작위로 결정
+        moveSpeed = Random.Range(15,25);
+        fireDelay = Random.Range(7,12);
+
+        // 현재 체력 초기화
+        currentHealth = maxHealth;
     }
 }

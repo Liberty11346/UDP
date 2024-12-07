@@ -19,7 +19,7 @@ public class RangeWeaponFourth : PlayerWeaponBasic
         }
 
         GetCameraTransform();
-        currentLevel = 3; // 테스트용으로 레벨업 해둔 것
+        projectile = Resources.Load<GameObject>("Range/RangeBulletFourth");
     }
 
     // 2초 후 바라보는 방향으로 Ray를 쏴서 충돌한 모든 대상에게 피해를 준다
@@ -36,25 +36,8 @@ public class RangeWeaponFourth : PlayerWeaponBasic
         // 2초간 대기
         yield return new WaitForSeconds(2);
 
-        // 저장해둔 각도로 Ray 발사
-        Ray ray = new Ray(playerCameraTransform.transform.position, launchAngle);
-        RaycastHit[] other = Physics.RaycastAll(ray.origin, ray.direction);
-
-        // Ray에 맞은 대상이 있는 경우에만 피해를 입힘 
-        if( other != null )
-        {
-            foreach( RaycastHit target in other )
-            {
-                // 자기 자신도 반환하기 때문에 태그로 걸러줌
-                if( target.collider.tag == "Enemy" )
-                {
-                    // 맞은 적에게 피해를 입힌다
-                    target.collider.GetComponent<Enemy>().GetDamage(projectileDamage[currentLevel]);
-                }
-            }
-            Debug.Log(other);
-        }
-
-        // TODO: Ray의 궤적에 맞게 레이저 파티클을 출력하는 코드 추가 필요
+        // 저장해둔 각도로 플라즈마 포 발사
+        GameObject ray = Instantiate(projectile, player.transform.position, Quaternion.Euler(launchAngle));
+        ray.GetComponent<PlayerBulletBasic>().Clone(this, currentLevel);
     }
 }

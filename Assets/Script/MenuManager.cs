@@ -23,7 +23,7 @@ public class MenuManager : MonoBehaviour
             StartGame();
         }
         // 누른 버튼이 Back 버튼이라면 메인으로 돌아감
-        else SceneManager.LoadScene("Retreat Protocol");
+        else SceneManager.LoadScene("Title");
     }
 
     void StartGame()

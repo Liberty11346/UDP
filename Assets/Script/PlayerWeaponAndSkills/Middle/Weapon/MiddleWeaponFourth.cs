@@ -26,7 +26,7 @@ public class MiddleWeaponFourth : PlayerWeaponBasic
             {
                 projectileDamage[3] = 25 + i * 5;
             }
-            projectileSpeed[i] = 25;
+            projectileSpeed[i] = 75;
             projectileAmount[i] = 1;
             maxCoolTime[i] = 1;
         }

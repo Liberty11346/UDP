@@ -22,7 +22,7 @@ public class MeleeSkillSecond : PlayerSkillBasic
 
         GameObject player = GameObject.FindWithTag("Player");
         playerRenderer = player.GetComponent<Renderer>();
-        PlayerDamage = player.GetComponent<PlayerBulletBasic>();
+        //playerDamage = ;
         originalColor = playerRenderer.material.color;  // 원래 색상 저장
     }
 
@@ -39,10 +39,10 @@ public class MeleeSkillSecond : PlayerSkillBasic
         // 5초 동안 적에게 입힌 피해량 누적
         while (timer > 0f)
         {
-            totalDamage += PlayerDamage.attackDamage * Time.deltaTime;
+            //totalDamage +=  * Time.deltaTime;
+            timer -= Time.deltaTime;
+            yield return null;
         }
-        timer -= Time.deltaTime;
-        yield return null;
 
         playerRenderer.material.color = originalColor; // 원래 색상으로 변경
 

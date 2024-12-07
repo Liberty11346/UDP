@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
         for( int i = 0 ; i < transform.childCount ; i++ ) if( transform.GetChild(i).tag == "FirePos" ) firePos.Add(transform.GetChild(i).transform);
     
         // 플레이어와 유지할 최소 거리를 산출
-        playerMinDistance = Random.Range(10, 30);
+        playerMinDistance = Random.Range(30, 50);
 
         // 최소 거리에 30~100 사이 무작위 값을 더하여 최대 거리를 산출
         playerMaxDistance = playerMinDistance + Random.Range(30, 100);
@@ -187,10 +187,12 @@ public class Enemy : MonoBehaviour
         float difficultyValue;
         if( currentDistance > maxDistance ) difficultyValue = 0;
         else difficultyValue = currentDistance / maxDistance;
-    
+
         // 체력과 공격력에 가중치 적용
-        // 체력과 공격력은 난이도에 따라 최대 두 배까지 증가
-        maxHealth += maxHealth * difficultyValue;
+        // 체력은 시간에 따라 최대 네 배까지 증가
+        // 공격력은 난이도에 따라 최대 두 배까지 증가
+        float elapsedTime = Mathf.Clamp(Time.time / 600f, 0f, 1f);
+        maxHealth = Mathf.Lerp(50f, 200f, elapsedTime);
         attackDamage += attackDamage * difficultyValue;
 
         // 이동 속도와 공격 속도는 무작위로 결정

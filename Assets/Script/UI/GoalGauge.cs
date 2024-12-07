@@ -14,7 +14,7 @@ public class GoalGauge : MonoBehaviour
     public float maxDistance, // 게임 시작 시 플레이어와 골 오브젝트 사이의 거리
                   currentDistance, // 현재 거리
                   gaugeLength; // 게이지 길이
-    private float percentage; // 달성도
+    public float percentage; // 달성도
     void Start()
     {
         // 자신의 컴포넌트에 접근

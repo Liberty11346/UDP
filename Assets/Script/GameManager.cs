@@ -44,8 +44,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Spawn()
     {
-        // 현재 생성된 적의 수가 최대치에 도달하지 않았다면 1초마다 적을 생성
-        yield return new WaitForSeconds(1f);
+        // 현재 생성된 적의 수가 최대치에 도달하지 않았다면 7~12초마다 적을 생성
+        float randomTime = Random.Range(7f, 12f);
+        yield return new WaitForSeconds(randomTime);
         if( currentMonsterCount < 4 ) SpawnMonsters();
         StartCoroutine(Spawn());
     }

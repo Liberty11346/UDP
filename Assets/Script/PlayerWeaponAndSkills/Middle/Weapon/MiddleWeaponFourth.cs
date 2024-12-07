@@ -9,27 +9,31 @@ public class MiddleWeaponFourth : PlayerWeaponBasic
 
     int burstCount = 4;
     float fireRate = 0.2f;
+
+     
     // Start is called before the first frame update
     void Start()
     {
         weaponName = "연속 공격";
         weaponExplain = "기본 포탄을 4발 발사합니다";
 
-        for(int i = 0; i < 4; i++)
+        currentLevel = 1;
+
+        for(int i= 0; i < 4; i++)
         {
             projectileDamage[i] = 25 + i * 10;
-            if(i == 2)
+            if(currentLevel == 2)
             {
                 projectileDamage[3] = 25 + i * 5;
             }
-            projectileSpeed[i] = 25;
+            projectileSpeed[i] = 75;
             projectileAmount[i] = 1;
             maxCoolTime[i] = 1;
         }
 
         GetCameraTransform();
         projectile =  Resources.Load<GameObject>("PlayerTestBullet");
-        currentLevel = 3;
+       
     }
 
 

@@ -12,7 +12,7 @@ public class RangeWeaponThird : PlayerWeaponBasic
         for( int i = 0 ; i < 4; i++ )
         {
             projectileDamage[i] = 10 + i; // 피해량
-            projectileSpeed[i] = 20; // 이동속도
+            projectileSpeed[i] = 60; // 이동속도
             projectileAmount[i] = 1; // 포탄 수
             maxCoolTime[i] = 12 - i; // 쿨타임
         }

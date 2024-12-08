@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    private float rotateSpeed = 15; // 플레이어 회전 속도
+    private float rotateSpeed = 55; // 플레이어 회전 속도
     public float currentSpeed = 10, // 플레이어의 현재 이동 속도
                  maxSpeed = 20, // 플레이어의 최대 이동 속도
                  minSpeed = 5; // 플레이어의 최소 이동 속도
@@ -38,6 +38,8 @@ public class PlayerCtrl : MonoBehaviour
     public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
     public string playerType; // 플레이어의 함선 타입
     public Action whenSelectWeapon;
+    private AudioSource audio;
+    public AudioClip levelUp, fire, selectWeapon;
      
     void Start()
     {
@@ -46,6 +48,9 @@ public class PlayerCtrl : MonoBehaviour
         playerCamObj = GameObject.Find("PlayerCamera");
         mainCam = mainCamObj.GetComponent<Camera>();
         playerCam = playerCamObj.GetComponent<Camera>();
+
+        // 자신의 컴포넌트에 접근
+        audio = GetComponent<AudioSource>();
         
         // 줌인 시 시야를 보여줄 카메라는 비활성화
         ActivateCamera(playerCam, false);
@@ -110,13 +115,15 @@ public class PlayerCtrl : MonoBehaviour
         if (Input.GetKey(KeyCode.Space)) currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, Time.deltaTime); // 가속
         if (Input.GetKey(KeyCode.LeftShift)) currentSpeed = Mathf.MoveTowards(currentSpeed, minSpeed, Time.deltaTime); // 감속
 
-        // W A S D 키를 받아서 함선을 기울임
-        if (Input.GetKey(KeyCode.W)) rotationX -= 10f * Time.deltaTime * rotateSpeed; // 상승
-        if (Input.GetKey(KeyCode.S)) rotationX += 10f * Time.deltaTime * rotateSpeed; // 하강
-        if (Input.GetKey(KeyCode.A)) rotationY -= 10f * Time.deltaTime * rotateSpeed; // 좌회전
-        if (Input.GetKey(KeyCode.D)) rotationY += 10f * Time.deltaTime * rotateSpeed; // 우회전
+        // 상승/하강
+        float vertical = Input.GetAxis("Vertical");
+        rotationX -= vertical *  Time.deltaTime * rotateSpeed;
 
-        // W A S D 키를 눌러서 변경한 함선의 기울기를 적용
+        // 좌우 회전
+        float horizontal = Input.GetAxis("Horizontal");
+        rotationY += horizontal * Time.deltaTime * rotateSpeed;
+
+        // 키보드를 눌러서 변경한 함선의 기울기를 적용
         transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
     }
 
@@ -132,6 +139,11 @@ public class PlayerCtrl : MonoBehaviour
             {
                 selectedWeapon.Fire(); // 주포 발사
                 StartCoroutine(selectedWeapon.CoolDown()); // 발사한 주포의 쿨타임을 돌리기 시작한다
+
+                // 주포 발사 소리를 출력
+                audio.clip = fire;
+                audio.pitch = 0.5f;
+                audio.Play();
             }
         }
 
@@ -158,26 +170,36 @@ public class PlayerCtrl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedWeaponIndex = 0;
-            whenSelectWeapon?.Invoke(); // 주포 슬롯 UI들에게 선택된 주포를 강조하게 하는 메세지를 보낸다.
+            SelectTypeEffect();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             selectedWeaponIndex = 1;
-            whenSelectWeapon?.Invoke();
+            SelectTypeEffect();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             selectedWeaponIndex = 2;
-            whenSelectWeapon?.Invoke();
+            SelectTypeEffect();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             selectedWeaponIndex = 3;
-            whenSelectWeapon?.Invoke();
+            SelectTypeEffect();
         }
+    }
+
+    void SelectTypeEffect()
+    {
+        // 주포 슬롯 UI들에게 선택된 주포를 강조하게 하는 메세지를 보낸다.
+        whenSelectWeapon?.Invoke();
+
+        // 주포 선택 소리를 출력
+        audio.clip = selectWeapon;
+        audio.Play();
     }
 
     void Skill()
@@ -189,6 +211,10 @@ public class PlayerCtrl : MonoBehaviour
             {
                 playerSkill[0].Activate(); // 스킬 사용
                 StartCoroutine(playerSkill[0].CoolDown()); // 사용한 스킬의 쿨타임을 돌리기 시작한다.
+
+                // 스킬 사용 소리를 출력
+                audio.clip = selectWeapon;
+                audio.Play();
             }
         }
 
@@ -199,6 +225,10 @@ public class PlayerCtrl : MonoBehaviour
             {
                 playerSkill[1].Activate();
                 StartCoroutine(playerSkill[1].CoolDown()); // 사용한 스킬의 쿨타임을 돌리기 시작한다.
+
+                // 스킬 사용 소리를 출력
+                audio.clip = selectWeapon;
+                audio.Play();
             }
         }
     }
@@ -230,13 +260,17 @@ public class PlayerCtrl : MonoBehaviour
 
     public void CheckForLevelUp()
     {
-        // 플레이어가 최대 레벨이 아니면서, 현재 경험치가 레벨 업에 필요한 경험치 보다 많다면
-        if( level < 16 && experience > requireExp[level])
+        // 플레이어가 최대 레벨이 아니면서, 현재 경험치가 레벨 업에 필요한 경험치 보다 많거나 같다면
+        if( level < 16 && experience >= requireExp[level])
         {
             experience -= requireExp[level]; // 현재 경험치 차감
             level++; // 플레이어의 레벨 증가
             weaponPoint++; // 주포 포인트 증가
             if(level == 4 || level == 8) skillPoint++; // 4, 8 레벨엔 스킬 포인트도 증가
+
+            // 레벨업 소리 출력
+            audio.clip = levelUp;
+            audio.Play();
         }
     }
 
@@ -291,7 +325,6 @@ public class PlayerCtrl : MonoBehaviour
             {
                 if( playerSkill[0].currentLevel < 0 )
                 {
-                
                     playerSkill[0].currentLevel = 1;
                     skillPoint--;
                 }

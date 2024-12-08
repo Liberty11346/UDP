@@ -5,52 +5,52 @@ using UnityEngine;
 public class MeleeSkillSecond : PlayerSkillBasic
 {
     Renderer playerRenderer;
-    Color originalColor; // ÇÃ·¹ÀÌ¾îÀÇ ¿ø·¡ »ö»ó
+    Color originalColor; // í”Œë ˆì´ì–´ì˜ ì›ë˜ ìƒ‰ìƒ
     PlayerCtrl playerSkill;
-    public float totalDamage; // Àû¿¡°Ô ÀÔÈù ÇÇÇØ·®
-    float duration = 5f; // ½ºÅ³ Áö¼Ó½Ã°£
+    public float totalDamage; // ì ì—ê²Œ ì…íŒ í”¼í•´ëŸ‰
+    float duration = 5f; // ìŠ¤í‚¬ ì§€ì†ì‹œê°„
     float timer = 0f; 
 
     void Start()
     {
-        // ÇÃ·¹ÀÌ¾î¿¡°Ô º¸¿©Áú ½ºÅ³ÀÇ Á¤º¸
-        skillName = "Å¸¿À¸£´Â Èû";
-        skillExplain = "5ÃÊ µ¿¾È ÁÖÆ÷·Î Àû¿¡°Ô ÀÔÈù ÇÇÇØ¸¸Å­ ³»±¸µµ¸¦ È¸º¹ÇÕ´Ï´Ù.";
+        // í”Œë ˆì´ì–´ì—ê²Œ ë³´ì—¬ì§ˆ ìŠ¤í‚¬ì˜ ì •ë³´
+        skillName = "íƒ€ì˜¤ë¥´ëŠ” í˜";
+        skillExplain = "5ì´ˆ ë™ì•ˆ ì£¼í¬ë¡œ ì ì—ê²Œ ì…íŒ í”¼í•´ë§Œí¼ ë‚´êµ¬ë„ë¥¼ íšŒë³µí•©ë‹ˆë‹¤.";
 
-        // ½ºÅ³ÀÇ ¼öÄ¡
-        maxCoolTime = 15; // ½ºÅ³ÀÇ Àç»ç¿ë ´ë±â½Ã°£
+        // ìŠ¤í‚¬ì˜ ìˆ˜ì¹˜
+        maxCoolTime = 15; // ìŠ¤í‚¬ì˜ ì¬ì‚¬ìš© ëŒ€ê¸°ì‹œê°„
 
         GameObject player = GameObject.FindWithTag("Player");
         playerRenderer = player.GetComponent<Renderer>();
-        originalColor = playerRenderer.material.color;  // ¿ø·¡ »ö»ó ÀúÀå
+        originalColor = playerRenderer.material.color;  // ì›ë˜ ìƒ‰ìƒ ì €ì¥
         playerSkill = player.GetComponent<PlayerCtrl>();
     }
 
     public override void Activate()
     {
-        totalDamage = 0f; // Àû¿¡°Ô ÀÔÈù ÇÇÇØ·® ÃÊ±âÈ­
+        totalDamage = 0f; // ì ì—ê²Œ ì…íŒ í”¼í•´ëŸ‰ ì´ˆê¸°í™”
         playerSkill.isMeleeSecondSkilled = true;
-        playerRenderer.material.color = Color.green; // ÇÃ·¹ÀÌ¾î »ö»óÀ» ÃÊ·Ï»öÀ¸·Î º¯°æ
+        playerRenderer.material.color = Color.green; // í”Œë ˆì´ì–´ ìƒ‰ìƒì„ ì´ˆë¡ìƒ‰ìœ¼ë¡œ ë³€ê²½
         timer = duration;
         StartCoroutine(Skill());
     }
 
     IEnumerator Skill()
     {
-        // 5ÃÊ µ¿¾È Àû¿¡°Ô ÀÔÈù ÇÇÇØ·® ´©Àû
+        // 5ì´ˆ ë™ì•ˆ ì ì—ê²Œ ì…íŒ í”¼í•´ëŸ‰ ëˆ„ì 
         while (timer > 0f)
         {
             timer -= Time.deltaTime;
             yield return null;
         }
 
-        playerRenderer.material.color = originalColor; // ¿ø·¡ »ö»óÀ¸·Î º¯°æ
+        playerRenderer.material.color = originalColor; // ì›ë˜ ìƒ‰ìƒìœ¼ë¡œ ë³€ê²½
         playerSkill.isMeleeSecondSkilled = false;
 
-        // Àû¿¡°Ô ÀÔÈù ÇÇÇØ·®¸¸Å­ ÇÃ·¹ÀÌ¾î ³»±¸µµ È¸º¹
+        // ì ì—ê²Œ ì…íŒ í”¼í•´ëŸ‰ë§Œí¼ í”Œë ˆì´ì–´ ë‚´êµ¬ë„ íšŒë³µ
         if (totalDamage > 0)
         {
-            // ÇÃ·¹ÀÌ¾î Ã¼·ÂÈ¸º¹ ½ºÅ©¸³Æ®
+            // í”Œë ˆì´ì–´ ì²´ë ¥íšŒë³µ ìŠ¤í¬ë¦½íŠ¸
         }
     }
 }

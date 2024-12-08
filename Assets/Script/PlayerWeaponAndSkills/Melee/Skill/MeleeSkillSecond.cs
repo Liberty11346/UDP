@@ -6,50 +6,51 @@ public class MeleeSkillSecond : PlayerSkillBasic
 {
     PlayerCtrl playerCtrl;
     Renderer playerRenderer;
-    Color originalColor; // ÇÃ·¹ÀÌ¾îÀÇ ¿ø·¡ »ö»ó
+
+    Color originalColor; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     float playerDamage;
-    public float totalDamage; // Àû¿¡°Ô ÀÔÈù ÇÇÇØ·®
-    float duration = 5f; // ½ºÅ³ Áö¼Ó½Ã°£
+    public float totalDamage; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø·ï¿½
+    float duration = 5f; // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½Ó½Ã°ï¿½
     float timer = 0f; 
 
     void Start()
     {
-        // ÇÃ·¹ÀÌ¾î¿¡°Ô º¸¿©Áú ½ºÅ³ÀÇ Á¤º¸
-        skillName = "Å¸¿À¸£´Â Èû";
-        skillExplain = "5ÃÊ µ¿¾È ÁÖÆ÷·Î Àû¿¡°Ô ÀÔÈù ÇÇÇØ¸¸Å­ ³»±¸µµ¸¦ È¸º¹ÇÕ´Ï´Ù.";
+        // í”Œë ˆì´ì–´ì—ê²Œ ë³´ì—¬ì§ˆ ìŠ¤í‚¬ì˜ ì •ë³´
+        skillName = "íƒ€ì˜¤ë¥´ëŠ” í˜";
+        skillExplain = "5ì´ˆ ë™ì•ˆ ì£¼í¬ë¡œ ì ì—ê²Œ ì…íŒ í”¼í•´ë§Œí¼ ë‚´êµ¬ë„ë¥¼ íšŒë³µí•©ë‹ˆë‹¤.";
 
-        // ½ºÅ³ÀÇ ¼öÄ¡
-        maxCoolTime = 15; // ½ºÅ³ÀÇ Àç»ç¿ë ´ë±â½Ã°£
+        // ìŠ¤í‚¬ì˜ ìˆ˜ì¹˜
+        maxCoolTime = 15; // ìŠ¤í‚¬ì˜ ì¬ì‚¬ìš© ëŒ€ê¸°ì‹œê°„
 
         GameObject player = GameObject.FindWithTag("Player");
         playerRenderer = player.GetComponent<Renderer>();
-        originalColor = playerRenderer.material.color;  // ¿ø·¡ »ö»ó ÀúÀå
-        playerCtrl = player.GetComponent<PlayerCtrl>();
+        originalColor = playerRenderer.material.color;  // ì›ë˜ ìƒ‰ìƒ ì €ì¥
+        playerSkill = player.GetComponent<PlayerCtrl>();
     }
 
     public override void Activate()
     {
-        totalDamage = 0f; // Àû¿¡°Ô ÀÔÈù ÇÇÇØ·® ÃÊ±âÈ­
-        playerCtrl.isMeleeSecondSkilled = true;
-        playerRenderer.material.color = Color.green; // ÇÃ·¹ÀÌ¾î »ö»óÀ» ÃÊ·Ï»öÀ¸·Î º¯°æ
+        totalDamage = 0f; // ì ì—ê²Œ ì…íŒ í”¼í•´ëŸ‰ ì´ˆê¸°í™”
+        playerSkill.isMeleeSecondSkilled = true;
+        playerRenderer.material.color = Color.green; // í”Œë ˆì´ì–´ ìƒ‰ìƒì„ ì´ˆë¡ìƒ‰ìœ¼ë¡œ ë³€ê²½
         timer = duration;
         StartCoroutine(Skill());
     }
 
     IEnumerator Skill()
     {
-        // 5ÃÊ µ¿¾È Àû¿¡°Ô ÀÔÈù ÇÇÇØ·® ´©Àû
+        // 5ì´ˆ ë™ì•ˆ ì ì—ê²Œ ì…íŒ í”¼í•´ëŸ‰ ëˆ„ì 
         while (timer > 0f)
         {
             totalDamage += PlayerBulletBasic.totalDamageDealt;
             timer -= Time.deltaTime;
             yield return null;
         }
-
-        playerRenderer.material.color = originalColor; // ¿ø·¡ »ö»óÀ¸·Î º¯°æ
+        
+        playerRenderer.material.color = originalColor; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         playerCtrl.isMeleeSecondSkilled = false;
 
-        // totalDamage°¡ 100 ÀÌ»óÀÌ¶ó¸é 100À¸·Î ¼³Á¤ÇÏ°í Àû¿¡°Ô ÀÔÈù ÇÇÇØ·®¸¸Å­ ÇÃ·¹ÀÌ¾îÀÇ ³»±¸µµ È¸º¹
+        // totalDamageï¿½ï¿½ 100 ï¿½Ì»ï¿½ï¿½Ì¶ï¿½ï¿½ 100ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½Å­ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½
         if (totalDamage > 0)
         {
             playerCtrl.GainHealth(totalDamage);

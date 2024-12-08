@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCtrl : MonoBehaviour
 {
@@ -30,6 +32,7 @@ public class PlayerCtrl : MonoBehaviour
     public int selectedWeaponIndex; // 선택된 주포 타입
     private GameObject mainCamObj, // 평상시 시야를 보여줄 카메라
                        playerCamObj; // 줌인 시 시야를 보여줄 카메라
+    public GameObject explosion; // 폭발 이펙트
     private Camera mainCam, playerCam; // 두 카메라 클래스
     public Camera currentCam; // 현재 활성화된 카메라 저장용
     public PlayerWeaponBasic[] playerWeapon = new PlayerWeaponBasic[4]; // 플레이어가 사용할 주포
@@ -38,7 +41,7 @@ public class PlayerCtrl : MonoBehaviour
     public bool isRangeSecondSkilled; // 원거리 함선 스킬인 비상발전을 구현하기 위한 변수. 스킬이 사용되었다면 true
     public string playerType; // 플레이어의 함선 타입
     public Action whenSelectWeapon;
-    private AudioSource audio;
+    private AudioSource sound;
     public AudioClip levelUp, fire, selectWeapon;
      
     void Start()
@@ -50,10 +53,13 @@ public class PlayerCtrl : MonoBehaviour
         playerCam = playerCamObj.GetComponent<Camera>();
 
         // 자신의 컴포넌트에 접근
-        audio = GetComponent<AudioSource>();
+        sound = GetComponent<AudioSource>();
         
         // 줌인 시 시야를 보여줄 카메라는 비활성화
         ActivateCamera(playerCam, false);
+
+        // 마우스 커서 숨기기
+        Cursor.visible = false;
 
         // 평상시 카메라의 FOV값 초기화
         originalFOV = playerCam.fieldOfView;
@@ -141,9 +147,9 @@ public class PlayerCtrl : MonoBehaviour
                 StartCoroutine(selectedWeapon.CoolDown()); // 발사한 주포의 쿨타임을 돌리기 시작한다
 
                 // 주포 발사 소리를 출력
-                audio.clip = fire;
-                audio.pitch = 0.5f;
-                audio.Play();
+                sound.clip = fire;
+                sound.pitch = 0.5f;
+                sound.Play();
             }
         }
 
@@ -198,8 +204,8 @@ public class PlayerCtrl : MonoBehaviour
         whenSelectWeapon?.Invoke();
 
         // 주포 선택 소리를 출력
-        audio.clip = selectWeapon;
-        audio.Play();
+        sound.clip = selectWeapon;
+        sound.Play();
     }
 
     void Skill()
@@ -213,8 +219,8 @@ public class PlayerCtrl : MonoBehaviour
                 StartCoroutine(playerSkill[0].CoolDown()); // 사용한 스킬의 쿨타임을 돌리기 시작한다.
 
                 // 스킬 사용 소리를 출력
-                audio.clip = selectWeapon;
-                audio.Play();
+                sound.clip = selectWeapon;
+                sound.Play();
             }
         }
 
@@ -227,8 +233,8 @@ public class PlayerCtrl : MonoBehaviour
                 StartCoroutine(playerSkill[1].CoolDown()); // 사용한 스킬의 쿨타임을 돌리기 시작한다.
 
                 // 스킬 사용 소리를 출력
-                audio.clip = selectWeapon;
-                audio.Play();
+                sound.clip = selectWeapon;
+                sound.Play();
             }
         }
     }
@@ -247,8 +253,18 @@ public class PlayerCtrl : MonoBehaviour
         // 체력이 1 미만이라면 게임 오버
         if( currentHealth < 1 )
         {
-            // 여기에 게임 오버 코드 입력
-            Debug.Log("Game over");
+            Cursor.visible = true;
+            
+            // 속도를 0으로 하고 시각적으로 안보이게 함
+            currentSpeed = 0;
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            for( int i = 0 ; i < 4 ; i++ ) transform.GetChild(i).gameObject.SetActive(false);
+
+            // 폭발 이펙트 생성
+            Instantiate(explosion, transform.position, Quaternion.identity);
+
+            // 게임 오버 UI 생성
+            
         }
     }
 
@@ -269,8 +285,8 @@ public class PlayerCtrl : MonoBehaviour
             if(level == 4 || level == 8) skillPoint++; // 4, 8 레벨엔 스킬 포인트도 증가
 
             // 레벨업 소리 출력
-            audio.clip = levelUp;
-            audio.Play();
+            sound.clip = levelUp;
+            sound.Play();
         }
     }
 
@@ -338,6 +354,15 @@ public class PlayerCtrl : MonoBehaviour
                     skillPoint--;
                 }
             }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // 골 오브젝트에 도착하면 엔딩
+        if( other.gameObject.tag == "GoalObject")
+        {
+            SceneManager.LoadScene("Ending");
         }
     }
 }

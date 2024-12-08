@@ -4319,7 +4319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb1a6d87f0d229e429d4ebf4c0b85f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 83440540658264513, guid: f66bd09c7a668b643a091278701c5ea8, type: 3}
+  playerPrefab: {fileID: 5998054288393243631, guid: f66bd09c7a668b643a091278701c5ea8, type: 3}
   enemyPrefab: {fileID: 3385360391997897396, guid: cdf233e224781b449a89f63b2321b8a2, type: 3}
   goalPrefab: {fileID: 4949470019285126847, guid: 43288ff6ccaa37d4d83bac8efa46d670, type: 3}
   playerType: Range

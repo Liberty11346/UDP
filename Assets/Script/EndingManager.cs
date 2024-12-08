@@ -13,6 +13,7 @@ public class EndingManager : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
     }
+
     void Update()
     {
         if (player == null)
@@ -20,6 +21,7 @@ public class EndingManager : MonoBehaviour
             endingCanvas.SetActive(true);
         }
     }
+    
     public void WhenClick(string name)
     {
         switch (name)

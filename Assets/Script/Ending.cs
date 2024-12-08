@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Ending : MonoBehaviour
 {
-    float moveSpeed = 500f;
+    float moveSpeed = 200f;
 
     void Start()
     {
-        Invoke("DestroySelf", 3f);
+        Invoke("DestroySelf", 7f);
     }
 
     void Update()

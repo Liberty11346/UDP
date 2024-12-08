@@ -194,7 +194,7 @@ public class Enemy : MonoBehaviour
         attackDamage += attackDamage * difficultyValue;
 
         // 이동 속도와 공격 속도는 무작위로 결정
-        moveSpeed = Random.Range(15,25);
+        moveSpeed = Random.Range(21,25);
         fireDelay = Random.Range(7,12);
 
         // 현재 체력 초기화

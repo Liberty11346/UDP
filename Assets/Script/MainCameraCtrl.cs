@@ -19,8 +19,11 @@ public class MainCameraCtrl : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Rotate();
+        if( player != null ) 
+        {
+            Move();
+            Rotate();
+        }
     }
 
     // 플레이어의 움직임을 따라 위치를 변경

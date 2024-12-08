@@ -12,9 +12,6 @@ public class Barrier : MonoBehaviour
         // 플레이어 오브젝트를 찾은 후 부모로 설정
         GameObject player = GameObject.FindWithTag("Player");
         transform.SetParent(player.transform);
-
-        // 비활성화 상태로 시작
-        gameObject.SetActive(false);
     }
 
     void Update()

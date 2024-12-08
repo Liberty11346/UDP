@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba361c5e5cfcb7d4f897112f851d8021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLevel: -1
+  currentLevel: 0
   currentCoolTime: 0

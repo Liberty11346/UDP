@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class MeleeSkillSecond : PlayerSkillBasic
 {
+    PlayerCtrl playerCtrl;
     Renderer playerRenderer;
-    Color originalColor; // 플레이어의 원래 색상
-    PlayerCtrl playerSkill;
-    public float totalDamage; // 적에게 입힌 피해량
-    float duration = 5f; // 스킬 지속시간
+
+    Color originalColor; // �÷��̾��� ���� ����
+    float playerDamage;
+    public float totalDamage; // ������ ���� ���ط�
+    float duration = 5f; // ��ų ���ӽð�
     float timer = 0f; 
 
     void Start()
@@ -40,17 +42,18 @@ public class MeleeSkillSecond : PlayerSkillBasic
         // 5초 동안 적에게 입힌 피해량 누적
         while (timer > 0f)
         {
+            totalDamage += PlayerBulletBasic.totalDamageDealt;
             timer -= Time.deltaTime;
             yield return null;
         }
+        
+        playerRenderer.material.color = originalColor; // ���� �������� ����
+        playerCtrl.isMeleeSecondSkilled = false;
 
-        playerRenderer.material.color = originalColor; // 원래 색상으로 변경
-        playerSkill.isMeleeSecondSkilled = false;
-
-        // 적에게 입힌 피해량만큼 플레이어 내구도 회복
+        // totalDamage�� 100 �̻��̶�� 100���� �����ϰ� ������ ���� ���ط���ŭ �÷��̾��� ������ ȸ��
         if (totalDamage > 0)
         {
-            // 플레이어 체력회복 스크립트
+            playerCtrl.GainHealth(totalDamage);
         }
     }
 }

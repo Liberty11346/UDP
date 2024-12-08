@@ -20,7 +20,7 @@ public class MiddleWeaponSecond : PlayerWeaponBasic
         for(int i = 0; i < 4; i++)
         {
             projectileDamage[i] = 25 + i * 5;
-            projectileSpeed[i] = 45;
+            projectileSpeed[i] = 60;
             projectileAmount[i] = 1;
             maxCoolTime[i] = 11;
 

@@ -274,6 +274,17 @@ public class PlayerCtrl : MonoBehaviour
         CheckForLevelUp();
     }
 
+    // MeleeSecondSkill에 사용할 체력 회복 함수
+    public void GainHealth(float damageDealt)
+    {
+        // 플레이어가 가한 대미지만큼 체력 회복
+        currentHealth += damageDealt;
+        
+        // 현재 체력이 최대 체력을 초과하는것을 방지
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+    }
+
     public void CheckForLevelUp()
     {
         // 플레이어가 최대 레벨이 아니면서, 현재 경험치가 레벨 업에 필요한 경험치 보다 많거나 같다면

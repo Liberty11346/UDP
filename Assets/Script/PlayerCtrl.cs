@@ -100,15 +100,20 @@ public class PlayerCtrl : MonoBehaviour
 
     void Update()
     {      
-        Move(); // 키보드로 이동
-        Attack(); // 마우스로 공격
+        if( currentHealth > 0 )
+        {
+            Move(); // 키보드로 이동
 
-        SelectType(); // 1 ~ 4 입력으로 주포 선택
-        Skill(); // Q, E 입력으로 스킬 사용
+            SelectType(); // 1 ~ 4 입력으로 주포 선택
+            Attack(); // 마우스로 공격
+            Skill(); // Q, E 입력으로 스킬 사용
 
-        // 포인트 보유 시 주포/스킬 레벨 업 가능
-        if( weaponPoint > 0 ) WeaponLevelUp();
-        if( skillPoint > 0 ) SkillLevelUp();
+            currentFuel = Mathf.MoveTowards(currentFuel, 0, Time.deltaTime * currentSpeed/10 ); // 연료 소모 (이동 속도에 따라 소모량 증가)
+
+            // 포인트 보유 시 주포/스킬 레벨 업 가능
+            if( weaponPoint > 0 ) WeaponLevelUp();
+            if( skillPoint > 0 ) SkillLevelUp();
+        }
     }
 
     // 플레이어로부터 입력을 받아 함선을 기울임
@@ -257,14 +262,15 @@ public class PlayerCtrl : MonoBehaviour
             
             // 속도를 0으로 하고 시각적으로 안보이게 함
             currentSpeed = 0;
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<MeshCollider>().enabled = false;
             for( int i = 0 ; i < 4 ; i++ ) transform.GetChild(i).gameObject.SetActive(false);
 
             // 폭발 이펙트 생성
             Instantiate(explosion, transform.position, Quaternion.identity);
 
             // 게임 오버 UI 생성
-            
+            StartCoroutine(GameObject.Find("MenuManager").GetComponent<MenuManager>().GameOver());
         }
     }
 
@@ -272,6 +278,9 @@ public class PlayerCtrl : MonoBehaviour
     {
         experience += amount;
         CheckForLevelUp();
+
+        // 연료 회복
+        currentFuel = 100;
     }
 
     public void CheckForLevelUp()
@@ -280,6 +289,7 @@ public class PlayerCtrl : MonoBehaviour
         if( level < 16 && experience >= requireExp[level])
         {
             experience -= requireExp[level]; // 현재 경험치 차감
+            currentHealth = maxHealth; // 체력 회복
             level++; // 플레이어의 레벨 증가
             weaponPoint++; // 주포 포인트 증가
             if(level == 4 || level == 8) skillPoint++; // 4, 8 레벨엔 스킬 포인트도 증가

@@ -25,13 +25,13 @@ public class MeleeSkillSecond : PlayerSkillBasic
         GameObject player = GameObject.FindWithTag("Player");
         playerRenderer = player.GetComponent<Renderer>();
         originalColor = playerRenderer.material.color;  // 원래 색상 저장
-        playerSkill = player.GetComponent<PlayerCtrl>();
+        playerCtrl = player.GetComponent<PlayerCtrl>();
     }
 
     public override void Activate()
     {
         totalDamage = 0f; // 적에게 입힌 피해량 초기화
-        playerSkill.isMeleeSecondSkilled = true;
+        playerCtrl.isMeleeSecondSkilled = true;
         playerRenderer.material.color = Color.green; // 플레이어 색상을 초록색으로 변경
         timer = duration;
         StartCoroutine(Skill());

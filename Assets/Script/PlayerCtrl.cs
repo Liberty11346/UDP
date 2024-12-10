@@ -1,9 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -318,8 +313,7 @@ public class PlayerCtrl : MonoBehaviour
 
     private void WeaponLevelUp()
     {
-        // 임시로 탭으로 설정해둠
-        if( Input.GetKey(KeyCode.Tab) )
+        if( Input.GetKey(KeyCode.LeftControl) )
         {
             if( Input.GetKeyDown(KeyCode.Alpha1) )
             {
@@ -361,7 +355,7 @@ public class PlayerCtrl : MonoBehaviour
 
     private void SkillLevelUp()
     {
-        if( Input.GetKey(KeyCode.Tab) )
+        if( Input.GetKey(KeyCode.LeftControl) )
         {
             if( Input.GetKeyDown(KeyCode.Q) )
             {
@@ -385,10 +379,13 @@ public class PlayerCtrl : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // 골 오브젝트에 도착하면 엔딩
-        if( other.gameObject.tag == "GoalObject")
+        // 골 오브젝트에 도착하면 엔딩 (튜토리얼에선 엔딩을 보여주지 않음)
+        if( SceneManager.GetActiveScene().name == "MainGame")
         {
-            SceneManager.LoadScene("Ending");
+            if( other.gameObject.tag == "GoalObject")
+            {
+                SceneManager.LoadScene("Ending");
+            }
         }
     }
 }

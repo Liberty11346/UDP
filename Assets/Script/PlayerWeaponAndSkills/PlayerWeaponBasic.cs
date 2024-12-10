@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 // 플레이어 함선의 주포를 PlayerCtrl의 PlayerWeaponBasic 배열을 이용하여 관리하기 위한 클래스입니다.

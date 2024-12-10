@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,10 +9,12 @@ public class EnemyAttackProjectile : MonoBehaviour
 {
     public float moveSpeed,
                  damage; // 플레이어에게 입히는 피해량
-    private GameObject player;
+    private GameObject player,
+                       onHitPrefab;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        onHitPrefab = Resources.Load<GameObject>("onHit");
     }
 
     void Update()
@@ -27,6 +30,7 @@ public class EnemyAttackProjectile : MonoBehaviour
     {
         if( other.tag == "Player" )
         {
+            Instantiate(onHitPrefab, transform.position, Quaternion.identity);
             other.GetComponent<PlayerCtrl>().GetDamage(damage);
             Destroy(gameObject);
         }

@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MainCameraCtrl : MonoBehaviour
 {
     [SerializeField] float MouseX;
     [SerializeField] float MouseY;
-    [SerializeField] float sens = 800f;
+    private float sens = 200f;
     [SerializeField] float Distance = 10f;
     [SerializeField] GameObject player;
 

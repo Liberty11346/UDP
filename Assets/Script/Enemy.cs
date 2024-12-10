@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -124,18 +122,29 @@ public class Enemy : MonoBehaviour
     {
         float attackMoveSpeed = attackProjectile.GetComponent<EnemyAttackProjectile>().moveSpeed;
 
-        // 플레이어의 현재 위치와 속도를 기반으로 예측 위치 계산
-        Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentSpeed; // 플레이어의 이동 벡터
-        Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player를 바라보는 벡터
+        Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentSpeed; // 플레이어의 이동 벡터 계산
 
         // 공격이 도달해야 할 플레이어의 예측 위치를 계산
-        float timeToHit = relativePosition.magnitude / attackMoveSpeed; // 공격이 목표에 도달할 시간
-        Vector3 predictedPosition = playerObject.transform.position + playerVelocity * timeToHit;
+        Vector3 relativePosition1 = playerObject.transform.position - transform.position; // 현재 위치에서 플레이어의 위치로 향하는 벡터
+        float timeToHit1 = relativePosition1.magnitude / attackMoveSpeed; // 공격이 목표에 도달할 시간 계산
+        Vector3 predictedPosition1 = playerObject.transform.position + playerVelocity * timeToHit1; // timeToHit 이후 플레이어의 위치를 계산
 
-        // 계속 플레이어 아래로 아슬아슬하게 빗맞추길래 보정값 추가
-        predictedPosition = new Vector3(predictedPosition.x, predictedPosition.y + 2, predictedPosition.z);
+        // 예상 위치를 한 번 더 계산하여 명중률을 높인다.
+        Vector3 relativePosition2 = predictedPosition1 - transform.position;
+        float timeToHit2 = relativePosition2.magnitude / attackMoveSpeed;
+        Vector3 predictedPosition2 = playerObject.transform.position + playerVelocity * timeToHit2;
 
-        return predictedPosition;
+        // 예상 위치를 두 번 더 계산하여 명중률을 더욱 높인다.
+        Vector3 relativePosition3 = predictedPosition2 - transform.position;
+        float timeToHit3 = relativePosition3.magnitude / attackMoveSpeed;
+        Vector3 predictedPosition3 = playerObject.transform.position + playerVelocity * timeToHit3;
+
+        // 예상 위치를 세 번 더 계산하여 명중률을 더더욱 높인다.
+        Vector3 relativePosition4 = predictedPosition3 - transform.position;
+        float timeToHit4 = relativePosition4.magnitude / attackMoveSpeed;
+        Vector3 predictedPosition4 = playerObject.transform.position + playerVelocity * timeToHit4;
+
+        return predictedPosition4;
     }
 
     // 플레이어에게 공격 받을 경우 호출
@@ -161,7 +170,7 @@ public class Enemy : MonoBehaviour
         int experienceGained = 100;
         playerScript.GainExperience(experienceGained);
         Instantiate(onDeath, transform.position, Quaternion.identity); // 사망 시 폭발 이펙트 생성
-        gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
+        if( gameManager != null ) gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다. (튜토리얼에선 작동하지 않음)
         Destroy(myHPGauge); // 자신의 체력을 표시하는 UI를 제거
         Destroy(gameObject); // 스스로를 파괴
     }

@@ -81,6 +81,10 @@ public class TutorialManager : MonoBehaviour
                 isPassable = false;
             }
         }
+
+        // 튜토리얼에선 체력과 연료가 떨어지면 채워준다.
+        if( playerScript.currentFuel < 50 ) playerScript.currentFuel = 100;
+        if( playerScript.currentHealth < 50 ) playerScript.currentHealth = 100;
     }
 
     void SpawnGoalPoint()
@@ -149,7 +153,7 @@ public class TutorialManager : MonoBehaviour
         // 문구가 등장하면서 레벨을 올려 준다.
         if( currentTutorStep == 14 )
         {
-            playerScript.experience += 8000;
+            playerScript.experience += 3000;
             for( int i = 0 ; i < 16 ; i++ ) playerScript.CheckForLevelUp();
         }
     }

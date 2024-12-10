@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -73,7 +72,7 @@ public class TutorialManager : MonoBehaviour
         // 14단계: 무기, 스킬 포인트를 모두 소모하면 다음 단계 진행
         if( currentTutorStep == 14 )
         {
-            if( playerScript.weaponPoint < 1 && playerScript.skillPoint < 1 )
+            if( playerScript.level > 9 && playerScript.weaponPoint < 1 && playerScript.skillPoint < 1 )
             {
                 StartCoroutine(ShowExplainText());
                 StartCoroutine(ShowGuideText());
@@ -85,6 +84,9 @@ public class TutorialManager : MonoBehaviour
         // 튜토리얼에선 체력과 연료가 떨어지면 채워준다.
         if( playerScript.currentFuel < 50 ) playerScript.currentFuel = 100;
         if( playerScript.currentHealth < 50 ) playerScript.currentHealth = 100;
+
+        // 튜토리얼 도중 ESC 누르면 타이틀로 이동 (엑스포 전시용)
+        if( Input.GetKeyDown(KeyCode.Escape) ) SceneManager.LoadScene("Title");
     }
 
     void SpawnGoalPoint()

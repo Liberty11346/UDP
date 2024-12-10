@@ -1,15 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine.UIElements;
-using UnityEngine;
-
-
 public class MiddleWeaponThird : PlayerWeaponBasic
 {
-    // Start is called before the first frame update
-
-     public bool isActive = false; // 무기가 활성화되어 있는지 여부
+    public bool isActive = false; // 무기가 활성화되어 있는지 여부
 
     public void ActivateWeapon()
     {
@@ -22,6 +13,7 @@ public class MiddleWeaponThird : PlayerWeaponBasic
         isActive = false;
         // 무기를 비활성화하는 코드 추가
     }
+    
     void Start()
     {
         weaponName = "빨간 버튼";
@@ -33,8 +25,7 @@ public class MiddleWeaponThird : PlayerWeaponBasic
             projectileAmount[i] = 1;
             maxCoolTime[i] = 13;
         }
-       
-
+        
         GetCameraTransform();
         currentLevel = 3;
     }

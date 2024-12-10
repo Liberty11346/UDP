@@ -5003,7 +5003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireDelay: 10
-  attackDamage: 25
+  attackDamage: 15
   moveSpeed: 10
   rotateSpeed: 0.2
   maxHealth: 100

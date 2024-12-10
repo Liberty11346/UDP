@@ -109,6 +109,7 @@ public class PlayerCtrl : MonoBehaviour
             Skill(); // Q, E 입력으로 스킬 사용
 
             currentFuel = Mathf.MoveTowards(currentFuel, 0, Time.deltaTime * currentSpeed/10 ); // 연료 소모 (이동 속도에 따라 소모량 증가)
+            if( currentFuel < 1 ) GetDamage(0); // 연료가 다 떨어지면 사망
 
             // 포인트 보유 시 주포/스킬 레벨 업 가능
             if( weaponPoint > 0 ) WeaponLevelUp();
@@ -142,7 +143,7 @@ public class PlayerCtrl : MonoBehaviour
     void Attack()
     {
         // 포탄 발사
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             PlayerWeaponBasic selectedWeapon = playerWeapon[selectedWeaponIndex];
             // 현재 선택된 주포를 발사
@@ -255,9 +256,13 @@ public class PlayerCtrl : MonoBehaviour
         // 입은 피해 만큼 자신의 체력을 깎는다
         currentHealth -= damage;
 
-        // 체력이 1 미만이라면 게임 오버
-        if( currentHealth < 1 )
+        // 체력이나 연료가 1 미만이면 게임 오버
+        if( currentHealth < 1 || currentFuel < 1 )
         {
+            currentHealth = 0;
+            currentFuel = 0;
+
+            // 게임에서 퇴장할 수 있도록 커서를 다시 보이게 한다
             Cursor.visible = true;
             
             // 속도를 0으로 하고 시각적으로 안보이게 함

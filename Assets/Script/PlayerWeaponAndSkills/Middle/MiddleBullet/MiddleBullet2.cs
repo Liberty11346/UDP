@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Data;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,95 +11,125 @@ public class MiddleBullet2 : PlayerBulletBasic
                  destroyDelay = 4f,
                  minDistance,
                  explodeRadius = 20,
-                 explosionForce = 10; 
+                 explosionForce = 10;
 
     public GameObject Explosion;
-
     public GameObject Enemy;
+
+    private bool hasExploded = false;  // 폭발이 발생했는지 체크
+
     public void Start()
     {
-        minDistance = Vector3.Distance(Enemy.transform.position, transform.position);
+        if (Enemy != null)
+        {
+            minDistance = Vector3.Distance(Enemy.transform.position, transform.position);
+        }
     }
+
+   public override void Update()
+{
+    // 기본적으로 직진
+    transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+
+    // 적을 찾고 업데이트
   
-    public override void Update()
+    Enemy = FindTarget();  // Enemy가 없다면 찾기
+
+    // 적이 폭발 범위 내에 있을 때 폭발 대신 이동속도 감소
+    if (!hasExploded && Enemy != null && Vector3.Distance(transform.position, Enemy.transform.position) < explodeRadius)
     {
-        // 기본적으로 직진
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-
-        Enemy = FindTarget();
-
-        if(minDistance < 10 && Input.GetMouseButtonDown(0))
-        {
-        StartCoroutine(PullEnemy(Enemy, destroyDelay));
-        }
-
-    
-        //적을 끌어 당긴 후 4초 뒤 사라짐
-        Destroy(gameObject, destroyDelay);
-
-        // 플레이어와 일정 거리 이상 떨어지면 적을 끌어당기고 4초 뒤 사라짐
-        if (Vector3.Distance(transform.position, player.transform.position) > 300)
-        {
-            Debug.Log("DarkMatter is too far from the player, destroying.");
-            Enemy = FindTarget();
-            StartCoroutine(PullEnemy(Enemy, destroyDelay));
-            Destroy(gameObject, destroyDelay);
-        }
-
-        
+        DecreaseEnemySpeed(Enemy);  // 적의 이동속도 감소
+        hasExploded = true;  // 폭발이 발생했음을 표시
     }
 
-    //적이 다크메터 근처에 있는 지 확인 
+    // 왼쪽 마우스 클릭 (0) 감지
+    if (Input.GetMouseButtonDown(0) && Enemy != null)  // 왼쪽 마우스 클릭 시
+    {
+        Debug.Log("Left mouse button clicked!");
+        StartCoroutine(PullEnemy(Enemy, destroyDelay));
+    }
+
+    // 플레이어와 일정 거리 이상 떨어지면 적을 끌어당기고 4초 뒤 사라짐
+    if (Vector3.Distance(transform.position, player.transform.position) > 300)
+    {
+        Debug.Log("DarkMatter is too far from the player, destroying.");
+        Enemy = FindTarget();
+        if (Enemy != null)
+        {
+            StartCoroutine(PullEnemy(Enemy, destroyDelay));
+        }
+        Destroy(gameObject, destroyDelay);
+    }
+}
+
+    // 적의 이동속도를 20% 감소시키는 함수
+    private void DecreaseEnemySpeed(GameObject enemy)
+    {
+        if (enemy != null)
+        {
+            // 적의 이동속도를 20% 감소시킴
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.moveSpeed *= 0.8f;  // 20% 감소
+                Debug.Log("Enemy's speed reduced by 20%");
+            }
+        }
+    }
 
     private GameObject FindTarget()
     {
-        GameObject [] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         GameObject closeEnemy = null;
         float closeDistance = Mathf.Infinity;
-        foreach(GameObject enemy in enemies)
+        foreach (GameObject enemy in enemies)
         {
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if(distance < closeDistance)
+            if (distance < closeDistance)
             {
                 closeDistance = distance;
                 closeEnemy = enemy;
-
             }
         }
-         Debug.Log("적 탐지 재대로 실행됨");
-    
-        return closeEnemy;
+
+        if (closeEnemy != null)
+        {
+            Debug.Log("Closest enemy found: " + closeEnemy.name);
+        }
+        else
+        {
+            Debug.LogWarning("No enemy found within range.");
         }
 
-       
+        return closeEnemy;
+    }
 
-    
-   private IEnumerator PullEnemy(GameObject Enemy, float duration)
-   {
+    private IEnumerator PullEnemy(GameObject enemy, float duration)
+    {
         float elapsedTime = 0f;
-
-        while(elapsedTime < duration)
+        while (elapsedTime < duration && enemy != null)
         {
             elapsedTime += Time.deltaTime;
-
-            Enemy.transform.position = Vector3.MoveTowards(Enemy.transform.position, transform.position, ForceSpeed * Time.deltaTime);
-
+            enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, transform.position, ForceSpeed * Time.deltaTime);
             yield return null;
         }
-        Debug.Log("땡기기 재대로 실행됨");
-   }
+        Debug.Log("Enemy pulled successfully.");
+    }
 
-
-    public void MadeExplode()
+    // 폭발 함수
+    public void MadeExplode(Vector3 position)
     {
-        Instantiate(Explosion, transform.position, Quaternion.identity);
+        // 폭발 효과 생성
+        Instantiate(Explosion, position, Quaternion.identity);
 
-        destroyDelay = 0.4f;
+        // "폭발" 로그 출력
+        Debug.Log("Explosion triggered!");
 
-        Destroy(this, destroyDelay);
+        // 폭발 후 0.4초 뒤에 삭제
+        Destroy(gameObject, 0.4f);  // 폭발 후 오브젝트 삭제
 
-         GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (GameObject enemy in enemyList)
         {
@@ -109,7 +139,11 @@ public class MiddleBullet2 : PlayerBulletBasic
             if (distance < explodeRadius + currentLevel)
             {
                 Debug.Log("Enemy within explosion range. Applying damage and force.");
+
+                attackDamage = 100;
+
                 enemy.GetComponent<Enemy>().GetDamage(attackDamage);
+                Debug.Log("데미지 : " + attackDamage);
                 Rigidbody enemyRb = enemy.GetComponent<Rigidbody>();
                 if (enemyRb != null)
                 {
@@ -119,5 +153,7 @@ public class MiddleBullet2 : PlayerBulletBasic
             }
         }
     }
-
 }
+
+
+

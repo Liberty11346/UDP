@@ -4,7 +4,6 @@ using UnityEngine.UIElements;
 using UnityEngine;
 using System;
 
-using System;
 
 
 public class MiddleWeaponThird : PlayerWeaponBasic

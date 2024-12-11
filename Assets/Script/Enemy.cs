@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using UnityEditor.SearchService;
+=======
+>>>>>>> main
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,7 +27,8 @@ public class Enemy : MonoBehaviour
                   playerMinDistance; // 플레이어와 유지할 최소 거리
 
     public GameObject attackProjectile, // 공격 시 발사할 공격 투사체
-                      enemyHPGauge; // 체력 게이지 오브젝트
+                      enemyHPGauge, // 체력 게이지 오브젝트
+                      onDeath; // 사망 시 발생할 폭발 오브젝트
     private GameObject myHPGauge;
     public GameManager gameManager; // 게임매니저.
     
@@ -43,7 +47,7 @@ public class Enemy : MonoBehaviour
         for( int i = 0 ; i < transform.childCount ; i++ ) if( transform.GetChild(i).tag == "FirePos" ) firePos.Add(transform.GetChild(i).transform);
     
         // 플레이어와 유지할 최소 거리를 산출
-        playerMinDistance = Random.Range(10, 30);
+        playerMinDistance = Random.Range(30, 50);
 
         // 최소 거리에 30~100 사이 무작위 값을 더하여 최대 거리를 산출
         playerMaxDistance = playerMinDistance + Random.Range(30, 100);
@@ -122,18 +126,29 @@ public class Enemy : MonoBehaviour
     {
         float attackMoveSpeed = attackProjectile.GetComponent<EnemyAttackProjectile>().moveSpeed;
 
-        // 플레이어의 현재 위치와 속도를 기반으로 예측 위치 계산
-        Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentSpeed; // 플레이어의 이동 벡터
-        Vector3 relativePosition = playerObject.transform.position - transform.position; // Enemy에서 Player를 바라보는 벡터
+        Vector3 playerVelocity = playerObject.transform.forward * playerScript.currentSpeed; // 플레이어의 이동 벡터 계산
 
         // 공격이 도달해야 할 플레이어의 예측 위치를 계산
-        float timeToHit = relativePosition.magnitude / attackMoveSpeed; // 공격이 목표에 도달할 시간
-        Vector3 predictedPosition = playerObject.transform.position + playerVelocity * timeToHit;
+        Vector3 relativePosition1 = playerObject.transform.position - transform.position; // 현재 위치에서 플레이어의 위치로 향하는 벡터
+        float timeToHit1 = relativePosition1.magnitude / attackMoveSpeed; // 공격이 목표에 도달할 시간 계산
+        Vector3 predictedPosition1 = playerObject.transform.position + playerVelocity * timeToHit1; // timeToHit 이후 플레이어의 위치를 계산
 
-        // 계속 플레이어 아래로 아슬아슬하게 빗맞추길래 보정값 추가
-        predictedPosition = new Vector3(predictedPosition.x, predictedPosition.y + 2, predictedPosition.z);
+        // 예상 위치를 한 번 더 계산하여 명중률을 높인다.
+        Vector3 relativePosition2 = predictedPosition1 - transform.position;
+        float timeToHit2 = relativePosition2.magnitude / attackMoveSpeed;
+        Vector3 predictedPosition2 = playerObject.transform.position + playerVelocity * timeToHit2;
 
-        return predictedPosition;
+        // 예상 위치를 두 번 더 계산하여 명중률을 더욱 높인다.
+        Vector3 relativePosition3 = predictedPosition2 - transform.position;
+        float timeToHit3 = relativePosition3.magnitude / attackMoveSpeed;
+        Vector3 predictedPosition3 = playerObject.transform.position + playerVelocity * timeToHit3;
+
+        // 예상 위치를 세 번 더 계산하여 명중률을 더더욱 높인다.
+        Vector3 relativePosition4 = predictedPosition3 - transform.position;
+        float timeToHit4 = relativePosition4.magnitude / attackMoveSpeed;
+        Vector3 predictedPosition4 = playerObject.transform.position + playerVelocity * timeToHit4;
+
+        return predictedPosition4;
     }
 
     // 플레이어에게 공격 받을 경우 호출
@@ -144,14 +159,7 @@ public class Enemy : MonoBehaviour
         currentHealth -= realDamage;
         
         // 체력을 깎은 후 남은 체력이 1 미만이라면 사망
-        if( currentHealth < 1 ) 
-        {
-            // TODO: 사망 시 연출 추가 예정
-            Die();
-            gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다.
-            Destroy(myHPGauge); // 자신의 체력을 표시하는 UI를 제거
-            Destroy(gameObject); // 스스로를 파괴
-        }
+        if( currentHealth < 1 ) Die();   
     }
 
     // 일정 시간 후 방어력을 초기화 하는 함수
@@ -165,6 +173,10 @@ public class Enemy : MonoBehaviour
     {
         int experienceGained = 100;
         playerScript.GainExperience(experienceGained);
+        Instantiate(onDeath, transform.position, Quaternion.identity); // 사망 시 폭발 이펙트 생성
+        if( gameManager != null ) gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다. (튜토리얼에선 작동하지 않음)
+        Destroy(myHPGauge); // 자신의 체력을 표시하는 UI를 제거
+        Destroy(gameObject); // 스스로를 파괴
     }
 
     // 캔버스에 자신의 체력 게이지 UI 생성
@@ -186,14 +198,16 @@ public class Enemy : MonoBehaviour
         float difficultyValue;
         if( currentDistance > maxDistance ) difficultyValue = 0;
         else difficultyValue = currentDistance / maxDistance;
-    
+
         // 체력과 공격력에 가중치 적용
-        // 체력과 공격력은 난이도에 따라 최대 두 배까지 증가
-        maxHealth += maxHealth * difficultyValue;
+        // 체력은 시간에 따라 최대 네 배까지 증가
+        // 공격력은 난이도에 따라 최대 두 배까지 증가
+        float elapsedTime = Mathf.Clamp(Time.time / 600f, 0f, 1f);
+        maxHealth = Mathf.Lerp(50f, 200f, elapsedTime);
         attackDamage += attackDamage * difficultyValue;
 
         // 이동 속도와 공격 속도는 무작위로 결정
-        moveSpeed = Random.Range(15,25);
+        moveSpeed = Random.Range(21,25);
         fireDelay = Random.Range(7,12);
 
         // 현재 체력 초기화

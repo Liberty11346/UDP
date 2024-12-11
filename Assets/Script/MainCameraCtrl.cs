@@ -1,12 +1,15 @@
+<<<<<<< HEAD
 using System.Collections;
 using System.Collections.Generic;
+=======
+>>>>>>> main
 using UnityEngine;
 
 public class MainCameraCtrl : MonoBehaviour
 {
     [SerializeField] float MouseX;
     [SerializeField] float MouseY;
-    [SerializeField] float sens = 800f;
+    private float sens = 200f;
     [SerializeField] float Distance = 10f;
     [SerializeField] GameObject player;
 
@@ -18,8 +21,11 @@ public class MainCameraCtrl : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Rotate();
+        if( player != null ) 
+        {
+            Move();
+            Rotate();
+        }
     }
 
     // 플레이어의 움직임을 따라 위치를 변경

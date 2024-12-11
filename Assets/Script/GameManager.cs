@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -40,12 +40,16 @@ public class GameManager : MonoBehaviour
     {
         // 항상 플레이어를 따라다닌다.
         if( player != null ) transform.position = player.transform.position;
+
+        // 게임 중 ESC 누르면 타이틀로 이동 (엑스포 전시용)
+        if( Input.GetKeyDown(KeyCode.Escape) ) SceneManager.LoadScene("Title");
     }
 
     IEnumerator Spawn()
     {
-        // 현재 생성된 적의 수가 최대치에 도달하지 않았다면 1초마다 적을 생성
-        yield return new WaitForSeconds(1f);
+        // 현재 생성된 적의 수가 최대치에 도달하지 않았다면 7~12초마다 적을 생성
+        float randomTime = Random.Range(7f, 12f);
+        yield return new WaitForSeconds(randomTime);
         if( currentMonsterCount < 4 ) SpawnMonsters();
         StartCoroutine(Spawn());
     }

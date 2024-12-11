@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class Barrier : MonoBehaviour
 {
-    float duration = 3f; // ¹æ¾î¸· Áö¼Ó½Ã°£
+    float duration = 3f; // ë°©ì–´ë§‰ ì§€ì†ì‹œê°„
     float timer = 0f;
 
     void Start()
     {
-        // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®¸¦ Ã£Àº ÈÄ ºÎ¸ğ·Î ¼³Á¤
+        // í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì€ í›„ ë¶€ëª¨ë¡œ ì„¤ì •
         GameObject player = GameObject.FindWithTag("Player");
         transform.SetParent(player.transform);
-
-        // ºñÈ°¼ºÈ­ »óÅÂ·Î ½ÃÀÛ
-        gameObject.SetActive(false);
     }
 
     void Update()
@@ -29,14 +26,14 @@ public class Barrier : MonoBehaviour
         }
     }
 
-    // ¹è¸®¾î ºñÈ°¼ºÈ­
+    // ë°°ë¦¬ì–´ ë¹„í™œì„±í™”
     void Deactive()
     {
         gameObject.SetActive(false);
         timer = 0f;
     }
 
-    // Àû ÃÑ¾Ë ÆÄ±«
+    // ì  ì´ì•Œ íŒŒê´´
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("EnemyBullet"))

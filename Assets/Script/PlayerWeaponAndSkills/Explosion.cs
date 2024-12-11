@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
+    public float duration;
     void Start()
     {
-        Invoke("DestroySelf", 1);
+        Invoke("DestroySelf", duration);
     }
 
     void DestroySelf()

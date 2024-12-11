@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 // 플레이어가 발사하는 공격 투사체에 들어가는 클래스.

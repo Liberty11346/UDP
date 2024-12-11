@@ -26,7 +26,7 @@ public class MiddleWeaponFourth : PlayerWeaponBasic
             {
                 projectileDamage[3] = 25 + i * 5;
             }
-            projectileSpeed[i] = 25;
+            projectileSpeed[i] = 60;
             projectileAmount[i] = 1;
             maxCoolTime[i] = 1;
         }
@@ -55,14 +55,14 @@ public override void Fire()
     // Update is called once per frame
    private IEnumerator FireBurst()
     {
+        for(int j = 0; j < burstCount; j++){
+           yield return new WaitForSeconds(1f);
         for (int i = 0; i < burstCount; i++) // 설정한 개수만큼 총을 발사
         {
             BasicWeapon(); // 총알 발사
             yield return new WaitForSeconds(fireRate); // 각 발사 간의 간격을 설정
         }
-
-        // 발사 후 쿨타임 적용
-        currentCoolTime = maxCoolTime[currentLevel];
+    }
     }
    
 }

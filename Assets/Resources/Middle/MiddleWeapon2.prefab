@@ -50,3 +50,4 @@ MonoBehaviour:
   maxCoolTime: 00000000000000000000000000000000
   currentCoolTime: 0
   currentLevel: 0
+  bullet: {fileID: 8387908295353069834, guid: 730e3c4f245599c4e9b08c5469d8b882, type: 3}

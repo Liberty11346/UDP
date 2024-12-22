@@ -4,7 +4,6 @@ using UnityEngine.UIElements;
 
 using UnityEngine;
 
-
 public class MiddleWeaponSecond : PlayerWeaponBasic
 {
     private MiddleWeaponThird middleWeapon;  // MiddleWeaponThird에 대한 참조를 저장할 변수
@@ -13,7 +12,6 @@ public class MiddleWeaponSecond : PlayerWeaponBasic
     {
         weaponName = "다크매터";
         weaponExplain = "조준한 방향으로 암흑물질을 발사하고 적 적중 시,\n 반지름 20범위 이내의 적들의 암흑물질의 중심으로 끌어당깁니다\n 적을 끌어 당긴 후 암흑물질은 그 자리에 4초동안 남아 적들의 이동속도를 둔화 시킵니다.";
-        currentLevel = 0;
 
         for (int i = 0; i < 4; i++)
         {
@@ -21,7 +19,6 @@ public class MiddleWeaponSecond : PlayerWeaponBasic
             projectileSpeed[i] = 15;
             projectileAmount[i] = 1;
             maxCoolTime[i] = 11;
-
             //레벨당 슬로우
         }
 
@@ -55,7 +52,7 @@ public class MiddleWeaponSecond : PlayerWeaponBasic
         }
         else
         {
-            Debug.LogWarning("MiddleWeaponThird not found in the scene.");
+           // Debug.LogWarning("MiddleWeaponThird not found in the scene.");
         }
     }
 }

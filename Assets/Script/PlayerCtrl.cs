@@ -384,9 +384,9 @@ public class PlayerCtrl : MonoBehaviour
         {
             if( other.gameObject.tag == "GoalObject")
             {
+                Cursor.visible = true;
                 SceneManager.LoadScene("Ending");
             }
         }
     }
 }
-

@@ -3324,9 +3324,9 @@ RectTransform:
   - {fileID: 362796337}
   m_Father: {fileID: 536513252}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -850, y: -480}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 110, y: 60}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &425451579
@@ -9016,10 +9016,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "(2) \uB2E4\uD06C \uB9E4\uD130\n\uC801\uC911 \uC2DC \uC8FC\uBCC0\uC758
-    \uC801\uB4E4\uC744 \uBE68\uC544\uB4E4\uC774\uB294 \uD3EC\uD0C4\uC744 \uBC1C\uC0AC\uD569\uB2C8\uB2E4.\n\uC801\uC911
-    \uD6C4 4\uCD08\uB3D9\uC548 \uB0A8\uC544 \uC8FC\uBCC0 \uC801\uB4E4\uC758 \uC774\uB3D9\uC744
-    \uB454\uD654\uC2DC\uD0B5\uB2C8\uB2E4."
+  m_text: "(2) \uB2E4\uD06C \uB9E4\uD130\n\uC218\uB3D9\uC73C\uB85C \uD65C\uC131\uD654\uD558\uC5EC
+    \uC8FC\uBCC0 \uC801\uB4E4\uC744 \uB04C\uC5B4\uB2F9\uAE30\uB294 \uD3EC\uD0C4\uC744
+    \uBC1C\uC0AC\uD569\uB2C8\uB2E4.\n\uD3EC\uD0C4\uC774 \uB0A0\uC544\uAC00\uB294
+    \uB3D9\uC548, \uC88C\uD074\uB9AD\uD558\uBA74 \uC8FC\uBCC0 \uC801\uB4E4\uC744
+    \uB04C\uC5B4\uB2F9\uAE41\uB2C8\uB2E4.\n\uBC1C\uC0AC \uC9C1\uD6C4 3\uCD08\uB3D9\uC548\uC740
+    \uB04C\uC5B4\uB2F9\uAE38 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e70073fc648420841942d088a08ca98f, type: 2}
   m_sharedMaterial: {fileID: -7484019716593851440, guid: e70073fc648420841942d088a08ca98f, type: 2}
@@ -9451,7 +9453,6 @@ GameObject:
   - component: {fileID: 1485618542}
   - component: {fileID: 1485618545}
   - component: {fileID: 1485618546}
-  - component: {fileID: 1485618547}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9556,69 +9557,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MouseX: 0
   MouseY: 0
-  sens: 400
   Distance: 50
   player: {fileID: 0}
---- !u!114 &1485618547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485618541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 1485618544}
-  volumeLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  stopNaNPropagation: 1
-  finalBlitToCameraTarget: 0
-  antialiasingMode: 1
-  temporalAntialiasing:
-    jitterSpread: 0.75
-    sharpness: 0.25
-    stationaryBlending: 0.95
-    motionBlending: 0.85
-  subpixelMorphologicalAntialiasing:
-    quality: 2
-  fastApproximateAntialiasing:
-    fastMode: 0
-    keepAlpha: 0
-  fog:
-    enabled: 1
-    excludeSkybox: 1
-  debugLayer:
-    lightMeter:
-      width: 512
-      height: 256
-      showCurves: 1
-    histogram:
-      width: 512
-      height: 256
-      channel: 3
-    waveform:
-      exposure: 0.12
-      height: 256
-    vectorscope:
-      size: 256
-      exposure: 0.12
-    overlaySettings:
-      linearDepth: 0
-      motionColorIntensity: 4
-      motionGridSize: 64
-      colorBlindnessType: 0
-      colorBlindnessStrength: 1
-  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
-  breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
 --- !u!1 &1519116250
 GameObject:
   m_ObjectHideFlags: 0
@@ -12741,6 +12681,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3489001171588595783}
   - component: {fileID: 3489001171588595784}
+  - component: {fileID: 3489001171588595786}
+  - component: {fileID: 3489001171588595785}
   m_Layer: 5
   m_Name: GameOver
   m_TagString: Untagged
@@ -12792,6 +12734,46 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &3489001171588595785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3032851439392458685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &3489001171588595786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3032851439392458685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!224 &3897076964187577698
 RectTransform:
   m_ObjectHideFlags: 0

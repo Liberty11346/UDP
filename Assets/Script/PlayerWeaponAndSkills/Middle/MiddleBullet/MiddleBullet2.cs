@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.ComponentModel;
-using System.Data;
 using UnityEngine;
 
 public class MiddleBullet2 : PlayerBulletBasic
@@ -14,15 +11,27 @@ public class MiddleBullet2 : PlayerBulletBasic
 
     public GameObject Explosion;
     public GameObject Enemy;
+    private bool isReady;
 
     private bool hasExploded = false;  // 폭발이 발생했는지 체크
 
     public void Start()
     {
+        player = GameObject.FindWithTag("Player");
+        onHitPrefab = Resources.Load<GameObject>("onHit");
+        
+        isReady = false;
+        Invoke("Ready", 3f);
+
         if (Enemy != null)
         {
             minDistance = Vector3.Distance(Enemy.transform.position, transform.position);
         }
+    }
+
+    void Ready()
+    {
+        isReady = true;
     }
 
    public override void Update()
@@ -42,16 +51,14 @@ public class MiddleBullet2 : PlayerBulletBasic
     }
 
     // 왼쪽 마우스 클릭 (0) 감지
-    if (Input.GetMouseButtonDown(0) && Enemy != null)  // 왼쪽 마우스 클릭 시
+    if (Input.GetMouseButtonDown(0) && Enemy != null && isReady == true)  // 왼쪽 마우스 클릭 시
     {
-        Debug.Log("Left mouse button clicked!");
         StartCoroutine(PullEnemy(Enemy, destroyDelay));
     }
 
     // 플레이어와 일정 거리 이상 떨어지면 적을 끌어당기고 4초 뒤 사라짐
     if (Vector3.Distance(transform.position, player.transform.position) > 300)
     {
-        Debug.Log("DarkMatter is too far from the player, destroying.");
         Enemy = FindTarget();
         if (Enemy != null)
         {
@@ -71,7 +78,6 @@ public class MiddleBullet2 : PlayerBulletBasic
             if (enemyScript != null)
             {
                 enemyScript.moveSpeed *= 0.8f;  // 20% 감소
-                Debug.Log("Enemy's speed reduced by 20%");
             }
         }
     }
@@ -94,11 +100,11 @@ public class MiddleBullet2 : PlayerBulletBasic
 
         if (closeEnemy != null)
         {
-            Debug.Log("Closest enemy found: " + closeEnemy.name);
+            //Debug.Log("Closest enemy found: " + closeEnemy.name);
         }
         else
         {
-            Debug.LogWarning("No enemy found within range.");
+            //Debug.LogWarning("No enemy found within range.");
         }
 
         return closeEnemy;
@@ -113,7 +119,7 @@ public class MiddleBullet2 : PlayerBulletBasic
             enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, transform.position, ForceSpeed * Time.deltaTime);
             yield return null;
         }
-        Debug.Log("Enemy pulled successfully.");
+        //Debug.Log("Enemy pulled successfully.");
     }
 
     // 폭발 함수
@@ -123,7 +129,7 @@ public class MiddleBullet2 : PlayerBulletBasic
         Instantiate(Explosion, position, Quaternion.identity);
 
         // "폭발" 로그 출력
-        Debug.Log("Explosion triggered!");
+        //Debug.Log("Explosion triggered!");
 
         // 폭발 후 0.4초 뒤에 삭제
         Destroy(gameObject, 0.4f);  // 폭발 후 오브젝트 삭제
@@ -137,12 +143,12 @@ public class MiddleBullet2 : PlayerBulletBasic
             // 폭발 범위 내에 있는 적들에게 피해를 주고 밀쳐냄
             if (distance < explodeRadius + currentLevel)
             {
-                Debug.Log("Enemy within explosion range. Applying damage and force.");
+                //Debug.Log("Enemy within explosion range. Applying damage and force.");
 
                 attackDamage = 100;
 
                 enemy.GetComponent<Enemy>().GetDamage(attackDamage);
-                Debug.Log("데미지 : " + attackDamage);
+                //Debug.Log("데미지 : " + attackDamage);
                 Rigidbody enemyRb = enemy.GetComponent<Rigidbody>();
                 if (enemyRb != null)
                 {

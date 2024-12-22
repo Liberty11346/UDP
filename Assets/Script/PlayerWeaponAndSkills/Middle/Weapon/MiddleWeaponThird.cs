@@ -25,13 +25,12 @@ public class MiddleWeaponThird : PlayerWeaponBasic
         }
 
         GetCameraTransform();
-        currentLevel = 3;
 
         projectile =  Resources.Load<GameObject>("Middle/Explode");
       
         if(projectile == null)
         {
-            Debug.Log("null뜬다 고쳐라");
+            //Debug.Log("null뜬다 고쳐라");
         }    
 
     }
@@ -44,7 +43,7 @@ public class MiddleWeaponThird : PlayerWeaponBasic
         }
         else
         {
-            Debug.LogWarning("No MiddleBullet2 object to track.");
+            //Debug.LogWarning("No MiddleBullet2 object to track.");
         }
     }
 
@@ -57,11 +56,11 @@ public class MiddleWeaponThird : PlayerWeaponBasic
         if (trackedBullet != null)
         {
             trackedBullet.MadeExplode(trackedBullet.transform.position);  // 해당 위치에서 폭발 발생
-            Debug.Log("폭발 발생");
+            //Debug.Log("폭발 발생");
         }
         else
         {
-            Debug.LogWarning("MiddleBullet2 has been destroyed before explosion.");
+            //Debug.LogWarning("MiddleBullet2 has been destroyed before explosion.");
         }
     }
 

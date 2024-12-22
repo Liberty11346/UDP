@@ -2,13 +2,10 @@ using UnityEngine;
 
 public class MiddleWeaponFirst : PlayerWeaponBasic
 {
-    // Start is called before the first frame update
     void Start()
     {
         weaponName = "기본공격";
         weaponExplain = "공격시 기본 포탄을 1발 발사합니다.";
-
-        currentLevel = 1;
 
         for(int i = 0; i < 4; i++)
         {
@@ -19,10 +16,9 @@ public class MiddleWeaponFirst : PlayerWeaponBasic
         }
 
         GetCameraTransform();
-        projectile =  Resources.Load<GameObject>("PlayerTestBullet");
+        projectile =  Resources.Load<GameObject>("Middle/MiddleBullet1");
     }
 
-    // Update is called once per frame
    public override void Fire()
     {
         BasicWeapon();

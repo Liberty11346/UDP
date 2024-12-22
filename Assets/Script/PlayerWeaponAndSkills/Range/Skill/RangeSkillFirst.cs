@@ -25,7 +25,7 @@ public class RangeSkillFirst : PlayerSkillBasic
             float distance = Vector3.Distance(playerPos.position, bullet.transform.position);
             
             // 20 거리 이내 적 포탄의 이동을 멈춘다
-            if( distance <= 20 ) bullet.GetComponent<EnemyAttackProjectile>().moveSpeed = 0;   
+            if( distance <= 20 ) bullet.GetComponent<EnemyAttackProjectile>().moveSpeed = 0;
         }
     }
 }

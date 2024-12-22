@@ -15,7 +15,6 @@ public class MiddleWeaponFourth : PlayerWeaponBasic
     {
         weaponName = "연속 공격";
         weaponExplain = "기본 포탄을 4발 발사합니다";
-
         for(int i= 0; i < 4; i++)
         {
             projectileDamage[i] = 25 + i * 10;
@@ -32,7 +31,6 @@ public class MiddleWeaponFourth : PlayerWeaponBasic
         projectile =  Resources.Load<GameObject>("Middle/MiddleBullet1");
        
     }
-
 
     public override void Fire()
     {    
@@ -58,5 +56,4 @@ public class MiddleWeaponFourth : PlayerWeaponBasic
             }
         }
     }
-   
 }

@@ -12,6 +12,8 @@ public class MiddleWeaponThird : PlayerWeaponBasic
 
     void Start()
     {
+      
+
         weaponName = "빨간 버튼";
         weaponExplain = "다크 매터와의 연계스킬\n 다크 매터를 폭파하여 적에게 피해를 입힙니다.";
 

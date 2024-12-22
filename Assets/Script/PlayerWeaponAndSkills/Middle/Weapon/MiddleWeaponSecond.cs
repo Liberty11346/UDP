@@ -1,3 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UIElements;
+
 using UnityEngine;
 
 public class MiddleWeaponSecond : PlayerWeaponBasic
@@ -33,7 +37,7 @@ public class MiddleWeaponSecond : PlayerWeaponBasic
 
     void BlackMatter()
     {
-        Vector3 firePos = new Vector3(playerCameraTransform.position.x, playerCameraTransform.position.y, playerCameraTransform.position.z);
+        Vector3 firePos = new Vector3(playerCameraTransform.position.x + 10, playerCameraTransform.position.y, playerCameraTransform.position.z + 10);
         GameObject fireProjectile = Instantiate(projectile, firePos, playerCameraTransform.rotation);
         fireProjectile.GetComponent<PlayerBulletBasic>().Clone(this, currentLevel);
 

@@ -53,14 +53,12 @@ public class MiddleBullet2 : PlayerBulletBasic
     // 왼쪽 마우스 클릭 (0) 감지
     if (Input.GetMouseButtonDown(0) && Enemy != null && isReady == true)  // 왼쪽 마우스 클릭 시
     {
-        //Debug.Log("Left mouse button clicked!");
         StartCoroutine(PullEnemy(Enemy, destroyDelay));
     }
 
     // 플레이어와 일정 거리 이상 떨어지면 적을 끌어당기고 4초 뒤 사라짐
     if (Vector3.Distance(transform.position, player.transform.position) > 300)
     {
-        //Debug.Log("DarkMatter is too far from the player, destroying.");
         Enemy = FindTarget();
         if (Enemy != null)
         {
@@ -80,7 +78,6 @@ public class MiddleBullet2 : PlayerBulletBasic
             if (enemyScript != null)
             {
                 enemyScript.moveSpeed *= 0.8f;  // 20% 감소
-                //Debug.Log("Enemy's speed reduced by 20%");
             }
         }
     }

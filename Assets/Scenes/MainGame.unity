@@ -10910,6 +10910,8 @@ MonoBehaviour:
   currentDistance: 0
   gaugeLength: 0
   percentage: 0
+<<<<<<< HEAD
+=======
 --- !u!1 &1786808852
 GameObject:
   m_ObjectHideFlags: 0
@@ -11318,6 +11320,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1828690640}
   m_CullTransparentMesh: 1
+>>>>>>> main
 --- !u!1 &1918350426
 GameObject:
   m_ObjectHideFlags: 0

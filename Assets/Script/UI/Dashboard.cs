@@ -5,6 +5,8 @@ using System.Reflection;
 using TMPro;
 using UnityEngine;
 
+// 작성자: 5702600 이창민
+// HP, 연료, 속도를 표시하기 위한 대시보드 스크립트
 public class Dashboard : MonoBehaviour
 {
     private PlayerCtrl player;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 작성자: 5702600 이창민
 public class RangeBulletFourth : PlayerBulletBasic
 {
     void Start()

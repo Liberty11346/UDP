@@ -2,17 +2,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 작성자: 5702600 이창민
+// 화면 하단 핫 키 슬롯의 스크립트
 public class HotKey : MonoBehaviour
 {
     private PlayerCtrl player;
-    private PlayerWeaponBasic myWeapon; // 자신이 주포 슬롯인 경우, 자신이 담당할 주포
+    private PlayerWeaponBasic myWeapon; // 자신이 무기 슬롯인 경우, 자신이 담당할 무기
     private PlayerSkillBasic mySkill; // 자신이 스킬 슬롯인 경우, 자신이 담당할 스킬
-    private Image weaponBorder, // 자신의 주포 슬롯의 테두리
-                  icon; // 자신의 주포/스킬의 아이콘
+    private Image weaponBorder, // 자신의 무기 슬롯의 테두리
+                  icon; // 자신의 무기/스킬의 아이콘
     private TextMeshProUGUI cooltimeText,
                             levelText;
     private Color origin = new Color(1, 1, 1, 1), // 기본 테두리 색상
-                  selected = new Color(0, 1, 0, 1), // 주포 선택 시 테두리 색상
+                  selected = new Color(0, 1, 0, 1), // 무기 선택 시 테두리 색상
                   unOpend = new Color(1, 1, 1, 0.5f); // 배우지 않은 무기/스킬일 경우 아이콘 색깔
     private string myType; // 자신의 슬롯 타입
     private int myIndex; // 자신의 슬롯 번호
@@ -21,13 +23,13 @@ public class HotKey : MonoBehaviour
         // 플레이어를 찾는다.
         player = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
 
-        // 자신의 이름을 통해 자신이 스킬 슬롯인지, 주포 슬롯인지 확인
+        // 자신의 이름을 통해 자신이 스킬 슬롯인지, 무기 슬롯인지 확인
         myType = gameObject.name.Contains("Weapon") ? "Weapon" : "Skill";
 
-        // 자신의 이름을 통해 자신이 담당할 스킬/주포의 배열 내 인덱스를 확인
+        // 자신의 이름을 통해 자신이 담당할 스킬/무기의 배열 내 인덱스를 확인
         myIndex = int.Parse(gameObject.name.Substring(0, 1));
 
-        // 자신의 슬롯 타입과 인덱스를 토대로 자신이 담당할 주포/스킬에 접근
+        // 자신의 슬롯 타입과 인덱스를 토대로 자신이 담당할 무기/스킬에 접근
         if( myType == "Weapon" ) myWeapon = player.playerWeapon[myIndex];
         else mySkill = player.playerSkill[myIndex];
 
@@ -55,7 +57,7 @@ public class HotKey : MonoBehaviour
         if( myType == "Weapon" ) levelText.text = (myWeapon.currentLevel + 1).ToString();
     }
 
-    // 자신이 담당한 주포/스킬의 아이콘을 표시
+    // 자신이 담당한 무기/스킬의 아이콘을 표시
     void DisplayIcon()
     {
         // 자신의 타입과 인덱스, 플레이어의 타입을 기반으로 적절한 스킬 아이콘을 로드하여 적용
@@ -64,7 +66,7 @@ public class HotKey : MonoBehaviour
         icon.sprite = myIcon;
     }
 
-    // 자신이 담당한 주포의 쿨타임을 표시
+    // 자신이 담당한 무기의 쿨타임을 표시
     void DisplayWeaponCooltime()
     {
         cooltimeText.text = myWeapon.currentCoolTime.ToString();
@@ -84,7 +86,7 @@ public class HotKey : MonoBehaviour
         else icon.color = origin;
     }
 
-    // 현재 선택된 주포를 강조
+    // 현재 선택된 무기를 강조
     void HighLightSelectedWeapon()
     {
         if( player.selectedWeaponIndex == myIndex ) weaponBorder.color = selected;

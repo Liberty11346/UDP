@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// 작성자: 5702600 이창민
 // 적 오브젝트에 탑재될 AI 스크립트
 public class Enemy : MonoBehaviour
 {
@@ -165,10 +166,11 @@ public class Enemy : MonoBehaviour
         defense = 0;
     }
 
+    // 사망 시 호출
     private void Die()
     {
-        int experienceGained = 100;
-        playerScript.GainExperience(experienceGained);
+        int experienceGained = 100; // 플레이어에게 지급할 경험치
+        playerScript.GainExperience(experienceGained); // 플레이어에게 경험치 지급
         Instantiate(onDeath, transform.position, Quaternion.identity); // 사망 시 폭발 이펙트 생성
         if( gameManager != null ) gameManager.currentMonsterCount--; // 현재 적의 수를 1 줄인다. (튜토리얼에선 작동하지 않음)
         Destroy(myHPGauge); // 자신의 체력을 표시하는 UI를 제거
@@ -178,16 +180,28 @@ public class Enemy : MonoBehaviour
     // 캔버스에 자신의 체력 게이지 UI 생성
     private void GenerateHPUI()
     {
+        // 체력 게이지 UI를 띄울 캔버스를 탐색
         GameObject canvas = GameObject.Find("PlayerUI");
+
+        // 자기 위치에 체력 게이지 UI를 생성 후 코드를 참조
         GameObject UIObj = Instantiate(enemyHPGauge, transform.position, Quaternion.identity);
         EnemyHP UIScript = UIObj.GetComponent<EnemyHP>();
+
+        // 체력 게이지 UI를 캔버스의 자식으로 편입하여 캔버스 위에 그려지게
         UIObj.transform.SetParent(canvas.GetComponent<RectTransform>());
+
+        // 체력 게이지 UI가 자기 자신을 참조하여 현재 체력을 알 수 있도록 함
         UIScript.myEnemyObj = gameObject;
         UIScript.myEnemyScript = gameObject.GetComponent<Enemy>();
+
+        // 작업이 끝나면 체력 게이지 UI를 활성화
         UIScript.isReady = true;
+
+        // 사망 시 함께 제거할 수 있도록 이렇게 만든 체력 게이지 UI를 참조
         myHPGauge = UIObj;
     }
 
+    // 현재 플레이어와 목표 지점 사이의 거리에 따라 능력치를 보정
     public void SetStatus(float currentDistance, float maxDistance)
     {
         // 현재 플레이어어와 목표 지점 사이의 거리에 따라 가중치를 계산 (0 ~ 1)

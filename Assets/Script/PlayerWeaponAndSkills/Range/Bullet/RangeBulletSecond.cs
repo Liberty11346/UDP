@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
+// 작성자: 5702600 이창민
 public class RangeBulletSecond : PlayerBulletBasic
 {
     private bool isTarget = false; // 타겟을 찾은 경우 true

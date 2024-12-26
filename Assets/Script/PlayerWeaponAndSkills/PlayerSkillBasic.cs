@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 작성자: 5702600 이창민
 // 플레이어 함선의 스킬을 PlayerCtrl의 PlayerSkillBasic 배열을 이용하여 관리하기 위한 클래스입니다.
 // 플레이어 함선들의 스킬을 구현할 땐, 이 클래스를 상속받는 클래스를 새로 만든 후, Activate() 함수를 오버라이딩하여 구현합니다.
 public class PlayerSkillBasic : MonoBehaviour
@@ -15,7 +16,7 @@ public class PlayerSkillBasic : MonoBehaviour
                   maxCoolTime; // 스킬의 재사용 대기시간
 
     // PlayerCtrl에서 스킬을 사용할 때, Activate() 함수를 호출합니다.
-    // Activate() 함수를 오버라이딩하여 각 플레이어 함선들의 주포를 구현합니다.
+    // Activate() 함수를 오버라이딩하여 각 플레이어 함선들의 스킬를 구현합니다.
     public virtual void Activate() { }
 
     // 현재 사용 가능한 상태인지 반환하는 함수.

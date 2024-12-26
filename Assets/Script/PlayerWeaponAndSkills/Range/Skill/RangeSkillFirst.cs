@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 작성자: 5702600 이창민
 // 사용 시 플레이어 주변 20거리 이내의 모든 적 포탄의 이동을 멈춘다.
 public class RangeSkillFirst : PlayerSkillBasic
 {

@@ -1,3 +1,11 @@
+/*
+┌─                     ─┐
+ 
+ 코드 작성: 5645866 구기현
+
+└─                     ─┘
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

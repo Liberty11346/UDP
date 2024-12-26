@@ -1,15 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
+// 작성자: 5702600 이창민
 public class RangeWeaponFourth : PlayerWeaponBasic
 {
     void Start()
     {
-        // 플레이어에게 보여질 주포의 정보를 입력
+        // 플레이어에게 보여질 무기의 정보를 입력
         weaponName = "플라즈마 광선";
         weaponExplain = "적들을 관통하며 큰 피해를 입히는 강력한 광선을 발사합니다.\n발사 명령 후 실제로 광선이 발사되기까지 2초동안의 충전 시간이 있습니다.";
         
-        // 주포의 레벨 별 수치를 입력
+        // 무기의 레벨 별 수치를 입력
         for( int i = 0 ; i < 4; i++ )
         {
             projectileDamage[i] = 48 + i*12; // 피해량

@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// 작성자: 5702600 이창민
+// 튜토리얼 씬에서 게임매니저 대신 사용될 튜토리얼 매니저
 public class TutorialManager : MonoBehaviour
 {
     public GameObject playerPrefab, // 플레이어 프리팹
@@ -25,7 +27,7 @@ public class TutorialManager : MonoBehaviour
         playerObj = Instantiate(playerPrefab, transform.position, Quaternion.identity);
         playerScript = playerObj.GetComponent<PlayerCtrl>();
 
-        // 플레이어의 타입에 맞춰 플레이어 무기를 설정
+        // 플레이어의 타입에 맞춰 플레이어 무기를 설정 (튜토리얼에선 원거리형으로 세팅)
         playerScript.PlayerTypeSetting("Range");
 
         // 목표 지점 생성
@@ -175,6 +177,7 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    // 텍스트 관리용
     void InitExplainText()
     {
         tutorTexts.Clear();

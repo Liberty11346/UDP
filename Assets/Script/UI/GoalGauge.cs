@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 작성자: 5702600 이창민
+// 화면 상단 목표 게이지 UI의 스크립트
 public class GoalGauge : MonoBehaviour
 {
     private Image gauge; // 게이지

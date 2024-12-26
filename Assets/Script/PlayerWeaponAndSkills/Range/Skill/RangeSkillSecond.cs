@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 사용 시 다음에 발사하는 주포의 쿨타임을 없앤다.
+// 작성자: 5702600 이창민
+// 사용 시 다음에 발사하는 무기의 쿨타임을 없앤다.
 public class RangeSkillSecond : PlayerSkillBasic
 {
     PlayerCtrl player;

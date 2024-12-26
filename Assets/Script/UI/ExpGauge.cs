@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 
+// 작성자: 5702600 이창민
+// 플레이어의 경험치 바 UI에 들어갈 스크립트
 public class ExpGauge : MonoBehaviour
 {
     private PlayerCtrl player;

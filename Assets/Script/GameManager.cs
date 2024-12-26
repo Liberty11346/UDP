@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//작성자 : 5702341 김기석
+
+
 public class GameManager : MonoBehaviour
 {
   

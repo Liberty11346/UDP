@@ -5,6 +5,8 @@ using UnityEngine;
 using System;
 
 
+//작성자 : 5702341 김기석
+
 
 public class MiddleWeaponThird : PlayerWeaponBasic
 {

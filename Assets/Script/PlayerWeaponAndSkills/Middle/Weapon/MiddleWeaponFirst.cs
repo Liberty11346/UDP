@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.UIElements;
 using UnityEngine;
 
+//작성자 : 5702341 김기석
+
 public class MiddleWeaponFirst : PlayerWeaponBasic
 {
     void Start()

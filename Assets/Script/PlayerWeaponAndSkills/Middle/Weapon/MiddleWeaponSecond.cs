@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 
 using UnityEngine;
 
+//작성자 : 5702341 김기석
+
 public class MiddleWeaponSecond : PlayerWeaponBasic
 {
     private MiddleWeaponThird middleWeapon;  // MiddleWeaponThird에 대한 참조를 저장할 변수

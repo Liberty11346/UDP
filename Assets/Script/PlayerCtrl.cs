@@ -1,3 +1,10 @@
+/*
+┌─                     ─┐
+ 
+ 코드 작성: 5645866 구기현
+
+└─                     ─┘
+*/
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;

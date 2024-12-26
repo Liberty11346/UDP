@@ -6,11 +6,6 @@
 └─                     ─┘
 */
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -107,15 +102,21 @@ public class PlayerCtrl : MonoBehaviour
 
     void Update()
     {      
-        Move(); // 키보드로 이동
-        Attack(); // 마우스로 공격
+        if( currentHealth > 0 )
+        {
+            Move(); // 키보드로 이동
 
-        SelectType(); // 1 ~ 4 입력으로 주포 선택
-        Skill(); // Q, E 입력으로 스킬 사용
+            SelectType(); // 1 ~ 4 입력으로 주포 선택
+            Attack(); // 마우스로 공격
+            Skill(); // Q, E 입력으로 스킬 사용
 
-        // 포인트 보유 시 주포/스킬 레벨 업 가능
-        if( weaponPoint > 0 ) WeaponLevelUp();
-        if( skillPoint > 0 ) SkillLevelUp();
+            currentFuel = Mathf.MoveTowards(currentFuel, 0, Time.deltaTime * currentSpeed/10 ); // 연료 소모 (이동 속도에 따라 소모량 증가)
+            if( currentFuel < 1 ) GetDamage(0); // 연료가 다 떨어지면 사망
+
+            // 포인트 보유 시 주포/스킬 레벨 업 가능
+            if( weaponPoint > 0 ) WeaponLevelUp();
+            if( skillPoint > 0 ) SkillLevelUp();
+        }
     }
 
     // 플레이어로부터 입력을 받아 함선을 기울임
@@ -144,7 +145,7 @@ public class PlayerCtrl : MonoBehaviour
     void Attack()
     {
         // 포탄 발사
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             PlayerWeaponBasic selectedWeapon = playerWeapon[selectedWeaponIndex];
             // 현재 선택된 주포를 발사
@@ -257,21 +258,26 @@ public class PlayerCtrl : MonoBehaviour
         // 입은 피해 만큼 자신의 체력을 깎는다
         currentHealth -= damage;
 
-        // 체력이 1 미만이라면 게임 오버
-        if( currentHealth < 1 )
+        // 체력이나 연료가 1 미만이면 게임 오버
+        if( currentHealth < 1 || currentFuel < 1 )
         {
+            currentHealth = 0;
+            currentFuel = 0;
+
+            // 게임에서 퇴장할 수 있도록 커서를 다시 보이게 한다
             Cursor.visible = true;
             
             // 속도를 0으로 하고 시각적으로 안보이게 함
             currentSpeed = 0;
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<MeshCollider>().enabled = false;
             for( int i = 0 ; i < 4 ; i++ ) transform.GetChild(i).gameObject.SetActive(false);
 
             // 폭발 이펙트 생성
             Instantiate(explosion, transform.position, Quaternion.identity);
 
             // 게임 오버 UI 생성
-            
+            StartCoroutine(GameObject.Find("MenuManager").GetComponent<MenuManager>().GameOver());
         }
     }
 
@@ -279,6 +285,9 @@ public class PlayerCtrl : MonoBehaviour
     {
         experience += amount;
         CheckForLevelUp();
+
+        // 연료 회복
+        currentFuel = 100;
     }
 
     // MeleeSecondSkill에 사용할 체력 회복 함수
@@ -298,6 +307,7 @@ public class PlayerCtrl : MonoBehaviour
         if( level < 16 && experience >= requireExp[level])
         {
             experience -= requireExp[level]; // 현재 경험치 차감
+            currentHealth = maxHealth; // 체력 회복
             level++; // 플레이어의 레벨 증가
             weaponPoint++; // 주포 포인트 증가
             if(level == 4 || level == 8) skillPoint++; // 4, 8 레벨엔 스킬 포인트도 증가
@@ -310,8 +320,7 @@ public class PlayerCtrl : MonoBehaviour
 
     private void WeaponLevelUp()
     {
-        // 임시로 탭으로 설정해둠
-        if( Input.GetKey(KeyCode.Tab) )
+        if( Input.GetKey(KeyCode.LeftControl) )
         {
             if( Input.GetKeyDown(KeyCode.Alpha1) )
             {
@@ -353,7 +362,7 @@ public class PlayerCtrl : MonoBehaviour
 
     private void SkillLevelUp()
     {
-        if( Input.GetKey(KeyCode.Tab) )
+        if( Input.GetKey(KeyCode.LeftControl) )
         {
             if( Input.GetKeyDown(KeyCode.Q) )
             {
@@ -377,11 +386,14 @@ public class PlayerCtrl : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // 골 오브젝트에 도착하면 엔딩
-        if( other.gameObject.tag == "GoalObject")
+        // 골 오브젝트에 도착하면 엔딩 (튜토리얼에선 엔딩을 보여주지 않음)
+        if( SceneManager.GetActiveScene().name == "MainGame")
         {
-            SceneManager.LoadScene("Ending");
+            if( other.gameObject.tag == "GoalObject")
+            {
+                Cursor.visible = true;
+                SceneManager.LoadScene("Ending");
+            }
         }
     }
 }
-

@@ -1,21 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-// 플레이어가 발사하는 공격 투사체에 들어가는 클래스.
+// 작성자: 5702600 이창민
+// 플레이어가 발사하는 공격 투사체에 들어가는 클래스
 // 투사체마다 다양한 효과가 있는 경우, 이 클래스를 상속 받는 새로운 클래스를 만든 후 ActivateWhenHit()을 오버라이딩하여 구현하세요.
 public class PlayerBulletBasic : MonoBehaviour
 {
     public float moveSpeed, attackDamage, currentLevel;
-    public static float totalDamageDealt; // MeleeSkillSecond에서 사용할 변수
-    public GameObject player,
-                      onHitPrefab;
+    public GameObject player;
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-        onHitPrefab = Resources.Load<GameObject>("onHit");
     }
     
     public virtual void Update()
@@ -27,7 +24,7 @@ public class PlayerBulletBasic : MonoBehaviour
         if( Vector3.Distance(transform.position, player.transform.position) > 300 ) Destroy(gameObject);
     }
 
-    // 이 투사체를 발사한 주포의 정보에 맞추어 피해량과 이동속도 조절
+    // 이 투사체를 발사한 무기의 정보에 맞추어 피해량과 이동속도 조절
     public void Clone(PlayerWeaponBasic weapon, int level)
     {
         currentLevel = level; // 현재 자신의 레벨을 가져옴
@@ -44,9 +41,7 @@ public class PlayerBulletBasic : MonoBehaviour
         {
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.GetDamage(attackDamage); // 맞은 적에게 피해를 입힌다
-            totalDamageDealt += attackDamage; // MeleeSkillSecond에서 사용할 변수에 가한 피해량 누적
             ActivateWhenHit(other); // 오버라이딩 된 추가 효과가 있다면 발동
-            Instantiate(onHitPrefab, transform.position, Quaternion.identity); // 폭발 이펙트 생성
             Destroy(gameObject); // 스스로를 삭제
         }
     }

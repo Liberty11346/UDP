@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+// 작성자: 5702600 이창민
 // 적의 공격 투사체에 들어갈 스트립트
 public class EnemyAttackProjectile : MonoBehaviour
 {
     public float moveSpeed,
                  damage; // 플레이어에게 입히는 피해량
-    private GameObject player;
+    private GameObject player,
+                       onHitPrefab;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        onHitPrefab = Resources.Load<GameObject>("onHit");
     }
 
     void Update()
@@ -25,10 +29,12 @@ public class EnemyAttackProjectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // 플레이어와 충돌할 경우
         if( other.tag == "Player" )
         {
-            other.GetComponent<PlayerCtrl>().GetDamage(damage);
-            Destroy(gameObject);
+            Instantiate(onHitPrefab, transform.position, Quaternion.identity); // 폭발 이펙트를 생성하고
+            other.GetComponent<PlayerCtrl>().GetDamage(damage); // 플레이어에게 피해를 입힌 후
+            Destroy(gameObject); // 스스로를 삭제
         }
     }
 }

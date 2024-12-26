@@ -1433,7 +1433,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MouseX: 0
   MouseY: 0
-  sens: 800
   Distance: 50
   player: {fileID: 0}
 --- !u!45 &431567326

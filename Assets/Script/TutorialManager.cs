@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
+// 작성자: 5702600 이창민
+// 튜토리얼 씬에서 게임매니저 대신 사용될 튜토리얼 매니저
 public class TutorialManager : MonoBehaviour
 {
     public GameObject playerPrefab, // 플레이어 프리팹
@@ -26,7 +27,7 @@ public class TutorialManager : MonoBehaviour
         playerObj = Instantiate(playerPrefab, transform.position, Quaternion.identity);
         playerScript = playerObj.GetComponent<PlayerCtrl>();
 
-        // 플레이어의 타입에 맞춰 플레이어 무기를 설정
+        // 플레이어의 타입에 맞춰 플레이어 무기를 설정 (튜토리얼에선 원거리형으로 세팅)
         playerScript.PlayerTypeSetting("Range");
 
         // 목표 지점 생성
@@ -73,7 +74,7 @@ public class TutorialManager : MonoBehaviour
         // 14단계: 무기, 스킬 포인트를 모두 소모하면 다음 단계 진행
         if( currentTutorStep == 14 )
         {
-            if( playerScript.weaponPoint < 1 && playerScript.skillPoint < 1 )
+            if( playerScript.level > 9 && playerScript.weaponPoint < 1 && playerScript.skillPoint < 1 )
             {
                 StartCoroutine(ShowExplainText());
                 StartCoroutine(ShowGuideText());
@@ -81,6 +82,13 @@ public class TutorialManager : MonoBehaviour
                 isPassable = false;
             }
         }
+
+        // 튜토리얼에선 체력과 연료가 떨어지면 채워준다.
+        if( playerScript.currentFuel < 50 ) playerScript.currentFuel = 100;
+        if( playerScript.currentHealth < 50 ) playerScript.currentHealth = 100;
+
+        // 튜토리얼 도중 ESC 누르면 타이틀로 이동 (엑스포 전시용)
+        if( Input.GetKeyDown(KeyCode.Escape) ) SceneManager.LoadScene("Title");
     }
 
     void SpawnGoalPoint()
@@ -149,7 +157,7 @@ public class TutorialManager : MonoBehaviour
         // 문구가 등장하면서 레벨을 올려 준다.
         if( currentTutorStep == 14 )
         {
-            playerScript.experience += 8000;
+            playerScript.experience += 3000;
             for( int i = 0 ; i < 16 ; i++ ) playerScript.CheckForLevelUp();
         }
     }
@@ -169,6 +177,7 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    // 텍스트 관리용
     void InitExplainText()
     {
         tutorTexts.Clear();

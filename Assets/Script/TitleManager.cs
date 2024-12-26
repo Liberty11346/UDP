@@ -23,4 +23,9 @@ public class TitleManager : MonoBehaviour
             case "Exit": Application.Quit(); break;
         }
     }
+
+    void Start()
+    {
+        Cursor.visible = true;
+    }
 }

@@ -4977,7 +4977,7 @@ GameObject:
   - component: {fileID: 3197741188132255942}
   - component: {fileID: 1683847206711695391}
   - component: {fileID: 6744514028411737275}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Rod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5060,7 +5060,7 @@ GameObject:
   - component: {fileID: 8605061079723730991}
   - component: {fileID: 6007699673745415664}
   - component: {fileID: 5124631449483339898}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Pointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15003,7 +15003,7 @@ MonoBehaviour:
   weaponPoint: 0
   skillPoint: 0
   selectedWeaponIndex: 0
-  explosion: {fileID: 6037072281901822316, guid: 5da2d7b2052e9f64ebdb4a4a85a444d8, type: 3}
+  explosion: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664, type: 3}
   currentCam: {fileID: 0}
   playerWeapon:
   - {fileID: 0}
@@ -15125,7 +15125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1035886380722309659}
   - component: {fileID: 4080792589049256440}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Compass
   m_TagString: Untagged
   m_Icon: {fileID: 0}

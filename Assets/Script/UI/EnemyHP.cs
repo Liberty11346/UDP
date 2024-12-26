@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor.MPE;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 작성자: 5702600 이창민
+// 적 오브젝트 머리 위에 띄워질 체력 게이지 UI의 스크립트
 public class EnemyHP : MonoBehaviour
 {
     public GameObject myEnemyObj; // 자신이 체력을 표시할 적 오브젝트
@@ -44,7 +42,7 @@ public class EnemyHP : MonoBehaviour
         // 월드 좌표 -> 스크린 좌표
         Vector3 screenPosition = player.currentCam.WorldToScreenPoint(enemyPos);
 
-        // z 값 확인: 카메라 앞쪽일 때만 UI 표시
+        // z값을 확인하여 카메라 앞쪽일 때만 UI 표시
         if (screenPosition.z > 0)
         {
             transform.position = screenPosition; // UI를 화면 좌표로 이동
@@ -53,7 +51,7 @@ public class EnemyHP : MonoBehaviour
         }
         else
         {
-            BGImage.enabled = false; // UI 켬
+            BGImage.enabled = false; // UI 끔
             GImage.enabled = false;
         }
     }

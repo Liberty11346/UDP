@@ -7,11 +7,8 @@
 */
 
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
@@ -21,6 +18,7 @@ public class MenuManager : MonoBehaviour
     public GameObject meleeToolTipText; // 근거리 툴팁
     public GameObject middleToolTipText; // 중거리 툴팁
     public GameObject rangeToolTipText; // 원거리 툴팁
+    private GameObject gameOverUI; // 게임 오버 시 보여줄 UI
 
     public void WhenClick(string name)
     {
@@ -32,6 +30,18 @@ public class MenuManager : MonoBehaviour
         }
         // 누른 버튼이 Back 버튼이라면 메인으로 돌아감
         else SceneManager.LoadScene("Title");
+    }
+
+    void Start()
+    {
+        gameOverUI = GameObject.Find("GameOver");
+        gameOverUI.SetActive(false);
+    }
+
+    public IEnumerator GameOver()
+    {
+        yield return new WaitForSeconds(3);
+        gameOverUI.SetActive(true);
     }
 
     void StartGame()

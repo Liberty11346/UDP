@@ -4922,4 +4922,5 @@ MonoBehaviour:
   attackDamage: 0
   currentLevel: 0
   player: {fileID: 0}
-  explosion: {fileID: 6037072281901822316, guid: 5da2d7b2052e9f64ebdb4a4a85a444d8, type: 3}
+  onHitPrefab: {fileID: 0}
+  explosion: {fileID: 1121192042590650, guid: 1a1696809c5a2764492a1173d75e9457, type: 3}

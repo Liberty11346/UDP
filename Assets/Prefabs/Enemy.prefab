@@ -4881,7 +4881,7 @@ Transform:
   m_GameObject: {fileID: 3385360391997897396}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: -20.8, z: 440.2}
+  m_LocalPosition: {x: 80.584755, y: -71.86596, z: 142.68336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5003,15 +5003,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireDelay: 10
+<<<<<<< HEAD
   attackDamage: 25
+  moveSpeed: 3.2768002
+=======
+  attackDamage: 15
   moveSpeed: 10
+>>>>>>> main
   rotateSpeed: 0.2
   maxHealth: 100
   currentHealth: 100
   defense: 0
   attackProjectile: {fileID: 5227564742270619401, guid: 9cd88bb7124b9ef45828d50626ade1f7, type: 3}
   enemyHPGauge: {fileID: 8129347530230241429, guid: 741113ecb852019418e1f5cf3b3e9414, type: 3}
-  onDeath: {fileID: 6037072281901822316, guid: ff07c0016a61fe0418879a152093bce1, type: 3}
+  onDeath: {fileID: 1121192042590650, guid: 1a1696809c5a2764492a1173d75e9457, type: 3}
   gameManager: {fileID: 0}
 --- !u!1 &6005764237972200767
 GameObject:
